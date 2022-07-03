@@ -13,7 +13,7 @@ namespace MorePartsMod
 
         public static MorePartsMod main;
 
-        public MorePartsMod():base("morepartsmod", "MorePartsMod", "dani0105","0.3.7","v1.0.0")
+        public MorePartsMod():base("morepartsmod", "MorePartsMod", "dani0105","0.3.7","v1.0.0","Add new parts!")
         {
             main = this;
         }
