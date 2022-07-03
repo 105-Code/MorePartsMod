@@ -90,13 +90,24 @@ namespace MorePartsMod.Parts
 	
 		public void Deploy(UsePartData data)
 		{
+			Debug.Log("Open Balloon");
 			bool flag = false;
 
 			if (this._targetState.Value == 0f && this._state.Value == 0f)
 			{
-				MsgDrawer.main.Log("Deployed");
-				this._targetState.Value = 1f;
-				flag = true;
+				if (!this.Location.planet.HasAtmospherePhysics || this.Location.Height > this.Location.planet.AtmosphereHeightPhysics * 0.9)
+				{
+					MsgDrawer.main.Log("Not atmosphere");
+					flag = false;
+				}
+				else
+				{
+					MsgDrawer.main.Log("Deployed");
+					this._targetState.Value = 1f;
+					flag = true;
+				}
+
+				
 			}
 			else if(this._targetState.Value == 1f && this._state.Value == 1f)
 			{
