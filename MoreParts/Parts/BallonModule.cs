@@ -10,38 +10,37 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    class BalloonModule : MonoBehaviour, I_PartMenu, INJ_Location, INJ_Physics
+    class BalloonModule : MonoBehaviour, INJ_Location, INJ_Physics
 	{
-
+		private OrientationModule _orientation;
 		private VariablesModule _variables;
+		private Part _part;
+
 		private VariableList<double>.Variable _state;
 		private VariableList<double>.Variable _targetState;
 
-		
+		private Transform _balloon;
 		private Location _location;
 		private Rigidbody2D _rb2d;
 
-		private double maxDeployVelocity;
+		private double _volumn = 1.33f * Math.PI * Math.Pow(300, 3);
 		private bool _isOpen;
-		private float _thrust;
 
 		public Location Location { get => this._location; set => this._location = value; }
-
 		public Rigidbody2D Rb2d{ get =>	this._rb2d;	set =>	this._rb2d = value;	}
-	
 
 		private void Awake()
 		{
-			this._thrust = 15;//15T
-			this.maxDeployVelocity = 250;
+			this._part = this.GetComponent<Part>();
 
-			Part balloonPart = this.GetComponent<Part>();
-			this._variables = this.GetComponent<VariablesModule>();
+			this._variables = this._part.variablesModule;
+			this._orientation = this._part.orientation;
+			this._isOpen = false;
 
+			this._part.onPartUsed.AddListener(this.Deploy);
+			this._balloon = this.transform.FindChild("Deployed Ballon");
 			this._state = this._variables.doubleVariables.GetVariable("state");
 			this._targetState = this._variables.doubleVariables.GetVariable("state_target");
-
-			balloonPart.onPartUsed.AddListener(this.Deploy);
 		}
 
 		private void Start()
@@ -57,59 +56,49 @@ namespace MorePartsMod.Parts
 
 		private void FixedUpdate()
 		{
-			if (!this._isOpen)
+			if (!this._isOpen || this.Location.planet == null || this._location == null)
 			{
 				return;
 			}
+
 			Vector2 force;
 			
-			if (this._location.Height > this._location.planet.AtmosphereHeightPhysics * 0.88)
-			{
-				force = base.transform.TransformVector(new Vector2(0, 1) * (this._rb2d.mass * this._location.planet.GetGravity(this._location.position) ));
-			}
+			float airDensity = (float) this._location.planet.GetAtmosphericDensity(this._location.Height);
+			float gravity = (float) this._location.planet.GetGravity(this._location.position).y * -1;
+			float ascensionForce = ((airDensity * gravity  * (float)this._volumn) - this._rb2d.mass* gravity * 1000)/1000;
+			float aceleration = (float)Math.Sqrt(ascensionForce / 0.5f * this._rb2d.mass);
+
+			if (this._location.VerticalVelocity < 30)
+				force = this._balloon.transform.TransformVector(Vector2.up * (aceleration-gravity));
 			else
-			{
-				if(this._location.VerticalVelocity > 60) {
-					force = Vector2.up;
-				}
-				else
-				{
-					force = base.transform.TransformVector(new Vector2(0, 1) * (this._thrust * 9.8f));
-				}
-				
-			}
+				force = this._balloon.transform.TransformVector(Vector2.up);
 
 			Vector2 relativePoint = this._rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(base.transform, this._rb2d, new Vector2(-0.5f, -0.047f)));
 			this._rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
 		}
 
-		public void Draw(StatsMenu drawer, PartDrawSettings settings)
+		private void LateUpdate()
 		{
-			drawer.DrawStat(40, "Drawer", null);
-		}
+			if (GameManager.main == null || this.Location.planet == null || this._location == null)
+			{
+				return;
+			}
 
+			float newRotation = (this._orientation.orientation.Value.z * -1 * this._orientation.orientation.Value.x) - (this._rb2d.transform.localEulerAngles.z * this._orientation.orientation.Value.x) ;
+			this._balloon.localEulerAngles = new Vector3(1, 1, newRotation + Mathf.Sin(Time.time) * 3f * this._balloon.parent.lossyScale.x * this._balloon.parent.lossyScale.y);
+		}
+	
 		public void Deploy(UsePartData data)
 		{
 			bool flag = false;
-			double parachuteMultiplier = this.Location.planet.data.atmospherePhysics.parachuteMultiplier; 
+
 			if (this._targetState.Value == 0f && this._state.Value == 0f)
 			{
-				if (!this.Location.planet.HasAtmospherePhysics || this.Location.Height > this.Location.planet.AtmosphereHeightPhysics * 0.9)
-				{
-					MsgDrawer.main.Log("no atmosphere");
-				}
-				else if (this.Location.velocity.magnitude > this.maxDeployVelocity * parachuteMultiplier)
-				{
-					MsgDrawer.main.Log("Max velocity 250m/s");
-				}
-				else
-				{
-					MsgDrawer.main.Log("Deployed");
-					this._targetState.Value = 1f;
-					flag = true;
-				}
+				MsgDrawer.main.Log("Deployed");
+				this._targetState.Value = 1f;
+				flag = true;
 			}
-			else if(this._targetState.Value == 1f && this._state.Value == 1f)// is deployed
+			else if(this._targetState.Value == 1f && this._state.Value == 1f)
 			{
 				MsgDrawer.main.Log("Cut");
 				this._targetState.Value = 2f;
@@ -123,6 +112,7 @@ namespace MorePartsMod.Parts
 
 			data.successfullyUsedPart = flag;
 		}
+
 		private void UpdateEnabled()
 		{
 			base.enabled = this._isOpen = (this._targetState.Value == 1f);
