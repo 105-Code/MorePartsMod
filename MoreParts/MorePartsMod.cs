@@ -4,23 +4,23 @@ using ModLoader.Helpers;
 using MorePartsMod.Parts;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace MorePartsMod
 {
     public class MorePartsMod : Mod
     {
 
-        public static MorePartsMod main;
+        public static MorePartsMod Main;
 
-        public MorePartsMod():base("morepartsmod", "MorePartsMod", "dani0105","0.3.7","v1.0.0","Add new parts!")
+
+        public MorePartsMod():base("morepartsmod", "MorePartsMod", "dani0105","0.3.7","v1.1.0","Add new parts!","moreparts-assets")
         {
-            main = this;
+            Main = this;
         }
 
         public override void Early_Load()
         {
-            Harmony harmony = new Harmony("website.danielrojas.morepartsmod");
+            Harmony harmony = new Harmony("morepartsmod.danielrojas.website");
             harmony.PatchAll();
         }      
 
@@ -28,7 +28,9 @@ namespace MorePartsMod
         {
             // add components
             Debug.Log("Adding components!");
+            KeySettings.Setup();
             BalloonModule.Setup();
+            TelecommunicationDishModule.Setup();
         }
 
         public override void Unload()
