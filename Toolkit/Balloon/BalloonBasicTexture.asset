@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01ae1bbf9dd329e4a8f37566e82a0a45, type: 3}
-  m_Name: Side Parachute
+  m_Name: BalloonBasicTexture
   m_EditorClassIdentifier: 
   colorTex:
     texture: {fileID: 2800000, guid: 686a56a112d2b4449bc12396585520f7, type: 3}

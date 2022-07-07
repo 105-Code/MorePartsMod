@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45ccf3a634b47aa4f9855acf05dfd568, type: 3}
-  m_Name: Flat Faces
+  m_Name: PistonShape
   m_EditorClassIdentifier: 
   shapeTex:
     textures:
