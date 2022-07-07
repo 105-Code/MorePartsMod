@@ -90,7 +90,6 @@ namespace MorePartsMod.Parts
 	
 		public void Deploy(UsePartData data)
 		{
-			Debug.Log("Open Balloon");
 			bool flag = false;
 
 			if (this._targetState.Value == 0f && this._state.Value == 0f)
