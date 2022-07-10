@@ -8,7 +8,7 @@ namespace MorePartsMod.ARPA
     class Node
     {
         private WorldLocation _worldLocation;
-        //private Dictionary<int,Arc> _arcs;
+        public GameObject dish;
         private bool _isOrigin;
         public bool mark;
         private int _id;
@@ -17,46 +17,41 @@ namespace MorePartsMod.ARPA
         public int Id { get => this._id; }
         public bool IsOrigin { get => this._isOrigin; }
 
-        public int Radius { get => 200000; } // 200 Km
 
-        public Vector2 Position {  get => this._worldLocation.position.Value;
-        }
+        public WorldLocation Position {  get => this._worldLocation; }
       
 
 
-        public Node(int id, WorldLocation worldLocation, bool isOrigin =false)
+        public Node(int id, WorldLocation worldLocation,GameObject dish, bool isOrigin =false)
         {
             this._id = id;
             this.mark = false;
             this.nextNode = null;
             this._worldLocation = worldLocation;
             this._isOrigin = isOrigin;
-            //this._arcs = new Dictionary<int,Arc>();
+            this.dish = dish;
         }
 
-        public bool isNear(Vector2 position)
+        public PlanetModule isAvailabe(Vector2 direction)
         {
-            return ARPANET.calculateDistance(position, this.Position) <= this.Radius;
-        }
-        
-        public bool isNearNextNode()
-        {
-            //Debug.Log("Checking if " + this.nextNode.Id+" is near");
-            return this.isNear(this.nextNode.Position);
-        }
+            RaycastHit2D[] hits = Physics2D.RaycastAll(dish.transform.position, direction);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider == null)
+                {
+                    continue;
+                }
 
-        /*
-        public void insertArc(Node destination)
-        {
-            Arc arc = new Arc(destination);
-            this._arcs.Add(destination._id,arc);
+                if (hit.collider.gameObject.HasComponent<PlanetModule>())
+                {
+                    PlanetModule planet = hit.collider.gameObject.GetComponent<PlanetModule>();
+                    Debug.Log("Hit " + planet.planet.name);
+                    return planet;
+                }
+            }
+            return null;
+
         }
-
-        public bool destroyArc(Node target)
-        {
-            return this._arcs.Remove(target._id);
-        }*/
-
 
     }
 }

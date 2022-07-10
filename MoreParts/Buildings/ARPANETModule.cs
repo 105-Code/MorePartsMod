@@ -1,6 +1,7 @@
 ﻿using SFS.World;
 using UnityEngine;
 using MorePartsMod.ARPA;
+using System.Collections.Generic;
 
 namespace MorePartsMod.Buildings
 {
@@ -10,6 +11,7 @@ namespace MorePartsMod.Buildings
 		public static GameObject Antenna;
 		public static WorldLocation WorldLocation;
 		public static ARPANETModule Main;
+		public static List<PlanetModule> planets = new List<PlanetModule>();
 
 		public ARPANET network;
 
@@ -21,6 +23,16 @@ namespace MorePartsMod.Buildings
 			Debug.Log("ARPANET ready!");
 		}
 
-
+		public static PlanetModule getPlanet(string name)
+		{
+			foreach(PlanetModule planet in planets)
+			{
+				if(planet.planet.name == name)
+				{
+					return planet;
+				}
+			}
+			return null;
+		}
 	}
 }

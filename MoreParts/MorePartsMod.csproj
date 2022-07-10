@@ -86,7 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ARPA\Arc.cs" />
     <Compile Include="ARPA\ARPANET.cs" />
     <Compile Include="ARPA\Node.cs" />
     <Compile Include="KeySettings.cs" />

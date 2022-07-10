@@ -62,4 +62,39 @@ namespace MorePartsMod
         }
     }
 
+    [HarmonyPatch(typeof(GameManager), "Start")]
+    class GameManagerPatcher
+    {
+
+        [HarmonyPostfix]
+        public static void Postfix(GameManager __instance)
+        {
+            
+            
+            foreach(SFS.World.Environment env in __instance.environment.environments)
+            {
+                PlanetModule planet = env.holder.GetOrAddComponent<PlanetModule>();
+                planet.gameobject = env.holder.gameObject;
+                planet.transform = env.holder;
+                planet.collider = env.holder.GetOrAddComponent<CircleCollider2D>();
+                planet.collider.isTrigger = true;
+                Debug.Log(env.planet.name + ":" + (float)env.planet.Radius+" Pos:"+env.holder.transform.position);
+                planet.collider.radius = (float) env.planet.Radius;
+                planet.planet = env.planet;
+                ARPANETModule.planets.Add(planet);
+            }
+
+        }
+            
+    }
+
+    public class PlanetModule : MonoBehaviour
+    {
+        public GameObject gameobject;
+        public Transform transform;
+        public CircleCollider2D collider;
+        public Planet planet;
+
+    }
+
 }

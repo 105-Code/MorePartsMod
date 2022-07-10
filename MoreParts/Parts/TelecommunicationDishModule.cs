@@ -12,22 +12,25 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    class TelecommunicationDishModule: MonoBehaviour, INJ_Rocket, INJ_IsPlayer
+	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket, INJ_IsPlayer
 	{
 		private Part _part;
 		private VariableList<bool>.Variable _state;
 		private Node _rocketNode;
-		private Node _nearNode;
 		private Rocket _rocket;
 		private bool _active;
 		private bool _notifyDisconection;
 		private bool _notifyConnection;
 		private const float _pingTime = 5f;
+		private bool _flag;
+
 		public bool State { get => this._state.Value; }
 
 		public Rocket Rocket { set => this._rocket = value; }
-		public bool IsPlayer { 
-			set {
+		public bool IsPlayer
+		{
+			set
+			{
 				if (!value) // is not player
 				{
 					this._rocket.hasControl.Value = true;
@@ -58,8 +61,65 @@ namespace MorePartsMod.Parts
 
 		}
 
-		private void checkConnection()
+		private void Start()
 		{
+			if (GameManager.main == null)
+			{
+				base.enabled = false;
+				return;
+			}
+			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Dish, this._toggle);
+			if (this._state.Value)
+			{
+				// conect to ARPANET
+				this._rocketNode = ARPANETModule.Main.network.insertNode(this._rocket.GetComponent<WorldLocation>(), this.transform.gameObject);
+				this.stateChange();
+
+			}
+			else
+			{
+				if (this._rocket.isPlayer)
+				{
+					this._rocket.hasControl.Value = false;
+				}
+
+			}
+
+			this._state.onValueChange += this.stateChange;
+
+		}
+
+		private void FixedUpdate()
+		{
+			if (GameManager.main == null || this._flag)
+			{
+				base.enabled = false;
+				return;
+			}
+			this._flag = true;
+			if (!this._rocket.isPlayer || !this._state.Value)
+			{
+				return;
+			}
+
+			if(ARPANETModule.Main.network.isConnected(this._rocketNode))
+			{
+				this._rocket.hasControl.Value = true;
+				return;
+			}
+			this._rocket.hasControl.Value = false;
+			
+
+			/*if(this._nearNode.isAvailabe())
+
+				Debug.Log("\n");
+			
+			if(this._nearNode == null)
+			{
+				return;
+			}
+			Debug.Log("Conectado:" + this._nearNode.Id);
+
 			if (this._rocketNode == null)
 			{
 				this._rocket.hasControl.Value = false;
@@ -83,9 +143,9 @@ namespace MorePartsMod.Parts
 					this._notifyDisconection = false;
 					this._notifyConnection = true;
 				}
-				
+
 				this._rocket.hasControl.Value = false;
-				
+
 				return;
 			}
 
@@ -96,54 +156,28 @@ namespace MorePartsMod.Parts
 				this._notifyDisconection = true;
 
 			}
-			this._rocket.hasControl.Value = true;
-		}
 
-		private void Start()
-		{
-			if (GameManager.main == null)
-			{
-				base.enabled = false;
-				return;
-			}
-			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Dish,this._toggle);
-
-			if (this._state.Value)
-			{
-				// conect to ARPANET
-				this._rocketNode = ARPANETModule.Main.network.insertNode(this._rocket.GetComponent<WorldLocation>());
-				this.stateChange();
-
-			}
-			else
-			{
-				if (this._rocket.isPlayer)
-				{
-					this._rocket.hasControl.Value = false;
-				}
-				
-			}
-			
-			this._state.onValueChange += this.stateChange;
-		
+			this._rocket.hasControl.Value = true;*/
 		}
 
 
 		private void stateChange()
 		{
 			Debug.Log("State Change");
+			this._flag = false;
 			//this._active = this._state.Value;
 			if (this._state.Value)
 			{
-				this.InvokeRepeating("checkConnection",1f,_pingTime);
+				//this.InvokeRepeating("checkConnection",1f,_pingTime);
 				this._active = true;
 			}
 			else
 			{
-				this.CancelInvoke("checkConnection");
+				//this.CancelInvoke("checkConnection");
 				this._active = false;
 			}
 		}
+
 
 		private void _toggle()
 		{
@@ -160,10 +194,9 @@ namespace MorePartsMod.Parts
 			}
 			else
 			{
-				this._rocketNode = ARPANETModule.Main.network.insertNode(this._rocket.GetComponent<WorldLocation>());
+				this._rocketNode = ARPANETModule.Main.network.insertNode(this._rocket.GetComponent<WorldLocation>(), this.transform.gameObject);
 				MsgDrawer.main.Log("Telecommunication Dish On");
 			}
-
 			this._state.Value = !this._state.Value;
 		}
 
@@ -174,7 +207,7 @@ namespace MorePartsMod.Parts
 		}
 
 		public static void Setup()
-        {
+		{
 			Part part;
 			Base.partsLoader.parts.TryGetValue("Telecommunication Dish", out part);
 
@@ -188,5 +221,5 @@ namespace MorePartsMod.Parts
 
 			Debug.Log("Telecommunication Dish component added!");
 		}
-    }
+	}
 }
