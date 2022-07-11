@@ -20,6 +20,8 @@ namespace MorePartsMod.Parts
 		private Rocket _rocket;
 		private bool _notifyDisconnection;
 		private bool _notifyConnection;
+		private float _time;
+		private float _ping;
 
 		public Node Node { get => this._rocketNode; }
 		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
@@ -51,6 +53,7 @@ namespace MorePartsMod.Parts
 
 			this._notifyConnection = true;
 			this._notifyDisconnection = true;
+			
 		}
 
 		private void Start()
@@ -78,8 +81,10 @@ namespace MorePartsMod.Parts
 			}
 
 			this._state.onValueChange += this.stateChange;
+			this._time = 3f;
+			this._ping = 3f;
 		}
-		private bool _flag;
+
 		private void FixedUpdate()
 		{
 			if (GameManager.main == null)
@@ -87,11 +92,25 @@ namespace MorePartsMod.Parts
 				base.enabled = false;
 				return;
 			}
-			if (!this._rocket.isPlayer || !this._state.Value)
+
+			if (!this._rocket.isPlayer || !this._state.Value ) 
 			{
 				return;
 			}
-			//this._flag = true;
+
+			if(WorldTime.main.timewarpSpeed >= 5)
+			{
+				this.doDisconnection();
+				return;
+			}
+
+			this._time += Time.deltaTime;
+			if(this._time <= this._ping)
+			{
+				return;
+			}
+			this._time = 0;
+
 			if (ARPANETModule.Main.isConnected(this._rocketNode))
 			{
 		
@@ -100,20 +119,23 @@ namespace MorePartsMod.Parts
 					MsgDrawer.main.Log("Connected");
 					this._notifyConnection = false;
 					this._notifyDisconnection = true;
-					
+					this._rocket.hasControl.Value = true;
 				}
-				this._rocket.hasControl.Value = true;
 				return;
 			}
+			this.doDisconnection();
+		}
 
+		private void doDisconnection()
+		{
 			if (this._notifyDisconnection)
 			{
 				MsgDrawer.main.Log("No Connection");
 				this._notifyDisconnection = false;
 				this._notifyConnection = true;
+				this._rocket.hasControl.Value = false;
+				this._time = this._ping;
 			}
-			
-			this._rocket.hasControl.Value = false;
 		}
 
 		private void stateChange()
