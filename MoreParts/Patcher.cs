@@ -61,26 +61,4 @@ namespace MorePartsMod
         }
     }
 
-    [HarmonyPatch(typeof(GameManager), "Start")]
-    class GameManagerPatcher
-    {
-
-        [HarmonyPostfix]
-        public static void Postfix(GameManager __instance)
-        {  
-            foreach(SFS.World.Environment env in __instance.environment.environments)
-            {
-                CircleCollider2D collider =  env.holder.GetOrAddComponent<CircleCollider2D>();
-                collider.isTrigger = true;
-                collider.radius = (float) env.planet.Radius;
-
-                PlanetHelper helper = env.holder.GetOrAddComponent<PlanetHelper>();
-                helper.name = env.planet.name;
-                Debug.Log("Collider Added to " + helper.name);
-            }
-
-        }
-            
-    }
-
 }

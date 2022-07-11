@@ -12,7 +12,6 @@ namespace MorePartsMod.ARPA
     {
         private List<Node> _nodes; // all satellites
         private int _counter;
-        private Node _origin; // space center antenna
 
 
 
@@ -26,12 +25,8 @@ namespace MorePartsMod.ARPA
 
         public Node insert(WorldLocation worldLocation, GameObject dish, bool isOrigin = false)
         {
-            Node newNode = new Node(this._counter, worldLocation, dish, isOrigin);
+            Node newNode = new Node(this._counter, worldLocation, isOrigin);
             this._counter++;
-            if (isOrigin)
-            {
-                this._origin = newNode;
-            }
             this._nodes.Add(newNode);
             return newNode;
         }
@@ -51,8 +46,6 @@ namespace MorePartsMod.ARPA
 
         public bool isConnected(Node origin)
         {
-            Double2 position = getAbsolutePosition(origin);
-
             foreach (Node node in this._nodes)
             {
                 
@@ -60,36 +53,22 @@ namespace MorePartsMod.ARPA
                 {
                     continue;
                 }
-                Double2 nodePosition = getAbsolutePosition(node);
-                Vector2 direction = (nodePosition - position ).normalized;
-                PlanetHelper hit = origin.isAvailabe(direction);
-                Debug.Log("From: Node " + origin.Id + " to: Node " + node.Id+" Direction: "+direction);
+
+                if (!origin.isAvailableTo(node))
+                {
+                    //Debug.Log("Ruta no Valida");
+                    continue;
+                }
+                //Debug.Log("Ruta valida desde" + origin.Id + " a " + node.Id);
 
                 if (node.IsOrigin)
                 {
-                    if(hit != null && hit.name != "Earth")
-                    {
-                        Debug.Log("Hit to origin" + hit.name);
-                        // there is a hit whit a planet, so is no possible communicate with the origin node
-                        continue;
-                    }
-                    if(direction.y < 0)
-                    {
-                        origin.next = node;
-                        return true;
-                    }
-                    continue;
-                }
-
-
-                if(hit != null)
-                {
-                    Debug.Log("Hit "+hit.name);
-                    continue;
+                    origin.next = node;
+                    return true;
                 }
 
                 node.mark = true;
-                //Debug.Log("Serching next Node");
+                //Debug.Log("Siguiente Nodo");
                 if (this.isConnected(node))
                 {
                     origin.next = node;
@@ -107,30 +86,14 @@ namespace MorePartsMod.ARPA
             {
                 return true;
             }
-            Double2 position = getAbsolutePosition(origin);
-            Double2 nodePosition = getAbsolutePosition(origin.next);
-            Vector2 direction = (nodePosition - position).normalized;
-            PlanetHelper hit = origin.isAvailabe(direction);
-            if (origin.next.IsOrigin)
-            {
-                if (hit != null && hit.name != "Earth")
-                {
-                    // there is a hit whit a planet, so is no possible communicate with the origin node
-                    return false;
-                }
-                if (direction.y < 0)
-                {
-                    return true;
-                }
-                return false;
-            }
 
-            if (hit != null)
+            if (!origin.isAvailableTo(origin.next))
             {
                 return false;
             }
             return this.checkRoute(origin.next);
-        }       
+
+        }
 
         public void clearRoute(Node origin)
         {
@@ -140,11 +103,6 @@ namespace MorePartsMod.ARPA
             }
             this.clearRoute(origin.next);
             origin.next = null;
-        }
-
-        public static Double2 getAbsolutePosition(Node node)
-        {
-            return node.WorlLocation.planet.Value.GetSolarSystemPosition() + node.WorlLocation.Value.position;
         }
     
     }

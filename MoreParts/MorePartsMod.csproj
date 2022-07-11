@@ -88,7 +88,6 @@
   <ItemGroup>
     <Compile Include="ARPA\ARPANET.cs" />
     <Compile Include="ARPA\Node.cs" />
-    <Compile Include="ARPA\PlanetHelper.cs" />
     <Compile Include="KeySettings.cs" />
     <Compile Include="MorePartsMod.cs" />
     <Compile Include="Buildings\ARPANETModule.cs" />

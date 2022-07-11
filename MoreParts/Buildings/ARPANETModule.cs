@@ -36,10 +36,12 @@ namespace MorePartsMod.Buildings
 
 		public bool isConnected(Node origin)
 		{
+			
 			bool result;
-
+			
 			if (origin.next != null)
 			{
+				//Debug.Log("Comprobando Ruta");
 				// there is a route
 				result = this._network.checkRoute(origin);
 				if (result)

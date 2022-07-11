@@ -79,7 +79,7 @@ namespace MorePartsMod.Parts
 
 			this._state.onValueChange += this.stateChange;
 		}
-
+		private bool _flag;
 		private void FixedUpdate()
 		{
 			if (GameManager.main == null)
@@ -91,6 +91,7 @@ namespace MorePartsMod.Parts
 			{
 				return;
 			}
+			//this._flag = true;
 			if (ARPANETModule.Main.isConnected(this._rocketNode))
 			{
 		
@@ -139,6 +140,7 @@ namespace MorePartsMod.Parts
 				this._rocketNode = ARPANETModule.Main.addNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish On");
 			}
+			//this._flag = false;
 			this._state.Value = !this._state.Value;
 		}
 
