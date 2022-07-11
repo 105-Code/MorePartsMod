@@ -20,10 +20,10 @@ namespace MorePartsMod.ARPA
         {
             this._nodes = new List<Node>();
             this._counter = 0;
-            this.insert(worldLocation, worldLocation.transform.gameObject, true);
+            this.insert(worldLocation, true);
         }
 
-        public Node insert(WorldLocation worldLocation, GameObject dish, bool isOrigin = false)
+        public Node insert(WorldLocation worldLocation, bool isOrigin = false)
         {
             Node newNode = new Node(this._counter, worldLocation, isOrigin);
             this._counter++;

@@ -25,7 +25,7 @@ namespace MorePartsMod.Buildings
 		public Node addNode(TelecommunicationDishModule dish)
 		{
 			WorldLocation location = dish.Rocket.GetComponent<WorldLocation>();
-			return this._network.insert(location, dish.transform.parent.gameObject);
+			return this._network.insert(location);
 		}
 
 		public void removeNode(TelecommunicationDishModule dish)
@@ -41,8 +41,6 @@ namespace MorePartsMod.Buildings
 			
 			if (origin.next != null)
 			{
-				//Debug.Log("Comprobando Ruta");
-				// there is a route
 				result = this._network.checkRoute(origin);
 				if (result)
 				{
