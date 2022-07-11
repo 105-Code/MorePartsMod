@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using MorePartsMod.ARPA;
 using MorePartsMod.Buildings;
 using MorePartsMod.Parts;
 using SFS;
@@ -48,8 +49,6 @@ namespace MorePartsMod
             // Create Space center building
             SpaceCenter.Building building = new SpaceCenter.Building();
             building.building = buildingObject;
-            ARPANETModule.Antenna = gameObject;// and Antenna gameobjecto to ARPANET module
-            ARPANETModule.WorldLocation = location;
 
             // set the antenna in the world
             building.building.location.Value = new Location(planet, spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0), default(Double2));
@@ -68,33 +67,20 @@ namespace MorePartsMod
 
         [HarmonyPostfix]
         public static void Postfix(GameManager __instance)
-        {
-            
-            
+        {  
             foreach(SFS.World.Environment env in __instance.environment.environments)
             {
-                PlanetModule planet = env.holder.GetOrAddComponent<PlanetModule>();
-                planet.gameobject = env.holder.gameObject;
-                planet.transform = env.holder;
-                planet.collider = env.holder.GetOrAddComponent<CircleCollider2D>();
-                planet.collider.isTrigger = true;
-                Debug.Log(env.planet.name + ":" + (float)env.planet.Radius+" Pos:"+env.holder.transform.position);
-                planet.collider.radius = (float) env.planet.Radius;
-                planet.planet = env.planet;
-                ARPANETModule.planets.Add(planet);
+                CircleCollider2D collider =  env.holder.GetOrAddComponent<CircleCollider2D>();
+                collider.isTrigger = true;
+                collider.radius = (float) env.planet.Radius;
+
+                PlanetHelper helper = env.holder.GetOrAddComponent<PlanetHelper>();
+                helper.name = env.planet.name;
+                Debug.Log("Collider Added to " + helper.name);
             }
 
         }
             
-    }
-
-    public class PlanetModule : MonoBehaviour
-    {
-        public GameObject gameobject;
-        public Transform transform;
-        public CircleCollider2D collider;
-        public Planet planet;
-
     }
 
 }

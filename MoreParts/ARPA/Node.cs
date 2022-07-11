@@ -1,4 +1,5 @@
-﻿using SFS.World;
+﻿using MorePartsMod.Buildings;
+using SFS.World;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,17 +9,16 @@ namespace MorePartsMod.ARPA
     class Node
     {
         private WorldLocation _worldLocation;
-        public GameObject dish;
         private bool _isOrigin;
-        public bool mark;
         private int _id;
-        public Node nextNode;
+        private Transform _startPoint;
+
+        public Node next;
+        public bool mark;
 
         public int Id { get => this._id; }
         public bool IsOrigin { get => this._isOrigin; }
-
-
-        public WorldLocation Position {  get => this._worldLocation; }
+        public WorldLocation WorlLocation {  get => this._worldLocation; }
       
 
 
@@ -26,15 +26,16 @@ namespace MorePartsMod.ARPA
         {
             this._id = id;
             this.mark = false;
-            this.nextNode = null;
+            this.next = null;
             this._worldLocation = worldLocation;
             this._isOrigin = isOrigin;
-            this.dish = dish;
+            this._startPoint = dish.transform;
         }
 
-        public PlanetModule isAvailabe(Vector2 direction)
+        public PlanetHelper isAvailabe(Vector2 direction)
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(dish.transform.position, direction);
+            //Debug.Log("ReycastAll from Node"+this.Id+" "+ this._startPoint.position.ToString()+" Direction"+ direction.ToString());
+            RaycastHit2D[] hits = Physics2D.RaycastAll(this._startPoint.position, direction);
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider == null)
@@ -42,15 +43,12 @@ namespace MorePartsMod.ARPA
                     continue;
                 }
 
-                if (hit.collider.gameObject.HasComponent<PlanetModule>())
+                if (hit.collider.gameObject.HasComponent<PlanetHelper>())
                 {
-                    PlanetModule planet = hit.collider.gameObject.GetComponent<PlanetModule>();
-                    Debug.Log("Hit " + planet.planet.name);
-                    return planet;
+                    return hit.collider.gameObject.GetComponent<PlanetHelper>();
                 }
             }
-            return null;
-
+            return null; // there is not hits
         }
 
     }

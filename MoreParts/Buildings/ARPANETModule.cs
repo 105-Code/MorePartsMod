@@ -2,37 +2,61 @@
 using UnityEngine;
 using MorePartsMod.ARPA;
 using System.Collections.Generic;
+using MorePartsMod.Parts;
 
 namespace MorePartsMod.Buildings
 {
     class ARPANETModule : MonoBehaviour
-
 	{
-		public static GameObject Antenna;
-		public static WorldLocation WorldLocation;
 		public static ARPANETModule Main;
-		public static List<PlanetModule> planets = new List<PlanetModule>();
 
-		public ARPANET network;
+		private ARPANET _network;
+		private Node _routeOrigin;
+		
 
 		private void Awake()
 		{
 			Main = this;
-			Debug.Log("Creating network");
-			this.network = new ARPANET(WorldLocation);
-			Debug.Log("ARPANET ready!");
+			WorldLocation worldLocation = this.GetComponent<WorldLocation>();
+			this._network = new ARPANET(worldLocation);
 		}
 
-		public static PlanetModule getPlanet(string name)
+
+		public Node addNode(TelecommunicationDishModule dish)
 		{
-			foreach(PlanetModule planet in planets)
-			{
-				if(planet.planet.name == name)
-				{
-					return planet;
-				}
-			}
-			return null;
+			WorldLocation location = dish.Rocket.GetComponent<WorldLocation>();
+			return this._network.insert(location, dish.transform.parent.gameObject);
 		}
+
+		public void removeNode(TelecommunicationDishModule dish)
+		{
+			this._network.remove(dish.Node);
+			this._network.clearRoute(this._routeOrigin);
+		}
+
+		public bool isConnected(Node origin)
+		{
+			bool result;
+
+			if (origin.next != null)
+			{
+				// there is a route
+				result = this._network.checkRoute(origin);
+				if (result)
+				{
+					return true;
+				}
+				this._network.clearRoute(origin);
+			}
+			origin.mark = true;
+			result = this._network.isConnected(origin);
+			if (result)
+			{
+				this._routeOrigin = origin;
+			}
+			this._network.clearMarks();
+			return result;
+		}
+
 	}
 }
