@@ -15,7 +15,7 @@ namespace MorePartsMod.Parts
 	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket, INJ_IsPlayer
 	{
 		private Part _part;
-		private VariableList<bool>.Variable _state;
+		private Bool_Local _state = new Bool_Local();
 		private Node _rocketNode;
 		private Rocket _rocket;
 		private bool _notifyDisconnection;
@@ -39,7 +39,7 @@ namespace MorePartsMod.Parts
 				if (this._state.Value)
 				{
 					this._rocket.hasControl.Value = false;
-					this.stateChange();
+					this.StateChange();
 				}
 
 			}
@@ -48,12 +48,13 @@ namespace MorePartsMod.Parts
 		private void Awake()
 		{
 			this._part = this.GetComponent<Part>();
-			this._state = this._part.variablesModule.boolVariables.GetVariable("isOn");
+			this._state.Value = this._part.variablesModule.boolVariables.GetVariable("isOn").Value;
 			this._part.onPartUsed.AddListener(this.Toggle);
 
 			this._notifyConnection = true;
 			this._notifyDisconnection = true;
-			
+			this._time = 3f;
+			this._ping = 3f;
 		}
 
 		private void Start()
@@ -69,8 +70,8 @@ namespace MorePartsMod.Parts
 			if (this._state.Value)
 			{
 				// conect to ARPANET
-				this._rocketNode = ARPANETModule.Main.addNode(this);
-				this.stateChange();
+				this._rocketNode = AntennaComponent.main.AddNode(this);
+				this.StateChange();
 			}
 			else
 			{
@@ -80,9 +81,7 @@ namespace MorePartsMod.Parts
 				}
 			}
 
-			this._state.onValueChange += this.stateChange;
-			this._time = 3f;
-			this._ping = 3f;
+			this._state.OnChange += this.StateChange;
 		}
 
 		private void FixedUpdate()
@@ -100,7 +99,7 @@ namespace MorePartsMod.Parts
 
 			if(WorldTime.main.timewarpSpeed >= 5)
 			{
-				this.doDisconnection();
+				this.DoDisconnection();
 				return;
 			}
 
@@ -111,7 +110,7 @@ namespace MorePartsMod.Parts
 			}
 			this._time = 0;
 
-			if (ARPANETModule.Main.isConnected(this._rocketNode))
+			if (AntennaComponent.main.IsConnected(this._rocketNode))
 			{
 		
 				if (this._notifyConnection)
@@ -123,10 +122,10 @@ namespace MorePartsMod.Parts
 				}
 				return;
 			}
-			this.doDisconnection();
+			this.DoDisconnection();
 		}
 
-		private void doDisconnection()
+		private void DoDisconnection()
 		{
 			if (this._notifyDisconnection)
 			{
@@ -138,9 +137,8 @@ namespace MorePartsMod.Parts
 			}
 		}
 
-		private void stateChange()
+		private void StateChange()
 		{
-			Debug.Log("State Change");
 			this._rocket.hasControl.Value = this._state.Value;
 		}
 
@@ -153,16 +151,15 @@ namespace MorePartsMod.Parts
 
 			if (this._state.Value)
 			{
-				ARPANETModule.Main.removeNode(this);
+				AntennaComponent.main.RemoveNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish Off");
 				this._rocketNode = null;
 			}
 			else
 			{
-				this._rocketNode = ARPANETModule.Main.addNode(this);
+				this._rocketNode = AntennaComponent.main.AddNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish On");
 			}
-			//this._flag = false;
 			this._state.Value = !this._state.Value;
 		}
 

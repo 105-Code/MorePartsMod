@@ -13,17 +13,14 @@ namespace MorePartsMod.ARPA
         private List<Node> _nodes; // all satellites
         private int _counter;
 
-
-
-
         public ARPANET(WorldLocation worldLocation)
         {
             this._nodes = new List<Node>();
             this._counter = 0;
-            this.insert(worldLocation, true);
+            this.Insert(worldLocation, true);
         }
 
-        public Node insert(WorldLocation worldLocation, bool isOrigin = false)
+        public Node Insert(WorldLocation worldLocation, bool isOrigin = false)
         {
             Node newNode = new Node(this._counter, worldLocation, isOrigin);
             this._counter++;
@@ -31,12 +28,12 @@ namespace MorePartsMod.ARPA
             return newNode;
         }
 
-        public void remove(Node target)
+        public void Remove(Node target)
         {
             this._nodes.Remove(target);
         }
 
-        public void clearMarks()
+        public void ClearMarks()
         {
             foreach (Node node in this._nodes)
             {
@@ -44,7 +41,7 @@ namespace MorePartsMod.ARPA
             }
         }
 
-        public bool isConnected(Node origin)
+        public bool IsConnected(Node origin)
         {
             foreach (Node node in this._nodes)
             {
@@ -54,12 +51,10 @@ namespace MorePartsMod.ARPA
                     continue;
                 }
 
-                if (!origin.isAvailableTo(node))
+                if (!origin.IsAvailableTo(node))
                 {
-                    //Debug.Log("Ruta no Valida");
                     continue;
                 }
-                //Debug.Log("Ruta valida desde" + origin.Id + " a " + node.Id);
 
                 if (node.IsOrigin)
                 {
@@ -68,8 +63,7 @@ namespace MorePartsMod.ARPA
                 }
 
                 node.mark = true;
-                //Debug.Log("Siguiente Nodo");
-                if (this.isConnected(node))
+                if (this.IsConnected(node))
                 {
                     origin.next = node;
                     return true;
@@ -80,28 +74,28 @@ namespace MorePartsMod.ARPA
             return false;
         }
 
-        public bool checkRoute(Node origin)
+        public bool CheckRoute(Node origin)
         {
             if (origin.IsOrigin)
             {
                 return true;
             }
 
-            if (!origin.isAvailableTo(origin.next))
+            if (!origin.IsAvailableTo(origin.next))
             {
                 return false;
             }
-            return this.checkRoute(origin.next);
+            return this.CheckRoute(origin.next);
 
         }
 
-        public void clearRoute(Node origin)
+        public void ClearRoute(Node origin)
         {
             if(origin == null)
             {
                 return;
             }
-            this.clearRoute(origin.next);
+            this.ClearRoute(origin.next);
             origin.next = null;
         }
     
