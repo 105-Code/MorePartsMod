@@ -23,9 +23,12 @@ namespace MorePartsMod
 			KeySettings keySettings = new KeySettings(); // default keybindings
 			base.CreateUI_Text("MoreParts Mod");
 			base.CreateUI_Keybinding(Toggle_Telecommunication_Dish, keySettings.Toggle_Telecommunication_Dish, "Toggle Telecommunication Dish");
+			base.CreateUI_Keybinding(Open_Colony, keySettings.Open_Colony, "Open Colony");
+
 		}
 
 
 		public KeybindingsPC.Key Toggle_Telecommunication_Dish = KeyCode.Y;
+		public KeybindingsPC.Key Open_Colony = KeyCode.U;
 	}
 }

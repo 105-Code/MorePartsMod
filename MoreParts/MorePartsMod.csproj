@@ -80,6 +80,9 @@
       <HintPath>..\Dependencies\UnityEngine.Physics2DModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\Dependencies\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Dependencies\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
@@ -88,9 +91,13 @@
   <ItemGroup>
     <Compile Include="ARPA\ARPANET.cs" />
     <Compile Include="ARPA\Node.cs" />
+    <Compile Include="Managers\ColonyManager.cs" />
+    <Compile Include="Buildings\RefineryComponent.cs" />
+    <Compile Include="WorldBuildings.cs" />
+    <Compile Include="Buildings\ColonyComponent.cs" />
     <Compile Include="KeySettings.cs" />
     <Compile Include="MorePartsMod.cs" />
-    <Compile Include="Buildings\ARPANETModule.cs" />
+    <Compile Include="Buildings\AntennaComponent.cs" />
     <Compile Include="Parts\BallonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
     <Compile Include="Patcher.cs" />
