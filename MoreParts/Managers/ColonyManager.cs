@@ -86,7 +86,7 @@ namespace MorePartsMod.Managers
             ResourceModule construction = null;
             foreach (ResourceModule resourceGroup in rocket.resources.globalGroups)
             {
-                if(resourceGroup.resourceType.name == "ElectronicComponent")
+                if(resourceGroup.resourceType.name == "Electronic_Component")
                 {
                     if(resourceGroup.ResourceAmount < electronicRequired)
                     {
@@ -95,7 +95,7 @@ namespace MorePartsMod.Managers
                     electronic = resourceGroup;
                 }
 
-                if (resourceGroup.resourceType.name == "ConstructionMaterial")
+                if (resourceGroup.resourceType.name == "Construction_Material")
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
