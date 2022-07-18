@@ -86,7 +86,7 @@ namespace MorePartsMod.Managers
             ResourceModule construction = null;
             foreach (ResourceModule resourceGroup in rocket.resources.globalGroups)
             {
-                if(resourceGroup.resourceType.name == "Electronic Component")
+                if(resourceGroup.resourceType.name == "ElectronicComponent")
                 {
                     if(resourceGroup.ResourceAmount < electronicRequired)
                     {
@@ -95,7 +95,7 @@ namespace MorePartsMod.Managers
                     electronic = resourceGroup;
                 }
 
-                if (resourceGroup.resourceType.name == "Construction Material")
+                if (resourceGroup.resourceType.name == "ConstructionMaterial")
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
@@ -119,24 +119,28 @@ namespace MorePartsMod.Managers
         private void CreateColony()
         {
             WorldLocation playerLocation = this.player.Value.location;
+            Planet planet = this.player.Value.location.planet.Value;
+
+            if (!this.CheckColonyDistance(planet.codeName, playerLocation.position.Value))
+            {
+                MsgDrawer.main.Log("Too close to another colony");
+                return;
+            }
+
+            if (!CheckAndReduceMaterials(7, 7))
+            {
+                MsgDrawer.main.Log("Insufficient Materials");
+                return;
+            }
 
             Double2 planetCenter = new Double2(0, 0);
             Vector3 direction = (playerLocation.position.Value - planetCenter).normalized;
-            Double2 colonyPosition = planetCenter + direction * (float)(playerLocation.planet.Value.Radius + 19);
-            Planet planet = this.player.Value.location.planet.Value;
-            if (!this.CheckColonyDistance(planet.codeName, colonyPosition))
-            {
-                MsgDrawer.main.Log("Too close to another Colony");
-                return;
-            }
+            double height = playerLocation.planet.Value.Radius + playerLocation.planet.Value.GetTerrainHeightAtAngle(playerLocation.position.Value.AngleRadians);
+            Double2 colonyPosition = planetCenter + direction * (float) height;
 
-            if (!CheckAndReduceMaterials(7, 5))
-            {
-                MsgDrawer.main.Log("Insuficient Materials");
-                return;
-            }
             this._newColony = new ColonyData((float)playerLocation.position.Value.AngleDegrees - 90,planet.codeName, colonyPosition);
-            this.ShowWindows();
+            this.OnCreateColony();
+            //this.ShowWindows(); // disable for the moment
         }
 
         private void ShowWindows()
@@ -156,7 +160,7 @@ namespace MorePartsMod.Managers
 
         private void OnCreateColony()
         {
-            this._windows.gameObject.SetActive(false);
+            //this._windows.gameObject.SetActive(false); // disable for the moment
             this._newColony.name = this._colonyName;
 
             GameObject colony = GameObject.Instantiate(MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony"));

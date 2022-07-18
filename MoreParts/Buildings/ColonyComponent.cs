@@ -176,7 +176,7 @@ namespace MorePartsMod.Buildings
             ColonyBuildingData building = this.GetBuilding(buildingName);
             if(!ColonyManager.main.CheckAndReduceMaterials(building.cost.constructionCost, building.cost.electronicCost))
             {
-                MsgDrawer.main.Log("Insuficient Materials");
+                MsgDrawer.main.Log("Insufficient Materials");
                 return;
             }
             building.state = true;
