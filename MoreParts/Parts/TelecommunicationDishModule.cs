@@ -15,7 +15,7 @@ namespace MorePartsMod.Parts
 	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket, INJ_IsPlayer
 	{
 		private Part _part;
-		private Bool_Local _state = new Bool_Local();
+		private VariableList<bool>.Variable _state;
 		private Node _rocketNode;
 		private Rocket _rocket;
 		private bool _notifyDisconnection;
@@ -36,19 +36,15 @@ namespace MorePartsMod.Parts
 				}
 
 				// is player 
-				if (this._state.Value)
-				{
-					this._rocket.hasControl.Value = false;
-					this.StateChange();
-				}
-
+				Debug.Log("IS player");
+				this._rocket.hasControl.Value = false;
 			}
 		}
 
 		private void Awake()
 		{
 			this._part = this.GetComponent<Part>();
-			this._state.Value = this._part.variablesModule.boolVariables.GetVariable("isOn").Value;
+			this._state = this._part.variablesModule.boolVariables.GetVariable("isOn");
 			this._part.onPartUsed.AddListener(this.Toggle);
 
 			this._notifyConnection = true;
@@ -66,12 +62,11 @@ namespace MorePartsMod.Parts
 			}
 
 			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Dish, this._toggle);
-
-			if (this._state.Value)
+			
+			if (this._state.Value) // telecommunication dish is on 
 			{
-				// conect to ARPANET
 				this._rocketNode = AntennaComponent.main.AddNode(this);
-				this.StateChange();
+				Debug.Log(this._rocketNode.Id +"State:true added to arpa");
 			}
 			else
 			{
@@ -80,8 +75,6 @@ namespace MorePartsMod.Parts
 					this._rocket.hasControl.Value = false;
 				}
 			}
-
-			this._state.OnChange += this.StateChange;
 		}
 
 		private void FixedUpdate()
@@ -92,7 +85,7 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-			if (!this._rocket.isPlayer || !this._state.Value ) 
+			if (!this._rocket.isPlayer || !this._state.Value ) //if is not the player or dish is off
 			{
 				return;
 			}
@@ -137,11 +130,6 @@ namespace MorePartsMod.Parts
 			}
 		}
 
-		private void StateChange()
-		{
-			this._rocket.hasControl.Value = this._state.Value;
-		}
-
 		private void _toggle()
 		{
 			if (!this._rocket.isPlayer)
@@ -154,11 +142,15 @@ namespace MorePartsMod.Parts
 				AntennaComponent.main.RemoveNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish Off");
 				this._rocketNode = null;
+				this._notifyDisconnection = true;
+				this.DoDisconnection();
 			}
 			else
 			{
 				this._rocketNode = AntennaComponent.main.AddNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish On");
+				this._notifyDisconnection = true;
+				this._notifyConnection = true;
 			}
 			this._state.Value = !this._state.Value;
 		}
