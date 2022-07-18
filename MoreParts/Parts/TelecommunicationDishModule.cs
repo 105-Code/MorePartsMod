@@ -36,7 +36,6 @@ namespace MorePartsMod.Parts
 				}
 
 				// is player 
-				Debug.Log("IS player");
 				this._rocket.hasControl.Value = false;
 			}
 		}
@@ -66,7 +65,6 @@ namespace MorePartsMod.Parts
 			if (this._state.Value) // telecommunication dish is on 
 			{
 				this._rocketNode = AntennaComponent.main.AddNode(this);
-				Debug.Log(this._rocketNode.Id +"State:true added to arpa");
 			}
 			else
 			{
