@@ -22,6 +22,7 @@ namespace MorePartsMod.Parts
 		private bool _notifyConnection;
 		private float _time;
 		private float _ping;
+		private int _maxTimeWarp;
 
 		public Node Node { get => this._rocketNode; }
 		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
@@ -50,6 +51,7 @@ namespace MorePartsMod.Parts
 			this._notifyDisconnection = true;
 			this._time = 3f;
 			this._ping = 3f;
+			this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == 3 ? 5 : 3;
 		}
 
 		private void Start()
@@ -88,7 +90,8 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-			if(WorldTime.main.timewarpSpeed >= 5)
+
+			if(WorldTime.main.timewarpSpeed > this._maxTimeWarp)
 			{
 				this.DoDisconnection();
 				return;
