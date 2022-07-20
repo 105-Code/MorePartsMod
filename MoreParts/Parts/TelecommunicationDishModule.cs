@@ -12,7 +12,7 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket, INJ_IsPlayer
+	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket
 	{
 		private Part _part;
 		private VariableList<bool>.Variable _state;
@@ -26,20 +26,6 @@ namespace MorePartsMod.Parts
 
 		public Node Node { get => this._rocketNode; }
 		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
-		public bool IsPlayer
-		{
-			set
-			{
-				if (!value) // is not the player
-				{
-					this._rocket.hasControl.Value = true;
-					return;
-				}
-
-				// is player 
-				this._rocket.hasControl.Value = false;
-			}
-		}
 
 		private void Awake()
 		{
@@ -114,6 +100,7 @@ namespace MorePartsMod.Parts
 					this._notifyDisconnection = true;
 					this._rocket.hasControl.Value = true;
 				}
+				
 				return;
 			}
 			this.DoDisconnection();
