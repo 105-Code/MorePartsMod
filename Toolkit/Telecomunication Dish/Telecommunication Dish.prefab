@@ -85,7 +85,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
-  polygon: {fileID: 0}
+  polygon: {fileID: 7144952993008515421}
   collider_Polygon: {fileID: 0}
   collider_Box: {fileID: 0}
 --- !u!33 &5480289666225415123
@@ -767,7 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
-  polygon: {fileID: 0}
+  polygon: {fileID: 6773572119525427104}
   collider_Polygon: {fileID: 0}
   collider_Box: {fileID: 0}
 --- !u!33 &5817945909796036164
@@ -969,7 +969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
-  polygon: {fileID: 0}
+  polygon: {fileID: 2715675976788091397}
   collider_Polygon: {fileID: 0}
   collider_Box: {fileID: 0}
 --- !u!33 &8220423908372006692

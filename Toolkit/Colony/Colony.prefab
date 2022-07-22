@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 869890492796749751}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2269624001840146954
 SpriteRenderer:
@@ -84,6 +84,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5518275011452144717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8547316059319244993}
+  m_Layer: 0
+  m_Name: Solar Panels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8547316059319244993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518275011452144717}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3806640208033390144}
+  - {fileID: 3451680704133479095}
+  m_Father: {fileID: 869890492796749751}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7143924448760645366
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +179,7 @@ Transform:
   m_Children:
   - {fileID: 343472917184787942}
   - {fileID: 3388246011644122219}
+  - {fileID: 8547316059319244993}
   - {fileID: 7754560698832141013}
   m_Father: {fileID: 8422925225994735361}
   m_RootOrder: 0
@@ -157,6 +191,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 869890492796749751}
     m_Modifications:
+    - target: {fileID: 558541902339847992, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 558541902339847992, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
         type: 3}
       propertyPath: m_SortingOrder
@@ -175,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 2651385789166060151, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.17
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2651385789166060151, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
         type: 3}
@@ -217,6 +256,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6607706844054862109, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6607706844054862109, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6607706844054862109, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.66
+      objectReference: {fileID: 0}
     - target: {fileID: 6788196533881260909, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
         type: 3}
       propertyPath: m_Name
@@ -229,6 +283,171 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2651385789166060151, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
     type: 3}
   m_PrefabInstance: {fileID: 2310311011062069137}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6951547800972681773
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8547316059319244993}
+    m_Modifications:
+    - target: {fileID: 679729943504864845, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1805576350462075415, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_Name
+      value: Solar Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894369380785916312, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894369380785916312, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f48fc18d65b4f594bbe470a6d0d540ab, type: 3}
+--- !u!4 &3806640208033390144 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 6951547800972681773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8885014569787934426
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8547316059319244993}
+    m_Modifications:
+    - target: {fileID: 1805576350462075415, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_Name
+      value: Solar Panel (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f48fc18d65b4f594bbe470a6d0d540ab, type: 3}
+--- !u!4 &3451680704133479095 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6101037178326056045, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 8885014569787934426}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8912143410333083654
 PrefabInstance:
@@ -260,7 +479,7 @@ PrefabInstance:
     - target: {fileID: 6101037178326056045, guid: 023c343bbe5af84439c07748348c8612,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.17
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: 6101037178326056045, guid: 023c343bbe5af84439c07748348c8612,
         type: 3}

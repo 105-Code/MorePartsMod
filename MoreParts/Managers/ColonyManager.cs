@@ -18,6 +18,7 @@ namespace MorePartsMod.Managers
         // public
         public static ColonyManager main;
         public Player_Local player;
+        public List<ColonyBuildingData> Buildings { get => this._buldingsList; }
 
         //private
         private SFS.UI.ModGUI.Button _createColonyButton;
@@ -42,9 +43,11 @@ namespace MorePartsMod.Managers
 
         private void Start()
         {
-            this.LoadWorldInfo();
             this._buldingsList = new List<ColonyBuildingData>();
-            this._buldingsList.Add(new ColonyBuildingData(false,"Refinery", new ColonyBuildingCost(10,12)));
+            this._buldingsList.Add(new ColonyBuildingData(false, "Refinery", new ColonyBuildingCost(10, 12)));
+            this._buldingsList.Add(new ColonyBuildingData(false, "Solar Panels", new ColonyBuildingCost(13, 4)));
+
+            this.LoadWorldInfo();
         }
 
         private void OnPlayerChange()
@@ -59,10 +62,10 @@ namespace MorePartsMod.Managers
 
         private void OnPlanetChange()
         {
-            if(this.player.Value.location.planet.Value.codeName == "Earth")
+            /*if(this.player.Value.location.planet.Value.codeName == "Earth")
             {
                 return;
-            }
+            }*/
             this.player.Value.location.velocity.OnChange += this.CheckPlayerVelocity;
 
         }
@@ -197,6 +200,8 @@ namespace MorePartsMod.Managers
             return true;
         }
 
+        #region World Info
+
         public void SaveWoldInfo()
         {
 
@@ -227,6 +232,7 @@ namespace MorePartsMod.Managers
             GameObject colonyPrefab = MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony");
             // setup buildings
             RefineryComponent.Setup(colonyPrefab);
+            SolarPanelComponent.Setup(colonyPrefab);
 
             foreach (ColonyData colony in data)
             {
@@ -236,10 +242,24 @@ namespace MorePartsMod.Managers
                 holder.transform.eulerAngles = new Vector3(0, 0, colony.angle);
                 ColonyComponent component = holder.AddComponent<ColonyComponent>();
                 component.data = colony;
+                // check if the building quantity is diferent.(there is a new building)
+                if(component.data.buildings.Count < this._buldingsList.Count)
+                {
+                    foreach(ColonyBuildingData newBuilding in this._buldingsList)
+                    {
+                        // colony don't have this building
+                        if(component.GetBuilding(newBuilding.name) == null)
+                        {
+                            component.data.buildings.Add(newBuilding);
+                        }
+                    }
+                }
                 component.RestoreBuildings();
                 this._colonies.Add(component);
             }
         }
 
+        #endregion
+    
     }
 }

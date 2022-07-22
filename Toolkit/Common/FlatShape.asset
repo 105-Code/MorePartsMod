@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45ccf3a634b47aa4f9855acf05dfd568, type: 3}
-  m_Name: PistonShape
+  m_Name: FlatShape
   m_EditorClassIdentifier: 
   shapeTex:
     textures:
@@ -18,12 +18,12 @@ MonoBehaviour:
       ideal: 0
     border_Bottom:
       uvSize: 0
-      sizeMode: 1
-      size: 0.25
+      sizeMode: 0
+      size: 0.5
     border_Top:
       uvSize: 0
-      sizeMode: 1
-      size: 0.25
+      sizeMode: 0
+      size: 0.5
     center:
       mode: 0
       sizeMode: 0
@@ -34,6 +34,6 @@ MonoBehaviour:
     flipToLight_X: 1
     flipToLight_Y: 1
     metalTexture: 0
-    icon: {fileID: 21300000, guid: 6f00fecd8f9178f4ca1168c30d132c3a, type: 3}
-  shadowTex: {fileID: 11400000, guid: 5ab903d9a192921449f4221af13e789b, type: 2}
+    icon: {fileID: 0}
+  shadowTex: {fileID: 11400000, guid: 9f217d6851d4b9940a561ce9d00af6ed, type: 2}
   tags: []

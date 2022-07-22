@@ -24,6 +24,7 @@ namespace MorePartsMod.Buildings
         private Dictionary<string, object> _modules = new Dictionary<string, object>();
         private Bool_Local _playerInPlanet = new Bool_Local();
         private Bool_Local _playerNear = new Bool_Local();
+        private bool _hasEnergy;
 
         private void Awake()
         {
@@ -70,57 +71,7 @@ namespace MorePartsMod.Buildings
             this._playerNear.Value = true;
 
         }
-        
-        private void InjectData()
-        {
-            this._playerInPlanet.OnChange += this.InjectPlayerInPlanet;
-            this._playerNear.OnChange += this.InjectPlayerNear;
-            ColonyManager.main.player.OnChange += this.InjectRocket;
-
-            this.InjectPlayerInPlanet();
-            this.InjectColony();
-            this.InjectPlayerNear();
-            this.InjectRocket();
-        }
-
-
-        private void InjectPlayerNear()
-        {
-            INJ_PlayerNear[] list = this.CollectModules<INJ_PlayerNear>();
-            for (int i = 0; i < list.Length; i++)
-            {
-                list[i].PlayerNear = this._playerNear;
-            }
-        }
-        
-        private void InjectPlayerInPlanet()
-        {
-
-            INJ_PlayerInPlanet[] list = this.CollectModules<INJ_PlayerInPlanet>();
-            for (int i = 0; i < list.Length; i++)
-            {
-                list[i].PlayerInPlanet = this._playerInPlanet;
-            }
-        }
-
-        private void InjectColony()
-        {
-            INJ_Colony[] list = this.CollectModules<INJ_Colony>();
-            for (int i = 0; i < list.Length; i++)
-            {
-                list[i].Colony = this;
-            }
-        }
-
-        private void InjectRocket()
-        {
-            INJ_Rocket[] list = this.CollectModules<INJ_Rocket>();
-            for (int i = 0; i < list.Length; i++)
-            {
-                list[i].Rocket = ColonyManager.main.player.Value as Rocket;
-            }
-        }
-
+       
         private void OpenColony()
         {
             if(ColonyManager.main.player.Value.location.Value.planet.codeName != this.data.andress)
@@ -171,6 +122,8 @@ namespace MorePartsMod.Buildings
 
         }
 
+       
+
         private void Build(string buildingName)
         {
             ColonyBuildingData building = this.GetBuilding(buildingName);
@@ -180,6 +133,7 @@ namespace MorePartsMod.Buildings
                 return;
             }
             building.state = true;
+            this.checkSolarPanel(building);
             ColonyManager.main.SaveWoldInfo();
             this.transform.FindChild(buildingName).gameObject.SetActive(true);
             this.CloseWindow();
@@ -191,7 +145,7 @@ namespace MorePartsMod.Buildings
             this.dialogOpen = false; 
         }
 
-        private ColonyBuildingData GetBuilding(string name)
+        public ColonyBuildingData GetBuilding(string name)
         {
             foreach(ColonyBuildingData building in this.data.buildings)
             {
@@ -201,16 +155,6 @@ namespace MorePartsMod.Buildings
                 }
             }
             return null;
-        }
-
-        public T[] CollectModules<T>()
-        {
-            string name = typeof(T).Name;
-            if (!this._modules.ContainsKey(name))
-            {
-                this._modules.Add(name, base.GetComponentsInChildren<T>(true));
-            }
-            return (T[])this._modules[name];
         }
 
         public void RestoreBuildings()
@@ -227,10 +171,92 @@ namespace MorePartsMod.Buildings
                 {
                     continue;
                 }
+
+                this.checkSolarPanel(building);
+
                 buildingTransform.gameObject.SetActive(building.state);
             }
             this.InjectData();
         }
+
+        private void checkSolarPanel(ColonyBuildingData building)
+        {
+            if (building.name == "Solar Panels")
+            {
+                this._hasEnergy = building.state;
+            }
+            this.InjectHasEnergy();
+        }
+
+
+        #region Injectables
+        private void InjectData()
+        {
+            this._playerInPlanet.OnChange += this.InjectPlayerInPlanet;
+            this._playerNear.OnChange += this.InjectPlayerNear;
+            ColonyManager.main.player.OnChange += this.InjectRocket;
+
+            this.InjectPlayerInPlanet();
+            this.InjectColony();
+            this.InjectPlayerNear();
+            this.InjectRocket();
+        }
+        private void InjectHasEnergy()
+        {
+            INJ_HasEnergy[] list = this.CollectModules<INJ_HasEnergy>();
+            for (int i = 0; i < list.Length; i++)
+            {
+                list[i].HasEnergy = this._hasEnergy;
+            }
+        }
+
+        private void InjectPlayerNear()
+        {
+            INJ_PlayerNear[] list = this.CollectModules<INJ_PlayerNear>();
+            for (int i = 0; i < list.Length; i++)
+            {
+                list[i].PlayerNear = this._playerNear;
+            }
+        }
+
+        private void InjectPlayerInPlanet()
+        {
+
+            INJ_PlayerInPlanet[] list = this.CollectModules<INJ_PlayerInPlanet>();
+            for (int i = 0; i < list.Length; i++)
+            {
+                list[i].PlayerInPlanet = this._playerInPlanet;
+            }
+        }
+
+        private void InjectColony()
+        {
+            INJ_Colony[] list = this.CollectModules<INJ_Colony>();
+            for (int i = 0; i < list.Length; i++)
+            {
+                list[i].Colony = this;
+            }
+        }
+
+        private void InjectRocket()
+        {
+            INJ_Rocket[] list = this.CollectModules<INJ_Rocket>();
+            for (int i = 0; i < list.Length; i++)
+            {
+                list[i].Rocket = ColonyManager.main.player.Value as Rocket;
+            }
+        }
+
+        public T[] CollectModules<T>()
+        {
+            string name = typeof(T).Name;
+            if (!this._modules.ContainsKey(name))
+            {
+                this._modules.Add(name, base.GetComponentsInChildren<T>(true));
+            }
+            return (T[])this._modules[name];
+        }
+        #endregion
 
         public class ColonyData
         {
@@ -322,6 +348,11 @@ namespace MorePartsMod.Buildings
         public interface INJ_Rocket
         {
             Rocket Rocket { set; }
+        }
+
+        public interface INJ_HasEnergy
+        {
+            bool HasEnergy { set; }
         }
 
     }

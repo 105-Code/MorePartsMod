@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="ARPA\ARPANET.cs" />
     <Compile Include="ARPA\Node.cs" />
+    <Compile Include="Buildings\SolarPanelComponent.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
     <Compile Include="WorldBuildings.cs" />

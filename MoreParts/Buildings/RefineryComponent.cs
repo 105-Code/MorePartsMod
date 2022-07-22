@@ -8,55 +8,57 @@ using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Buildings
 {
-    class RefineryComponent : MonoBehaviour, INJ_PlayerNear, INJ_PlayerInPlanet, INJ_Rocket
+    class RefineryComponent : MonoBehaviour, INJ_PlayerNear, INJ_PlayerInPlanet, INJ_Rocket, INJ_HasEnergy
     {
 
-        private bool playerNear;
-        private bool playerInPlanet;
-        private ResourceModule rocketTanks;
-        private Rocket rocket;
+        private bool _playerNear;
+        private bool _playerInPlanet;
+        private bool _hasEnergy;
+        private ResourceModule _rocketTanks;
+        private Rocket _rocket;
 
         public bool PlayerNear { 
             set
             {
-                this.rocketTanks = null;
-                this.playerNear = value;
+                this._rocketTanks = null;
+                this._playerNear = value;
             } 
         }
         public bool PlayerInPlanet {
             set
             {
-                this.rocketTanks = null;
-                this.playerInPlanet = value;
+                this._rocketTanks = null;
+                this._playerInPlanet = value;
             }
         }
 
-        public Rocket Rocket { set => this.rocket = value; }
+        public Rocket Rocket { set => this._rocket = value; }
+        public bool HasEnergy { set => this._hasEnergy = value; }
 
         private void FixedUpdate()
         {
-            if(!this.playerNear || !this.playerInPlanet)
+            if(!this._playerNear || !this._playerInPlanet || !this._hasEnergy)
             {
                 return;
             }
 
-            if(this.rocketTanks == null)
+            if(this._rocketTanks == null)
             {
-                this.rocketTanks = this.GetRocketTanks();
+                this._rocketTanks = this.GetRocketTanks();
                 return;
             }
 
-            if (this.rocketTanks.resourcePercent.Value == 1.0)
+            if (this._rocketTanks.resourcePercent.Value == 1.0)
             {
                 return;
             }
  
-            this.rocketTanks.AddResource(0.02);
+            this._rocketTanks.AddResource(0.02);
         }
 
         private ResourceModule GetRocketTanks()
         {
-            foreach (ResourceModule resource in this.rocket.resources.globalGroups)
+            foreach (ResourceModule resource in this._rocket.resources.globalGroups)
             {
                 if (resource.resourceType.name == "Liquid_Fuel")
                 {
