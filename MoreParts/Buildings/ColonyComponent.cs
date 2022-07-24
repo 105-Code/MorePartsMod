@@ -44,6 +44,10 @@ namespace MorePartsMod.Buildings
 
         private void OnChangePlayer()
         {
+            if(ColonyManager.main.player.Value == null)
+            {
+                return;
+            }
             ColonyManager.main.player.Value.location.planet.OnChange += this.OnChangePlanet;
         }
 
