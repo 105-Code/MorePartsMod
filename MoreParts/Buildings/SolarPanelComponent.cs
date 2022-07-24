@@ -50,7 +50,6 @@ namespace MorePartsMod.Buildings
         {
             foreach (ResourceModule resource in this._rocket.resources.globalGroups)
             {
-                Debug.Log(resource.resourceType.name);
                 if (resource.resourceType.name == "Electricity_Resource")
                 {
                     return resource; 

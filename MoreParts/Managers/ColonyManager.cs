@@ -62,10 +62,10 @@ namespace MorePartsMod.Managers
 
         private void OnPlanetChange()
         {
-            /*if(this.player.Value.location.planet.Value.codeName == "Earth")
+            if(this.player.Value.location.planet.Value.codeName == "Earth")
             {
                 return;
-            }*/
+            }
             this.player.Value.location.velocity.OnChange += this.CheckPlayerVelocity;
 
         }
