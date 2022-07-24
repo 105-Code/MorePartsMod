@@ -2,12 +2,12 @@
 using MorePartsMod.Buildings;
 using SFS;
 using SFS.Parts;
+using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
-using SFS.World.Maps;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using static SFS.Parts.Modules.FlowModule;
 using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
@@ -16,27 +16,42 @@ namespace MorePartsMod.Parts
 	{
 		private Part _part;
 		private VariableList<bool>.Variable _state;
+		private VariableList<double>.Variable _flow_rate;
 		private Node _rocketNode;
 		private Rocket _rocket;
 		private bool _notifyDisconnection;
 		private bool _notifyConnection;
-		private float _time;
-		private float _ping;
+		private float _time = 3f;
+		private const float _ping = 3f;
 		private int _maxTimeWarp;
+		private FlowModule _source;
 
 		public Node Node { get => this._rocketNode; }
 		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
+		
+		private I_MsgLogger Logger
+		{
+			get
+			{
+				if (!this._rocket.isPlayer)
+				{
+					return new MsgNone();
+				}
+				return MsgDrawer.main;
+			}
+		}
+
 
 		private void Awake()
 		{
 			this._part = this.GetComponent<Part>();
+			this._source = this.GetComponent<FlowModule>();
 			this._state = this._part.variablesModule.boolVariables.GetVariable("isOn");
+			this._flow_rate = this._part.variablesModule.doubleVariables.GetVariable("flow_rate");
 			this._part.onPartUsed.AddListener(this.Toggle);
 
 			this._notifyConnection = true;
 			this._notifyDisconnection = true;
-			this._time = 3f;
-			this._ping = 3f;
 			this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == 3 ? 5 : 3;
 		}
 
@@ -47,15 +62,19 @@ namespace MorePartsMod.Parts
 				base.enabled = false;
 				return;
 			}
+			this._source.onStateChange += this.CheckOutOfElectricity;
+			this.CheckOutOfElectricity();
 
 			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Dish, this._toggle);
 			
 			if (this._state.Value) // telecommunication dish is on 
 			{
+				this._flow_rate.Value = 0.1;
 				this._rocketNode = AntennaComponent.main.AddNode(this);
 			}
 			else
 			{
+				this._flow_rate.Value = 0;
 				if (this._rocket.isPlayer)
 				{
 					this._rocket.hasControl.Value = false;
@@ -76,15 +95,14 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-
 			if(WorldTime.main.timewarpSpeed > this._maxTimeWarp)
 			{
 				this.DoDisconnection();
 				return;
-			}
+			}			
 
 			this._time += Time.deltaTime;
-			if(this._time <= this._ping)
+			if(this._time <= _ping)
 			{
 				return;
 			}
@@ -92,7 +110,6 @@ namespace MorePartsMod.Parts
 
 			if (AntennaComponent.main.IsConnected(this._rocketNode))
 			{
-		
 				if (this._notifyConnection)
 				{
 					MsgDrawer.main.Log("Connected");
@@ -100,7 +117,6 @@ namespace MorePartsMod.Parts
 					this._notifyDisconnection = true;
 					this._rocket.hasControl.Value = true;
 				}
-				
 				return;
 			}
 			this.DoDisconnection();
@@ -114,8 +130,23 @@ namespace MorePartsMod.Parts
 				this._notifyDisconnection = false;
 				this._notifyConnection = true;
 				this._rocket.hasControl.Value = false;
-				this._time = this._ping;
+				this._time = _ping;
 			}
+		}
+
+		private void CheckOutOfElectricity()
+		{
+			if (this._state.Value && !this.HasElectricity(this.Logger))
+			{
+				this._state.Value = false;
+				this._flow_rate.Value = 0;
+				this._rocket.hasControl.Value = false;
+			}
+		}
+
+		private bool HasElectricity(I_MsgLogger logger)
+		{
+			return this._source.CanFlow(logger);
 		}
 
 		private void _toggle()
@@ -131,16 +162,19 @@ namespace MorePartsMod.Parts
 				MsgDrawer.main.Log("Telecommunication Dish Off");
 				this._rocketNode = null;
 				this._notifyDisconnection = true;
-				this.DoDisconnection();
+				this.DoDisconnection(); 
+				this._flow_rate.Value = 0;
 			}
 			else
 			{
 				this._rocketNode = AntennaComponent.main.AddNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish On");
 				this._notifyDisconnection = true;
-				this._notifyConnection = true;
+				this._notifyConnection = true; 
+				this._flow_rate.Value = 0.1;
 			}
 			this._state.Value = !this._state.Value;
+			this.CheckOutOfElectricity();
 		}
 
 		private void Toggle(UsePartData data)

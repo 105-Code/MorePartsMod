@@ -550,6 +550,7 @@ GameObject:
   - component: {fileID: 527995676948341972}
   - component: {fileID: 5662358357611772582}
   - component: {fileID: 4382373109341745631}
+  - component: {fileID: 7985950641479228873}
   m_Layer: 8
   m_Name: Telecommunication Dish
   m_TagString: Untagged
@@ -675,6 +676,9 @@ MonoBehaviour:
     - name: height
       save: 1
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c75650006000000000000f03f0b
+    - name: flow_rate
+      save: 0
+      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
   boolVariables:
     saves:
     - name: isOn
@@ -682,6 +686,31 @@ MonoBehaviour:
       data: 0001000000ffffffff010000000000000004010000000e53797374656d2e426f6f6c65616e01000000076d5f76616c75650001000b
   stringVariables:
     saves: []
+--- !u!114 &7985950641479228873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903166738067769997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f80098a90a69dcd45a1b26ae1e010609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sources:
+  - resourceType: {fileID: 11400000, guid: 04b436aa485ffa14cab70bc05a1ef5bf, type: 2}
+    flowPercent: 1
+    sourceSearchMode: 0
+    surface: {fileID: 0}
+    flowType: 0
+    flowRate:
+      variableName: flow_rate
+      referenceToVariables: {fileID: 4382373109341745631}
+      localValue: 0
+    state:
+      value: 0
+    sources: []
 --- !u!1 &6243192004553079864
 GameObject:
   m_ObjectHideFlags: 0
