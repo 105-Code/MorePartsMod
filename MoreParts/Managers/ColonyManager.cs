@@ -72,12 +72,18 @@ namespace MorePartsMod.Managers
 
         private void CheckPlayerVelocity()
         {
-
-            if(this.player.Value.location.velocity.Value.magnitude > 0.5f)
+            if (this.player.Value.location.Value.TerrainHeight > 5)
             {
                 this._createColonyButton.gameObject.SetActive(false);
                 return;
             }
+
+            if (this.player.Value.location.velocity.Value.magnitude > 0.5f)
+            {
+                this._createColonyButton.gameObject.SetActive(false);
+                return;
+            }
+
 
             this._createColonyButton.gameObject.SetActive(true);
         }
