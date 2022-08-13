@@ -64,8 +64,6 @@ namespace MorePartsMod.Parts
 			}
 			this._source.onStateChange += this.CheckOutOfElectricity;
 			this.CheckOutOfElectricity();
-
-			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Dish, this._toggle);
 			
 			if (this._state.Value) // telecommunication dish is on 
 			{
@@ -115,8 +113,8 @@ namespace MorePartsMod.Parts
 					MsgDrawer.main.Log("Connected");
 					this._notifyConnection = false;
 					this._notifyDisconnection = true;
-					this._rocket.hasControl.Value = true;
 				}
+				this._rocket.hasControl.Value = true;
 				return;
 			}
 			this.DoDisconnection();
@@ -124,12 +122,12 @@ namespace MorePartsMod.Parts
 
 		private void DoDisconnection()
 		{
+			this._rocket.hasControl.Value = false;
 			if (this._notifyDisconnection)
 			{
 				MsgDrawer.main.Log("No Connection");
 				this._notifyDisconnection = false;
 				this._notifyConnection = true;
-				this._rocket.hasControl.Value = false;
 				this._time = _ping;
 			}
 		}
@@ -149,7 +147,7 @@ namespace MorePartsMod.Parts
 			return this._source.CanFlow(logger);
 		}
 
-		private void _toggle()
+		public void _toggle()
 		{
 			if (!this._rocket.isPlayer)
 			{
@@ -177,7 +175,7 @@ namespace MorePartsMod.Parts
 			this.CheckOutOfElectricity();
 		}
 
-		private void Toggle(UsePartData data)
+		public void Toggle(UsePartData data)
 		{
 			this._toggle();
 			data.successfullyUsedPart = true;
