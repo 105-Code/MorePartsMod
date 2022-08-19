@@ -194,7 +194,18 @@ namespace MorePartsMod.Parts
 
 			part.gameObject.AddComponent<TelecommunicationDishModule>();
 
+			Base.partsLoader.parts.TryGetValue("Antenna", out part);
+
+			if (part == null)
+			{
+				Debug.Log("Antenna not found!");
+				return;
+			}
+
+			part.gameObject.AddComponent<TelecommunicationDishModule>();
+
 			Debug.Log("Telecommunication Dish component added!");
+			Debug.Log("Antenna component added!");
 		}
 	
 	}
