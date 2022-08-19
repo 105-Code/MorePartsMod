@@ -35,6 +35,7 @@ namespace MorePartsMod
             Debug.Log("Adding components");
             BalloonModule.Setup();
             TelecommunicationDishModule.Setup();
+            RotorModule.Setup();
         }
 
 
