@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2237146052364392910}
   - component: {fileID: 4535720494208912127}
   - component: {fileID: 842111651293309394}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blade Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 626457311837419590}
   - component: {fileID: 2896930186447744271}
   - component: {fileID: 8871285911855079485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 1829568303351766780}
   - component: {fileID: 1266790246729118564}
   - component: {fileID: 227277754698134031}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blade (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -837,7 +837,7 @@ GameObject:
   - component: {fileID: 242862384509865988}
   - component: {fileID: 2171426824132108703}
   - component: {fileID: 7173391587464155683}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ GameObject:
   - component: {fileID: 5700136436372710172}
   - component: {fileID: 7281608166575621481}
   - component: {fileID: 4068594087124507037}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rotor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1280,7 +1280,7 @@ GameObject:
   - component: {fileID: 1830203912571861030}
   - component: {fileID: 5547387670343680109}
   - component: {fileID: 5404140097042181304}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blade (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1513,7 +1513,7 @@ GameObject:
   - component: {fileID: 1020041398300567299}
   - component: {fileID: 8990111604210224481}
   - component: {fileID: 7338092013125180808}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blade Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1600,7 +1600,7 @@ GameObject:
   - component: {fileID: 4730239417139376945}
   - component: {fileID: 1673237316505658843}
   - component: {fileID: 796889346907474376}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
