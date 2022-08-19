@@ -595,7 +595,7 @@ MonoBehaviour:
     TranslatableName: Telecommunication Dish
   description:
     plainText: 1
-    TranslatableName: Insert Description here
+    TranslatableName: It's only a telecommunication dish
   mass:
     variables: {fileID: 4382373109341745631}
     input: 0.2
