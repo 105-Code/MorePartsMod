@@ -141,6 +141,7 @@ namespace MorePartsMod.Buildings
             ColonyManager.main.SaveWoldInfo();
             this.transform.FindChild(buildingName).gameObject.SetActive(true);
             this.CloseWindow();
+            this.InjectData();
         }
 
         private void CloseWindow()
