@@ -3,6 +3,8 @@ using UnityEngine;
 using MorePartsMod.ARPA;
 using MorePartsMod.Parts;
 using System;
+using SFS.WorldBase;
+using SFS.World.Maps;
 
 namespace MorePartsMod.Buildings
 {
@@ -12,13 +14,14 @@ namespace MorePartsMod.Buildings
 
 		private ARPANET _network;
 		private Node _routeOrigin;
-		
+		private WorldLocation _position;
+
 
 		private void Awake()
 		{
 			main = this;
-			WorldLocation worldLocation = this.GetComponent<WorldLocation>();
-			this._network = new ARPANET(worldLocation);
+			this._position = this.GetComponent<WorldLocation>();
+			this._network = new ARPANET(this._position);
 		}
 
 		private void Start()
@@ -80,5 +83,24 @@ namespace MorePartsMod.Buildings
 			}
 		}
 
+
+		public void DrawPointInMap()
+		{
+			Planet planet = this._position.planet.Value;
+			double num = planet.data.basics.radius * 6;
+			float num2 = Mathf.Min(MapDrawer.GetFadeIn(Map.view.view.distance, num * 0.5, num * 0.4), MapDrawer.GetFadeOut(Map.view.view.distance, 20000.0, 15000.0));
+			if (num2 > 0f)
+			{
+				Color color = new Color(1f, 1f, 1f, num2);
+				Vector2 normal = Double2.CosSin(0);
+				
+				Vector2 position = new Vector2((float)(planet.mapHolder.position.x + (this._position.Value.position.x / 1000)), (float)(planet.mapHolder.position.y + (this._position.Value.position.y / 1000)));
+
+				MapDrawer.DrawPointWithText(15, color, "Space Center", 40, color, position, normal, 4, 4);
+			}
+		}
+
 	}
+
+
 }

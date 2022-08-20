@@ -29,6 +29,8 @@ namespace MorePartsMod.Managers
         private ColonyData _newColony;
         private List<ColonyBuildingData> _buldingsList;
 
+        public List<ColonyComponent> Colonies { get => this._colonies; }
+
         private void Awake()
         {
             main = this;

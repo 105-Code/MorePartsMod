@@ -62,7 +62,7 @@ namespace MorePartsMod.Buildings
 
         private void FixedUpdate()
         {
-            if (GameManager.main == null || !this._playerInPlanet.Value)
+            if (GameManager.main == null || !this._playerInPlanet.Value || !ColonyManager.main.player.Value)
             {
                 return;
             }
@@ -305,6 +305,7 @@ namespace MorePartsMod.Buildings
                 this.andress = location.planet.Value.codeName;
             }
 
+            public float LandmarkAngle { get => this.angle + 90; }
         }
 
         public class ColonyBuildingData
