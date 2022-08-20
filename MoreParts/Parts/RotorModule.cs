@@ -166,7 +166,7 @@ namespace MorePartsMod.Parts
 			float density = (float) this._location.planet.GetAtmosphericDensity(this._location.Height);
 			double thrust = 0.5 * density * this._area * ( (exitVelocity * exitVelocity) - (this._location.VerticalVelocity * this._location.VerticalVelocity));
 
-			Vector2 force = this._base.transform.TransformVector(Vector2.up * (float)thrust);
+			Vector2 force = this._base.transform.TransformVector(Vector2.up * (float)(thrust/this._rb2d.mass));
 			Vector2 relativePoint = this._rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(this.transform, this._rb2d, new Vector2(0,0)));
 			this._rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
 		}
