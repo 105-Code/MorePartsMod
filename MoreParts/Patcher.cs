@@ -57,8 +57,10 @@ namespace MorePartsMod
                     if (num2 > 0f)
                     {
                         Color color = new Color(1f, 1f, 1f, num2);
-                        Vector2 normal = Double2.CosSin((double)(0.017453292f * colony.data.LandmarkAngle));
-                        Vector2 position = new Vector2((float)(planet.mapHolder.position.x + (colony.data.position.x / 1000)), (float)(planet.mapHolder.position.y + (colony.data.position.y / 1000)));
+                        Vector2 normal = Double2.CosSin(0.017453292f * (colony.data.LandmarkAngle + 6));
+                        float x = (float) (planet.mapHolder.position.x + (colony.data.position.x / 1000));
+                        float y = (float)(planet.mapHolder.position.y + (colony.data.position.y / 1000));
+                        Vector2 position = new Vector2( x, y);
 
                         MapDrawer.DrawPointWithText(20, color, colony.data.name, 40, color, position, normal, 4, 4);
                     }
@@ -73,5 +75,8 @@ namespace MorePartsMod
         }
     
     }
-
+    /*
+     * ,
+  
+     * */
 }

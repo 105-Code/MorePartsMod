@@ -92,10 +92,10 @@ namespace MorePartsMod.Buildings
 			if (num2 > 0f)
 			{
 				Color color = new Color(1f, 1f, 1f, num2);
-				Vector2 normal = Double2.CosSin(0);
-				
-				Vector2 position = new Vector2((float)(planet.mapHolder.position.x + (this._position.Value.position.x / 1000)), (float)(planet.mapHolder.position.y + (this._position.Value.position.y / 1000)));
-
+				Vector2 normal = Double2.CosSin(this._position.Value.position.AngleRadians);
+				float x = (float)(planet.mapHolder.position.x + (this._position.Value.position.x / 1000));
+				float y = (float)(planet.mapHolder.position.y + (this._position.Value.position.y / 1000));
+				Vector2 position = new Vector2(x, y);
 				MapDrawer.DrawPointWithText(15, color, "Space Center", 40, color, position, normal, 4, 4);
 			}
 		}
