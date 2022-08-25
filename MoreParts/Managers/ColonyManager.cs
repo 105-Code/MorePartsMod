@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using MorePartsMod.Buildings;
+using MorePartsMod.UI;
 using SFS;
+using SFS.Input;
 using SFS.IO;
 using SFS.Parsers.Json;
 using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.UI.ModGUI;
+using UnityEngine;
 using SFS.World;
 using SFS.WorldBase;
-using UnityEngine;
+
 using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Managers
@@ -18,29 +21,40 @@ namespace MorePartsMod.Managers
         // public
         public static ColonyManager main;
         public Player_Local player;
+
         public List<ColonyBuildingData> Buildings { get => this._buldingsList; }
+        public List<ColonyComponent> Colonies { get => this._colonies; }
 
         //private
         private SFS.UI.ModGUI.Button _createColonyButton;
         private List<ColonyComponent> _colonies;
-        private GameObject _holder;
         private Window _windows;
-        private string _colonyName;
         private ColonyData _newColony;
         private List<ColonyBuildingData> _buldingsList;
-
-        public List<ColonyComponent> Colonies { get => this._colonies; }
+        private ColonyGUI _ui;
+        private GameObject _holder;
+        private readonly int partEditingWindowID = 2; // Builder.GetRandomID(); -- this function not exist
 
         private void Awake()
         {
             main = this;
-            this._holder = GameObject.Find("Main UI");
-            this._createColonyButton = Builder.CreateButton(this._holder, 212, 55, 0, 600, this.CreateColony, "Create Colony", Builder.Style.Blue);
-            this._createColonyButton.gameObject.SetActive(false);
-            this.player = PlayerController.main.player;
-            this.player.OnChange += this.OnPlayerChange;
             this._colonies = new List<ColonyComponent>();
-            this._colonyName = "Name";
+            this.player = PlayerController.main.player;
+
+            this.InitGUI();
+        }
+
+        private void InitGUI()
+        {
+            GameObject mainUI = GameObject.Find("Main UI");
+            this._createColonyButton = Builder.CreateButton(mainUI, 212, 55, 0, 600, this.CreateColony, "Create Colony", Builder.Style.Blue);
+            this._createColonyButton.gameObject.SetActive(false);
+
+            // colony menu GUI
+            this._holder = new GameObject("Colony Menu");
+            this._holder.transform.localScale = new Vector3(0.9f, 0.9f);
+            Builder.AttachToCanvas(this._holder, Builder.SceneToAttach.CurrentScene);
+            this._ui = this._holder.AddComponent<ColonyGUI>();
         }
 
         private void Start()
@@ -49,7 +63,29 @@ namespace MorePartsMod.Managers
             this._buldingsList.Add(new ColonyBuildingData(false, "Refinery", new ColonyBuildingCost(10, 12)));
             this._buldingsList.Add(new ColonyBuildingData(false, "Solar Panels", new ColonyBuildingCost(13, 4)));
 
+            KeySettings.AddOnKeyDown_World(KeySettings.Main.Open_Colony, this.OpenColony);
+            this.player.OnChange += this.OnPlayerChange;
             this.LoadWorldInfo();
+        }
+
+        private void OpenColony()
+        {
+            foreach (ColonyComponent colony in this._colonies)
+            {
+                if (colony.data.andress != this.player.Value.location.planet.Value.codeName)
+                {
+                    continue;
+                }
+
+                float distance = Vector2.Distance(colony.data.position, this.player.Value.location.position.Value);
+                if (distance > 100)// 50mts
+                {
+                    continue;
+                }
+                this._ui.Colony = colony;
+                ScreenManager.main.OpenScreen(() => this._ui);
+                break;
+            }           
         }
 
         private void OnPlayerChange()
@@ -74,7 +110,7 @@ namespace MorePartsMod.Managers
 
         private void CheckPlayerVelocity()
         {
-            if (this.player.Value.location.Value.TerrainHeight > 5)
+            if (this.player.Value.location.Value.TerrainHeight > 20)
             {
                 this._createColonyButton.gameObject.SetActive(false);
                 return;
@@ -151,28 +187,11 @@ namespace MorePartsMod.Managers
 
             this._newColony = new ColonyData((float)playerLocation.position.Value.AngleDegrees - 90,planet.codeName, colonyPosition);
             this.OnCreateColony();
-            //this.ShowWindows(); // disable for the moment
-        }
-
-        private void ShowWindows()
-        {
-            if (this._windows != null)
-            {
-                this._windows.gameObject.SetActive(true);
-                return;
-            }
-
-            Window window = Builder.CreateWindow(this._holder, 350, 190, 0, 0, false, 0.95f, "New Colony");
-            this._windows = window;
-
-            Builder.CreateTextInput(this._windows.gameObject, 340, 60, 0, 20, this._colonyName, (string value) => this._colonyName = value);
-            Builder.CreateButton(this._windows.gameObject, 340, 60, 0, -45, this.OnCreateColony, "Create");
         }
 
         private void OnCreateColony()
         {
-            //this._windows.gameObject.SetActive(false); // disable for the moment
-            this._newColony.name = this._colonyName;
+            this._newColony.name = "Name";
 
             GameObject colony = GameObject.Instantiate(MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony"));
 
@@ -184,7 +203,6 @@ namespace MorePartsMod.Managers
             ColonyComponent component = holder.AddComponent<ColonyComponent>();
             this._newColony.buildings = new List<ColonyBuildingData>(this._buldingsList);
             component.data = this._newColony;
-            this._colonyName = "Name";
             component.RestoreBuildings();
             this._colonies.Add(component);
             this.SaveWoldInfo();

@@ -1,5 +1,7 @@
 ﻿using MorePartsMod.Managers;
+using MorePartsMod.UI;
 using SFS;
+using SFS.Input;
 using SFS.UI;
 using SFS.UI.ModGUI;
 using SFS.Variables;
@@ -7,7 +9,6 @@ using SFS.World;
 using SFS.WorldBase;
 using System.Collections.Generic;
 using UnityEngine;
-using static SFS.World.WorldSave;
 
 namespace MorePartsMod.Buildings
 {
@@ -39,7 +40,6 @@ namespace MorePartsMod.Buildings
             }
             this.dialogOpen = false;
             ColonyManager.main.player.OnChange += this.OnChangePlayer;
-            KeySettings.AddOnKeyDown_World(KeySettings.Main.Open_Colony, this.OpenColony);
         }
 
         private void OnChangePlayer()
@@ -75,60 +75,8 @@ namespace MorePartsMod.Buildings
             this._playerNear.Value = true;
 
         }
-       
-        private void OpenColony()
-        {
-            if(ColonyManager.main.player.Value.location.Value.planet.codeName != this.data.andress)
-            {
-                return;
-            }
-            
-            if (Vector2.Distance(ColonyManager.main.player.Value.location.position.Value,this.data.position) > 100)
-            {
-                return;
-            }
 
-            this.ShowWindows();
-        }
-
-        private void ShowWindows()
-        {
-            if (this.dialogOpen)
-            {
-                this.CloseWindow();
-                return;
-            }
-
-            this.dialogOpen = true;
-
-            if (this.windows != null)
-            {
-                this.windows.gameObject.SetActive(true);
-                return;
-            }
-
-            int height = this.data.buildings.Count * 60 + 60;
-            Window window = Builder.CreateWindow(holder, 350, height, 300, 300, false, 0.95f, this.data.name);
-            this.windows = window;
-
-            int start = height - 135;
-
-            foreach (ColonyBuildingData building in this.data.buildings)
-            {
-                if (building.state)
-                {
-                    continue;
-                }
-              
-                Builder.CreateButton(this.windows.gameObject, 340, 60, 0, start, () => this.Build(building.name), building.name);
-                start -= 60;
-            }
-
-        }
-
-       
-
-        private void Build(string buildingName)
+        public void Build(string buildingName)
         {
             ColonyBuildingData building = this.GetBuilding(buildingName);
             if(!ColonyManager.main.CheckAndReduceMaterials(building.cost.constructionCost, building.cost.electronicCost))

@@ -4,6 +4,7 @@ using ModLoader.Helpers;
 using MorePartsMod.Buildings;
 using MorePartsMod.Managers;
 using MorePartsMod.Parts;
+using MorePartsMod.UI;
 using SFS.UI.ModGUI;
 using System;
 using UnityEngine;
