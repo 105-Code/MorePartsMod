@@ -29,6 +29,9 @@ namespace MorePartsMod.Parts
 		public Node Node { get => this._rocketNode; }
 		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
 		
+		public bool IsActive { get => this._state.Value; }
+		public bool IsConnected { get => !this._notifyConnection; }
+
 		private I_MsgLogger Logger
 		{
 			get
@@ -111,6 +114,7 @@ namespace MorePartsMod.Parts
 				if (this._notifyConnection)
 				{
 					MsgDrawer.main.Log("Connected");
+					AntennaComponent.main.ShowTelecommunicationLines = true;
 					this._notifyConnection = false;
 					this._notifyDisconnection = true;
 				}
@@ -125,6 +129,7 @@ namespace MorePartsMod.Parts
 			this._rocket.hasControl.Value = false;
 			if (this._notifyDisconnection)
 			{
+				AntennaComponent.main.ShowTelecommunicationLines = false;
 				MsgDrawer.main.Log("No Connection");
 				this._notifyDisconnection = false;
 				this._notifyConnection = true;

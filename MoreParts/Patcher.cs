@@ -44,11 +44,15 @@ namespace MorePartsMod
         [HarmonyPostfix]
         public static void Postfix()
         {
-            // Moon position: 55602.2548611263  -66264.1926272867
-            // Angle: 310 Start: 301 End: 317
             try
             {
-                AntennaComponent.main.DrawPointInMap();
+                AntennaComponent.main.DrawInMap();
+
+                if(ColonyManager.main == null)
+                {
+                    return;
+                }
+
                 foreach (ColonyComponent colony in ColonyManager.main.Colonies)
                 {
                     Planet planet = colony.data.getPlanet();
@@ -68,15 +72,10 @@ namespace MorePartsMod
             }
             catch(Exception e)
             {
-                Debug.Log("Error");
+                Debug.LogError(e);
             }
-            
-
         }
     
     }
-    /*
-     * ,
-  
-     * */
+
 }

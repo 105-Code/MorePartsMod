@@ -76,17 +76,21 @@ namespace MorePartsMod.ARPA
 
         public bool CheckRoute(Node origin)
         {
-            if (origin.IsOrigin)
+            Node aux = origin;
+            while(aux != null)
             {
-                return true;
-            }
+                if (aux.IsOrigin)
+                {
+                    return true;
+                }
 
-            if (!origin.IsAvailableTo(origin.next))
-            {
-                return false;
+                if (!aux.IsAvailableTo(aux.next))
+                {
+                    return false;
+                }
+                aux = aux.next;
             }
-            return this.CheckRoute(origin.next);
-
+            return false;
         }
 
         public void ClearRoute(Node origin)
