@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rotor_sound
   m_EditorClassIdentifier: 
   sounds:
-  - clip: {fileID: 8300000, guid: 0ff59dcc2775cc0439fd3a07b8f7799a, type: 3}
+  - clip: {fileID: 8300000, guid: 56c485439c8d8264594c71736723aa14, type: 3}
     volume: 1
     pitch: 0.3
     delay: 0
