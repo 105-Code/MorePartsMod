@@ -47,7 +47,7 @@ namespace MorePartsMod.Managers
         private void InitGUI()
         {
             GameObject mainUI = GameObject.Find("Main UI");
-            this._createColonyButton = Builder.CreateButton(mainUI, 212, 55, 0, 600, this.CreateColony, "Create Colony", Builder.Style.Blue);
+            this._createColonyButton = Builder.CreateButton(mainUI.transform, 212, 55, 0, 600, this.CreateColony, "Create Colony");
             this._createColonyButton.gameObject.SetActive(false);
 
             // colony menu GUI

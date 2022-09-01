@@ -1,8 +1,11 @@
-﻿using HarmonyLib;
-using MorePartsMod.ARPA;
+﻿using Cysharp.Threading.Tasks;
+using HarmonyLib;
+using MorePartsMod;
 using MorePartsMod.Buildings;
 using MorePartsMod.Managers;
+using MorePartsMod.Parts;
 using SFS;
+using SFS.Parts;
 using SFS.World;
 using SFS.World.Maps;
 using SFS.WorldBase;
@@ -11,7 +14,26 @@ using UnityEngine;
 
 namespace MorePartsMod
 {
-	
+    [HarmonyPatch(typeof(CustomAssetsLoader), "LoadAllCustomAssets")]
+    class CustomAssetsLoaderPatcher
+    {
+
+        [HarmonyPostfix]
+        public static void Postfix(ref UniTask __result)
+        {
+            __result.GetAwaiter().OnCompleted(test);
+        }
+
+        private static void test()
+        {
+            // add components
+            Debug.Log("Adding moreparts components");           
+            BalloonModule.Setup();
+            TelecommunicationDishModule.Setup();
+            RotorModule.Setup();
+        }
+    }
+
     [HarmonyPatch(typeof(SpaceCenter), "Start")]
     class AntennaPatcher
     {

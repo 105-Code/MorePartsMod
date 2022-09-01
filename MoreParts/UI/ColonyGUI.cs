@@ -34,10 +34,10 @@ namespace MorePartsMod.UI
         public override void OnOpen()
         {
             this._name = this._colony.data.name;
-            this._holder = Builder.CreateWindow(this.transform.gameObject, 500, 700, 0, 0, false, 1, "Colony Menu", Builder.Style.Blue);
-            this._holder.CreateLayoutGroup(LayoutType.Vertical).spacing = 20f;
-            this._holder.CreateLayoutGroup(LayoutType.Vertical).DisableChildControl();
-            this._holder.CreateLayoutGroup(LayoutType.Vertical).childAlignment = TextAnchor.UpperCenter;
+            this._holder = Builder.CreateWindow(this.transform,2, 500, 700,titleText:"Colony Menu");
+            this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
+            this._holder.CreateLayoutGroup(Type.Vertical).DisableChildControl();
+            this._holder.CreateLayoutGroup(Type.Vertical).childAlignment = TextAnchor.UpperCenter;
             this.generateUI();
         }
 
@@ -66,10 +66,10 @@ namespace MorePartsMod.UI
                 {
                     continue;
                 }
-                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this._colony.Build(building.name), "Build " + building.name, Builder.Style.Blue);
+                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this._colony.Build(building.name), "Build " + building.name);
             }
 
-            Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => ScreenManager.main.CloseCurrent(), "Close", Builder.Style.Blue);
+            Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => ScreenManager.main.CloseCurrent(), "Close");
         }
 
 

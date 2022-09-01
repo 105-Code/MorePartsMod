@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace MorePartsMod
 {
-	public class KeySettings : Mod_Keybindings
+	public class KeySettings : ModKeybindings
 	{
 		public static KeySettings Main;
 		public static void Setup()
