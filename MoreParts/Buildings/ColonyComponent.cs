@@ -67,7 +67,7 @@ namespace MorePartsMod.Buildings
                 return;
             }
 
-            if (Vector2.Distance(this.data.position, ColonyManager.main.player.Value.location.position.Value) > 50)
+            if (Vector2.Distance(this.data.position, ColonyManager.main.player.Value.location.position.Value) > 100)
             {
                 this._playerNear.Value = false;
                 return;
@@ -86,7 +86,7 @@ namespace MorePartsMod.Buildings
             }
             building.state = true;
             this.checkSolarPanel(building);
-            ColonyManager.main.SaveWoldInfo();
+            ColonyManager.main.SaveColonies();
             this.transform.FindChild(buildingName).gameObject.SetActive(true);
             this.CloseWindow();
             this.InjectData();
@@ -126,7 +126,6 @@ namespace MorePartsMod.Buildings
                 }
 
                 this.checkSolarPanel(building);
-
                 buildingTransform.gameObject.SetActive(building.state);
             }
             this.InjectData();
@@ -145,14 +144,14 @@ namespace MorePartsMod.Buildings
         #region Injectables
         private void InjectData()
         {
+            this.InjectColony();
+            this.InjectRocket();
+            this.InjectPlayerInPlanet();
+            this.InjectPlayerNear();
+
             this._playerInPlanet.OnChange += this.InjectPlayerInPlanet;
             this._playerNear.OnChange += this.InjectPlayerNear;
             ColonyManager.main.player.OnChange += this.InjectRocket;
-
-            this.InjectPlayerInPlanet();
-            this.InjectColony();
-            this.InjectPlayerNear();
-            this.InjectRocket();
         }
         private void InjectHasEnergy()
         {
@@ -217,6 +216,7 @@ namespace MorePartsMod.Buildings
             public Double2 position;
             public string andress;
             public string name;
+            public double rocketParts;
             public List<ColonyBuildingData> buildings;
 
             public ColonyData() {
@@ -253,6 +253,36 @@ namespace MorePartsMod.Buildings
                 this.andress = location.planet.Value.codeName;
             }
 
+            public Double2 getBuildingPosition(string buildingName, float height = 0)
+            {
+                foreach(ColonyBuildingData building in this.buildings)
+                {
+                    if(building.name != buildingName)
+                    {
+                        continue;
+                    }
+
+                    Vector2 buildingPos = Double2.CosSin((double)(0.017453292f * (this.angle + height))) * building.offset.x;
+                    return this.position + buildingPos;
+                }
+
+                Debug.Log(buildingName+" Not Found");
+                return Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
+            }
+
+            public bool isBuildingActive(string buildingName)
+            {
+                foreach (ColonyBuildingData building in this.buildings)
+                {
+                    if (building.name != buildingName)
+                    {
+                        continue;
+                    }
+                    return building.state;
+                }
+                return false;
+            }
+
             public float LandmarkAngle { get => this.angle + 90; }
         }
 
@@ -261,15 +291,24 @@ namespace MorePartsMod.Buildings
             public bool state;
             public string name;
             public ColonyBuildingCost cost;
+            public Double2 offset;
 
             public ColonyBuildingData() { }
 
+            public ColonyBuildingData(bool state, string name, ColonyBuildingCost cost, Double2 pos)
+            {
+                this.name = name;
+                this.state = state;
+                this.cost = cost;
+                this.offset = pos;
+            }
             public ColonyBuildingData(bool state, string name, ColonyBuildingCost cost)
             {
                 this.name = name;
                 this.state = state;
                 this.cost = cost;
             }
+
 
         }
 

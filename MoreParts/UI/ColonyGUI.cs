@@ -26,8 +26,7 @@ namespace MorePartsMod.UI
             if (this._name != this._colony.data.name)
             {
                 this._colony.data.name = this._name;
-               
-                ColonyManager.main.SaveWoldInfo();
+                ColonyManager.main.SaveColonies();
             }
         }
 
