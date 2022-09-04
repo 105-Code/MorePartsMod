@@ -18,5 +18,5 @@ MonoBehaviour:
   resourceUnit:
     plainText: 0
     TranslatableName: Mass_Unit
-  resourceMass: 1.4
+  resourceMass: 1
   transferRate: 1
