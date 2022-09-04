@@ -71,7 +71,7 @@ namespace MorePartsMod.Managers
             // setup buildings
             RefineryComponent.Setup(colonyPrefab);
             SolarPanelComponent.Setup(colonyPrefab);
-            WarehouseComponent.Setup(colonyPrefab);
+            VABComponent.Setup(colonyPrefab);
             bool flag = false;
             foreach (ColonyData colony in MorePartsMod.Main.ColoniesInfo)
             {
@@ -167,7 +167,6 @@ namespace MorePartsMod.Managers
                 return;
             }
             this.player.Value.location.velocity.OnChange += this.CheckPlayerVelocity;
-
         }
 
         private void CheckPlayerVelocity()

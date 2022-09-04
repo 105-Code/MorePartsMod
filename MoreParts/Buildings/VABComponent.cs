@@ -5,7 +5,7 @@ using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Buildings
 {
-    class WarehouseComponent : MonoBehaviour, INJ_PlayerNear, INJ_Rocket, INJ_Colony
+    class VABComponent : MonoBehaviour, INJ_PlayerNear, INJ_Rocket, INJ_Colony
     {
 
         private Rocket _rocket;
@@ -53,8 +53,8 @@ namespace MorePartsMod.Buildings
 
         public static void Setup(GameObject colonyPrefab)
         {
-            GameObject building = colonyPrefab.transform.FindChild("Holder").gameObject.transform.FindChild("Warehouse").gameObject;
-            building.AddComponent<WarehouseComponent>();
+            GameObject building = colonyPrefab.transform.FindChild("Holder").gameObject.transform.FindChild("VAB").gameObject;
+            building.AddComponent<VABComponent>();
         }
     }
 }
