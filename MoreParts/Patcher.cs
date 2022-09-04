@@ -202,8 +202,8 @@ namespace MorePartsMod
             Staging.CreateStages(blueprint, array);
             Rocket rocket = array4.FirstOrDefault((Rocket a) => a.hasControl.Value);
             PlayerController.main.player.Value = ((rocket != null) ? rocket : ((array4.Length != 0) ? array4[0] : null));
+            MorePartsMod.Main.spawnPoint.rocketParts -= BuildManagerPatcherLaunch.RocketMass;
             MorePartsMod.Main.spawnPoint = null;
-
             return false; 
         }
 
@@ -226,7 +226,7 @@ namespace MorePartsMod
             Builder.AttachToCanvas(holder, Builder.SceneToAttach.CurrentScene);
             _ui = holder.AddComponent<BuildingColonyGUI>();
 
-            SFS.UI.ModGUI.Button button =  Builder.CreateButton(ui.transform, 120, 50, (int) topMenu.localPosition.x + 400, (int) topMenu.localPosition.y + 180, () => ScreenManager.main.OpenScreen(() => _ui), "Colonies");
+            SFS.UI.ModGUI.Button button =  Builder.CreateButton(ui.transform, 120, 40, (int) topMenu.localPosition.x + 400, (int) topMenu.localPosition.y + 180, () => ScreenManager.main.OpenScreen(() => _ui), "Colonies");
         }
 
     }
@@ -234,6 +234,7 @@ namespace MorePartsMod
     [HarmonyPatch(typeof(BuildManager), "Launch")]
     class BuildManagerPatcherLaunch
     {
+        public static double RocketMass;
 
         [HarmonyPrefix]
         public static bool Prefix(BuildManager __instance)
@@ -249,7 +250,7 @@ namespace MorePartsMod
                 ShowMenu("Insufficient Resource on " + MorePartsMod.Main.spawnPoint.name,"Ok");
                 return false;
             }
-
+            double resourcesWeight = 0;
             ResourceModule[] resources = __instance.buildGrid.activeGrid.partsHolder.GetModules<ResourceModule>();
             foreach (ResourceModule resource in resources)
             {
@@ -258,7 +259,10 @@ namespace MorePartsMod
                     ShowMenu("You can't transport " + resource.resourceType.name, "Ok");
                     return false;
                 }
+               resourcesWeight += resource.ResourceAmount;
             }
+            RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
+
 
             return true;
         }
