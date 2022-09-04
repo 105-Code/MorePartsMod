@@ -46,7 +46,7 @@ namespace MorePartsMod.Buildings
 			{
 				return;
 			}
-			PlayerController.main.player.OnChange += AntennaComponent.main.OnChangePlayer;
+			PlayerController.main.player.OnChange += this.OnChangePlayer;
 			
 			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Dish, this.ToggleRocketAntenna);
 			KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Telecommunication_Lines, this.ToggleTelecommunicationlines);
@@ -122,6 +122,11 @@ namespace MorePartsMod.Buildings
 		{
 			this._network.ClearRoute(this._routeOrigin);
 			Rocket rocket = (Rocket) PlayerController.main.player;
+			if(rocket == null)
+			{
+				this._hasTelecommunicationDish = false;
+				return;
+			}
 			this._hasTelecommunicationDish = rocket.partHolder.GetModules<TelecommunicationDishModule>().Length > 0;
 		}
 
