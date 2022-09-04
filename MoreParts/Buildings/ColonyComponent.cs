@@ -16,7 +16,6 @@ namespace MorePartsMod.Buildings
     {
 
         private GameObject holder;
-        public Window windows;
 
         public ColonyData data;
         public bool dialogOpen;
@@ -76,27 +75,22 @@ namespace MorePartsMod.Buildings
 
         }
 
-        public void Build(string buildingName)
+        public bool Build(string buildingName)
         {
             ColonyBuildingData building = this.GetBuilding(buildingName);
             if(!ColonyManager.main.CheckAndReduceMaterials(building.cost.constructionCost, building.cost.electronicCost))
             {
                 MsgDrawer.main.Log("Insufficient Materials");
-                return;
+                return false ;
             }
             building.state = true;
             this.checkSolarPanel(building);
             ColonyManager.main.SaveColonies();
             this.transform.FindChild(buildingName).gameObject.SetActive(true);
-            this.CloseWindow();
             this.InjectData();
+            return true;
         }
 
-        private void CloseWindow()
-        {
-            this.windows.gameObject.SetActive(false);
-            this.dialogOpen = false; 
-        }
 
         public ColonyBuildingData GetBuilding(string name)
         {

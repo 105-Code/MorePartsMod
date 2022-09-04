@@ -33,7 +33,7 @@ namespace MorePartsMod.UI
         public override void OnOpen()
         {
             this._name = this._colony.data.name;
-            this._holder = Builder.CreateWindow(this.transform,2, 500, 700,titleText:"Colony Menu");
+            this._holder = Builder.CreateWindow(this.transform,2, 500, 500,titleText:"Colony Menu");
             this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
             this._holder.CreateLayoutGroup(Type.Vertical).DisableChildControl();
             this._holder.CreateLayoutGroup(Type.Vertical).childAlignment = TextAnchor.UpperCenter;
@@ -56,6 +56,7 @@ namespace MorePartsMod.UI
         {
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Information");
             Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.data.name,this.onChangeColonyName);
+            Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Rocket Resource: "+this._colony.data.rocketParts);
 
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Buildings");
 
@@ -65,12 +66,19 @@ namespace MorePartsMod.UI
                 {
                     continue;
                 }
-                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this._colony.Build(building.name), "Build " + building.name);
+                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this.OnClickButton(building), "Build " + building.name);
             }
 
             Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => ScreenManager.main.CloseCurrent(), "Close");
         }
 
+        private void OnClickButton(ColonyBuildingData building)
+        {
+            if (this._colony.Build(building.name))
+            {
+                ScreenManager.main.CloseCurrent();
+            }
+        }
 
     }
 }
