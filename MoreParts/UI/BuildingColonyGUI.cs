@@ -39,7 +39,7 @@ namespace MorePartsMod.UI
         {
             foreach(ColonyData colony in MorePartsMod.Main.ColoniesInfo)
             {
-                if(!colony.isBuildingActive("Launch pad"))
+                if(!colony.isBuildingActive("Launch pad") || !colony.isBuildingActive("VAB"))
                 {
                     continue;
                 }
