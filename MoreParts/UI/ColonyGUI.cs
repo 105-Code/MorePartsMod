@@ -33,7 +33,7 @@ namespace MorePartsMod.UI
         public override void OnOpen()
         {
             this._name = this._colony.data.name;
-            this._holder = Builder.CreateWindow(this.transform,2, 500, 500,titleText:"Colony Menu");
+            this._holder = Builder.CreateWindow(this.transform,2, 500, 700,posY:350,titleText:"Colony Menu");
             this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
             this._holder.CreateLayoutGroup(Type.Vertical).DisableChildControl();
             this._holder.CreateLayoutGroup(Type.Vertical).childAlignment = TextAnchor.UpperCenter;
