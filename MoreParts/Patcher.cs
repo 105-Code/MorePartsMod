@@ -195,7 +195,7 @@ namespace MorePartsMod
                 }
             }
             blueprint.rotation = 0;
-            Part_Utility.PositionParts(WorldView.ToLocalPosition(target.getBuildingPosition("Launch pad", 3)), new Vector2(0.5f, 0f), true, true, array3);
+            Part_Utility.PositionParts(WorldView.ToLocalPosition(target.getBuildingPosition("Launch Pad", 3)), new Vector2(0.5f, 0f), true, true, array3);
             List<JointGroup> groups;
             new JointGroup(RocketManager.GenerateJoints(array3), array3.ToList<Part>()).RecreateGroups(out groups);
             Rocket[] array4 = SpawnRockets(groups);

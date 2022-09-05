@@ -76,7 +76,7 @@ namespace MorePartsMod
             this._buldingsList.Add(new ColonyBuildingData(false, "Refinery", new ColonyBuildingCost(10, 12) ));
             this._buldingsList.Add(new ColonyBuildingData(false, "Solar Panels", new ColonyBuildingCost(13, 4) ));
             this._buldingsList.Add(new ColonyBuildingData(false, "VAB", new ColonyBuildingCost(4, 10) ));
-            this._buldingsList.Add(new ColonyBuildingData(false, "Launch pad", new ColonyBuildingCost(1, 20), new Double2(100, 3)));
+            this._buldingsList.Add(new ColonyBuildingData(false, "Launch Pad", new ColonyBuildingCost(1, 20), new Double2(100, 3)));
 
         }
             
