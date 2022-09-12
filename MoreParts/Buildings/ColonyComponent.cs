@@ -255,9 +255,9 @@ namespace MorePartsMod.Buildings
                     {
                         continue;
                     }
-
-                    Vector2 buildingPos = Double2.CosSin((double)(0.017453292f * (this.angle + height))) * building.offset.x;
-                    return this.position + buildingPos;
+                    Double2 colonyPos =  Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
+                    Vector2 buildingPos = Double2.CosSin((double)(0.017453292f * (this.angle))) * building.offset.x;
+                    return colonyPos + buildingPos;
                 }
 
                 Debug.Log(buildingName+" Not Found");
