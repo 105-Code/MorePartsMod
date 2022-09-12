@@ -120,6 +120,11 @@
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
     <Compile Include="Parts\RotorModule.cs" />
+    <Compile Include="Patches\RocketManagerPatcher.cs" />
+    <Compile Include="Patches\MapManagerPatcher.cs" />
+    <Compile Include="Patches\BuildManagerPatcher.cs" />
+    <Compile Include="Patches\SpaceCenterPatcher.cs" />
+    <Compile Include="Patches\CustomAssetsLoaderPatcher.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
     <Compile Include="UI\ColonyGUI.cs" />
     <Compile Include="WorldBuildings.cs" />
@@ -129,7 +134,6 @@
     <Compile Include="Buildings\AntennaComponent.cs" />
     <Compile Include="Parts\BallonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
-    <Compile Include="Patcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
