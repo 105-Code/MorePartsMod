@@ -1,4 +1,5 @@
-﻿using MorePartsMod.Managers;
+﻿using MorePartsMod.ARPA;
+using MorePartsMod.Managers;
 using MorePartsMod.UI;
 using SFS;
 using SFS.Input;
@@ -25,6 +26,7 @@ namespace MorePartsMod.Buildings
         private Bool_Local _playerInPlanet = new Bool_Local();
         private Bool_Local _playerNear = new Bool_Local();
         private bool _hasEnergy;
+        private Node _node;
 
         private void Awake()
         {
@@ -38,6 +40,7 @@ namespace MorePartsMod.Buildings
                 return;
             }
             this.dialogOpen = false;
+            this._node = AntennaComponent.main.AddNode(this.transform.parent.GetComponent<WorldLocation>(), true);
             ColonyManager.main.player.OnChange += this.OnChangePlayer;
         }
 

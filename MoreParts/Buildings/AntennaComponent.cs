@@ -75,6 +75,11 @@ namespace MorePartsMod.Buildings
 			}
 		}
 
+		public Node AddNode(WorldLocation location,bool isOrigin = false)
+		{
+			return this._network.Insert(location, isOrigin);
+		}
+
 		public Node AddNode(TelecommunicationDishModule dish)
 		{
 			WorldLocation location = dish.Rocket.GetComponent<WorldLocation>();
