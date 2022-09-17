@@ -75,7 +75,7 @@ namespace MorePartsMod.Patches
         private static double GetHeight(Part[] parts)
         {
             Rect rect;
-            return (double)(Part_Utility.GetBuildColliderBounds_WorldSpace(out rect, true, parts) ? rect.height : 0f);
+            return (double)(Part_Utility.GetBuildColliderBounds_WorldSpace(out rect, true, parts) ? rect.height + 3: 3f);
         }
 
         [HarmonyPrefix]
