@@ -3,6 +3,7 @@ using SFS.Builds;
 using SFS.Parts;
 using SFS.Parts.Modules;
 using SFS.World;
+using SFS.World.Maps;
 using SFS.WorldBase;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,10 @@ namespace MorePartsMod.Patches
             colonyPlanet = target.getPlanet();
             Location colonyLocation = new Location(colonyPlanet, target.position);
             WorldView.main.SetViewLocation(colonyLocation);
-           
+
+            Map.view.view.target.Value = colonyPlanet.mapPlanet;
+            Map.view.view.distance.Value = colonyPlanet.mapPlanet.FocusDistance * 0.5;
+
             blueprint.rotation = target.angle;
             if (blueprint.rotation != 0f)
             {
