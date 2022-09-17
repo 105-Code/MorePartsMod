@@ -153,6 +153,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0
   composedBaseDepth:
@@ -160,7 +161,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 1
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 4382373109341745631}
@@ -253,6 +257,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0
   composedBaseDepth:
@@ -260,7 +265,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 1
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 0
   composedShape:
     variables: {fileID: 4382373109341745631}
@@ -667,7 +675,7 @@ MonoBehaviour:
     - name: state
       save: 1
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
-    - name: state_target
+    - name: target_state
       save: 0
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
     - name: width
@@ -864,6 +872,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0
   composedBaseDepth:
@@ -871,7 +880,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 0
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 4382373109341745631}
@@ -1066,6 +1078,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0
   composedBaseDepth:
@@ -1073,7 +1086,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 0
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 4382373109341745631}
