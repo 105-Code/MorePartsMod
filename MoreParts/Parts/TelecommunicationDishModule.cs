@@ -15,8 +15,10 @@ namespace MorePartsMod.Parts
 	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket
 	{
 		private Part _part;
-		private VariableList<bool>.Variable _state;
-		private VariableList<double>.Variable _flow_rate;
+		private VariableList<bool>.Variable _isOn;
+		private VariableList<double>.Variable _flowRate;
+		private VariableList<double>.Variable _state;
+		private VariableList<double>.Variable _targetState;
 		private Node _rocketNode;
 		private Rocket _rocket;
 		private bool _notifyDisconnection;
@@ -29,7 +31,7 @@ namespace MorePartsMod.Parts
 		public Node Node { get => this._rocketNode; }
 		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
 		
-		public bool IsActive { get => this._state.Value; }
+		public bool IsActive { get => this._isOn.Value; }
 		public bool IsConnected { get => !this._notifyConnection; }
 
 		private I_MsgLogger Logger
@@ -49,8 +51,10 @@ namespace MorePartsMod.Parts
 		{
 			this._part = this.GetComponent<Part>();
 			this._source = this.GetComponent<FlowModule>();
-			this._state = this._part.variablesModule.boolVariables.GetVariable("isOn");
-			this._flow_rate = this._part.variablesModule.doubleVariables.GetVariable("flow_rate");
+			this._isOn = this._part.variablesModule.boolVariables.GetVariable("isOn");
+			this._flowRate = this._part.variablesModule.doubleVariables.GetVariable("flow_rate");
+			this._state = this._part.variablesModule.doubleVariables.GetVariable("state");
+			this._targetState = this._part.variablesModule.doubleVariables.GetVariable("target_state");
 			this._part.onPartUsed.AddListener(this.Toggle);
 
 			this._notifyConnection = true;
@@ -68,14 +72,14 @@ namespace MorePartsMod.Parts
 			this._source.onStateChange += this.CheckOutOfElectricity;
 			this.CheckOutOfElectricity();
 			
-			if (this._state.Value) // telecommunication dish is on 
+			if (this._isOn.Value) // telecommunication dish is on 
 			{
-				this._flow_rate.Value = 0.1;
+				this._flowRate.Value = 0.1;
 				this._rocketNode = AntennaComponent.main.AddNode(this);
 			}
 			else
 			{
-				this._flow_rate.Value = 0;
+				this._flowRate.Value = 0;
 				if (this._rocket.isPlayer)
 				{
 					this._rocket.hasControl.Value = false;
@@ -91,7 +95,7 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-			if (!this._rocket.isPlayer || !this._state.Value ) //if is not the player or dish is off
+			if (!this._rocket.isPlayer || !this._isOn.Value ) //if is not the player or dish is off
 			{
 				return;
 			}
@@ -139,10 +143,11 @@ namespace MorePartsMod.Parts
 
 		private void CheckOutOfElectricity()
 		{
-			if (this._state.Value && !this.HasElectricity(this.Logger))
+			if (this._isOn.Value && !this.HasElectricity(this.Logger))
 			{
-				this._state.Value = false;
-				this._flow_rate.Value = 0;
+				this._isOn.Value = false;
+				this._targetState.Value = 0;
+				this._flowRate.Value = 0;
 				this._rocket.hasControl.Value = false;
 			}
 		}
@@ -159,14 +164,16 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-			if (this._state.Value)
+			if (this._isOn.Value)
 			{
 				AntennaComponent.main.RemoveNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish Off");
 				this._rocketNode = null;
 				this._notifyDisconnection = true;
 				this.DoDisconnection(); 
-				this._flow_rate.Value = 0;
+				this._flowRate.Value = 0;
+				this._targetState.Value = 0;
+
 			}
 			else
 			{
@@ -174,9 +181,10 @@ namespace MorePartsMod.Parts
 				MsgDrawer.main.Log("Telecommunication Dish On");
 				this._notifyDisconnection = true;
 				this._notifyConnection = true; 
-				this._flow_rate.Value = 0.1;
+				this._flowRate.Value = 0.1;
+				this._targetState.Value = 1;
 			}
-			this._state.Value = !this._state.Value;
+			this._isOn.Value = !this._isOn.Value;
 			this.CheckOutOfElectricity();
 		}
 
