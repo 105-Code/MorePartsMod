@@ -1,33 +1,33 @@
 ﻿using HarmonyLib;
-using MorePartsMod.Buildings;
 using MorePartsMod.UI;
+using SFS;
 using SFS.Builds;
 using SFS.Input;
 using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.UI.ModGUI;
 using UnityEngine;
-
 namespace MorePartsMod.Patches
 {
     [HarmonyPatch(typeof(BuildManager), "Start")]
     class BuildManagerStart
     {
-
         private static BuildingColonyGUI _ui;
 
         [HarmonyPostfix]
-        public static void Postfix(BuildManager __instance)
+        public static void Postfix()
         {
             GameObject ui = GameObject.Find("--- UI ---");
             Transform topMenu = ui.transform.Find("Top Right");
 
             GameObject holder = new GameObject("Colony Menu");
             holder.transform.localScale = new Vector3(0.9f, 0.9f);
-            Builder.AttachToCanvas(holder, Builder.SceneToAttach.CurrentScene);
             _ui = holder.AddComponent<BuildingColonyGUI>();
+            Builder.AttachToCanvas(holder, Builder.SceneToAttach.CurrentScene);
 
-            SFS.UI.ModGUI.Button button = Builder.CreateButton(ui.transform, 120, 40, (int)topMenu.localPosition.x + 400, (int)topMenu.localPosition.y + 180, () => ScreenManager.main.OpenScreen(() => _ui), "Colonies");
+            SFS.UI.ModGUI.Button button = Builder.CreateButton(ui.transform, 120, 40, -90,-95, () => ScreenManager.main.OpenScreen(() => _ui), "Colonies");
+            button.rectTransform.anchorMin = Vector2.one;
+            button.rectTransform.anchorMax = Vector2.one;
         }
 
     }
@@ -36,7 +36,6 @@ namespace MorePartsMod.Patches
     class BuildManagerLaunch
     {
         public static double RocketMass;
-        public static double Heigth;
 
         [HarmonyPrefix]
         public static bool Prefix(BuildManager __instance)
@@ -46,12 +45,6 @@ namespace MorePartsMod.Patches
                 return true;
             }
 
-            // spawn point selected
-            if (__instance.buildMenus.statsDrawer.mass > MorePartsMod.Main.spawnPoint.rocketParts)
-            {
-                ShowMenu("Insufficient Resource on " + MorePartsMod.Main.spawnPoint.name, "Ok");
-                return false;
-            }
             double resourcesWeight = 0;
             ResourceModule[] resources = __instance.buildGrid.activeGrid.partsHolder.GetModules<ResourceModule>();
             foreach (ResourceModule resource in resources)
@@ -64,6 +57,14 @@ namespace MorePartsMod.Patches
                 resourcesWeight += resource.ResourceAmount;
             }
             RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
+
+            // spawn point selected
+            if (RocketMass > MorePartsMod.Main.spawnPoint.rocketParts)
+            {
+                ShowMenu("Insufficient rocket material on " + MorePartsMod.Main.spawnPoint.name, "Ok");
+                return false;
+            }
+
             return true;
         }
 
