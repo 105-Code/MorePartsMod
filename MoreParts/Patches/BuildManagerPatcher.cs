@@ -54,11 +54,11 @@ namespace MorePartsMod.Patches
                     ShowMenu("You can't transport " + resource.resourceType.name, "Ok");
                     return false;
                 }
-                resourcesWeight += resource.ResourceAmount;
+                
+                resourcesWeight += resource.wetMass.Value - (resource.wetMass.Value * resource.dryMassPercent.Value);
             }
             RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
 
-            // spawn point selected
             if (RocketMass > MorePartsMod.Main.spawnPoint.rocketParts)
             {
                 ShowMenu("Insufficient rocket material on " + MorePartsMod.Main.spawnPoint.name, "Ok");
