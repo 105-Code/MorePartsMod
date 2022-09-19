@@ -16,26 +16,22 @@ using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod
 {
-    class MorePartsMod : Mod
+    public class MorePartsModMain : Mod
     {
+        public static MorePartsModMain Main;
 
-        public static MorePartsMod Main;
+        public CustomModulesManager CustomModules;
 
         public List<ColonyBuildingData> Buildings { get => this._buldingsList; }
+        
         public List<ColonyData> ColoniesInfo { get => this._coloniesInfo; }
 
         public ColonyData spawnPoint;
-
-        private AssetBundle _assets;
-        private List<ColonyBuildingData> _buldingsList;
-        private List<ColonyData> _coloniesInfo;
-
 
         public AssetBundle Assets
         {
             get { return this._assets; }
         }
-
 
         public override string ModNameID => "morepartsmod";
 
@@ -49,10 +45,20 @@ namespace MorePartsMod
 
         public override string Description => "Add special features to the MoreParts Pack";
 
-        public override void Early_Load()
+        private AssetBundle _assets;
+
+        private List<ColonyBuildingData> _buldingsList;
+
+        private List<ColonyData> _coloniesInfo;
+
+        public MorePartsModMain()
         {
             Main = this;
+            this.CustomModules = new CustomModulesManager();
+        }
 
+        public override void Early_Load()
+        {
             string assetFilePath = Path.Combine(this.ModFolder, "moreparts-assets");
             AssetBundle assets = AssetBundle.LoadFromFile(assetFilePath);
             if (assets == null)
@@ -79,7 +85,6 @@ namespace MorePartsMod
             this._buldingsList.Add(new ColonyBuildingData(false, "Launch Pad", new ColonyBuildingCost(1, 20), new Double2(100, 3)));
 
         }
-            
 
         private void OnWorld()
         {
@@ -92,7 +97,6 @@ namespace MorePartsMod
         {
             this.LoadColonyInfo();
         }
-
 
         public void SaveColonyInfo(List<ColonyComponent> colonies)
         {
@@ -127,7 +131,6 @@ namespace MorePartsMod
             this._coloniesInfo = data;
             
         }
-
 
     }
 }

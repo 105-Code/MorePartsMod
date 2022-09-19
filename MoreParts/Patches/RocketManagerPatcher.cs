@@ -81,7 +81,7 @@ namespace MorePartsMod.Patches
         [HarmonyPrefix]
         public static bool Prefix( ref Blueprint blueprint)
         {
-            ColonyData target = MorePartsMod.Main.spawnPoint;
+            ColonyData target = MorePartsModMain.Main.spawnPoint;
 
             if (target == null)
             {
@@ -128,8 +128,8 @@ namespace MorePartsMod.Patches
             Staging.CreateStages(blueprint, array);
             Rocket rocket = array4.FirstOrDefault((Rocket a) => a.hasControl.Value);
             PlayerController.main.player.Value = ((rocket != null) ? rocket : ((array4.Length != 0) ? array4[0] : null));
-            MorePartsMod.Main.spawnPoint.rocketParts -= BuildManagerLaunch.RocketMass;
-            MorePartsMod.Main.spawnPoint = null;
+            MorePartsModMain.Main.spawnPoint.rocketParts -= BuildManagerLaunch.RocketMass;
+            MorePartsModMain.Main.spawnPoint = null;
             return false;
         }
     }

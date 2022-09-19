@@ -16,7 +16,7 @@ namespace MorePartsMod
 		public static KeySettings Main;
 		public static void Setup()
 		{
-			Main = SetupKeybindings<KeySettings>(MorePartsMod.Main);
+			Main = SetupKeybindings<KeySettings>(MorePartsModMain.Main);
 		}
 
 		// Token: 0x0600027D RID: 637 RVA: 0x0000C74C File Offset: 0x0000A94C
@@ -38,7 +38,7 @@ namespace MorePartsMod
 		private void Save()
 		{
 			string text = JsonWrapper.ToJson(this, true);
-			this.GetPath(MorePartsMod.Main).WriteText(text);
+			this.GetPath(MorePartsModMain.Main).WriteText(text);
 		}
 
 		private FilePath GetPath(Mod mod)

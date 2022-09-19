@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="UniTask">
       <HintPath>..\Dependencies\UniTask.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Dependencies\UnityEngine.dll</HintPath>
@@ -63,6 +64,7 @@
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>..\Dependencies\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
       <HintPath>..\Dependencies\UnityEngine.AssetBundleModule.dll</HintPath>
@@ -78,9 +80,11 @@
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>..\Dependencies\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
       <HintPath>..\Dependencies\UnityEngine.InputModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
       <HintPath>..\Dependencies\UnityEngine.Physics2DModule.dll</HintPath>
@@ -88,15 +92,19 @@
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>..\Dependencies\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextCoreFontEngineModule">
       <HintPath>..\Dependencies\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextCoreTextEngineModule">
       <HintPath>..\Dependencies\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\Dependencies\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Dependencies\UnityEngine.UI.dll</HintPath>
@@ -104,12 +112,15 @@
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
       <HintPath>..\Dependencies\UnityEngine.UIElementsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIElementsNativeModule">
       <HintPath>..\Dependencies\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
       <HintPath>..\Dependencies\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +128,7 @@
     <Compile Include="ARPA\Node.cs" />
     <Compile Include="Buildings\VABComponent.cs" />
     <Compile Include="Buildings\SolarPanelComponent.cs" />
+    <Compile Include="CustomModulesManager.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
     <Compile Include="Parts\RotorModule.cs" />
@@ -130,7 +142,7 @@
     <Compile Include="WorldBuildings.cs" />
     <Compile Include="Buildings\ColonyComponent.cs" />
     <Compile Include="KeySettings.cs" />
-    <Compile Include="MorePartsMod.cs" />
+    <Compile Include="MorePartsModMain.cs" />
     <Compile Include="Buildings\AntennaComponent.cs" />
     <Compile Include="Parts\BallonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />

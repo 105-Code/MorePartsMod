@@ -22,7 +22,7 @@ namespace MorePartsMod.Managers
         public static ColonyManager main;
         public Player_Local player;
 
-        public List<ColonyBuildingData> Buildings { get => MorePartsMod.Main.Buildings; }
+        public List<ColonyBuildingData> Buildings { get => MorePartsModMain.Main.Buildings; }
         public List<ColonyComponent> Colonies { get => this._colonies; }
 
         //private
@@ -62,18 +62,18 @@ namespace MorePartsMod.Managers
 
         public void SaveColonies()
         {
-            MorePartsMod.Main.SaveColonyInfo(this._colonies);
+            MorePartsModMain.Main.SaveColonyInfo(this._colonies);
         }
 
         private void LoadColonies()
         {
-            GameObject colonyPrefab = MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony");
+            GameObject colonyPrefab = MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Colony");
             // setup buildings
             RefineryComponent.Setup(colonyPrefab);
             SolarPanelComponent.Setup(colonyPrefab);
             VABComponent.Setup(colonyPrefab);
             bool flag = false;
-            foreach (ColonyData colony in MorePartsMod.Main.ColoniesInfo)
+            foreach (ColonyData colony in MorePartsModMain.Main.ColoniesInfo)
             {
                 GameObject colonyGameObject = GameObject.Instantiate(colonyPrefab);
                 WorldBuildings.addBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
@@ -253,7 +253,7 @@ namespace MorePartsMod.Managers
         {
             this._newColony.name = "Name";
 
-            GameObject colony = GameObject.Instantiate(MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony"));
+            GameObject colony = GameObject.Instantiate(MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Colony"));
 
             WorldBuildings.addBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
             
@@ -265,7 +265,7 @@ namespace MorePartsMod.Managers
             component.data = this._newColony;
             component.RestoreBuildings();
             this.Colonies.Add(component);
-            MorePartsMod.Main.SaveColonyInfo(this._colonies);
+            MorePartsModMain.Main.SaveColonyInfo(this._colonies);
         }
 
         private bool CheckColonyDistance(string address,Double2 colonyPosition)
