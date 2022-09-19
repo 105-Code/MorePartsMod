@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MorePartsMod.ARPA
 {
-    class ARPANET
+    public class ARPANET
     {
         private List<Node> _nodes; // all satellites
         private int _counter;

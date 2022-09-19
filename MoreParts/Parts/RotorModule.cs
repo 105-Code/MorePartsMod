@@ -11,7 +11,7 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-	class RotorModule : MonoBehaviour, INJ_IsPlayer, INJ_Location, INJ_Throttle, INJ_Physics
+	public class RotorModule : MonoBehaviour, INJ_IsPlayer, INJ_Location, INJ_Throttle, INJ_Physics
 	{
 		private VariablesModule _variables;
 		private Part _part;

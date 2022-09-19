@@ -12,7 +12,7 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket
+	public class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket
 	{
 		private Part _part;
 		private VariableList<bool>.Variable _isOn;

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace MorePartsMod.Buildings
 {
-    class ColonyComponent : MonoBehaviour
+    public class ColonyComponent : MonoBehaviour
     {
 
         private GameObject holder;

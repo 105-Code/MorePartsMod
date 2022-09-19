@@ -10,7 +10,7 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    class BalloonModule : MonoBehaviour, INJ_Location, INJ_Physics
+    public class BalloonModule : MonoBehaviour, INJ_Location, INJ_Physics
 	{
 		private OrientationModule _orientation;
 		private VariablesModule _variables;

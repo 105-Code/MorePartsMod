@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MorePartsMod.ARPA
 {
-    class Node
+    public class Node
     {
         private WorldLocation _worldLocation;
         private bool _isOrigin;
