@@ -194,32 +194,5 @@ namespace MorePartsMod.Parts
 			data.successfullyUsedPart = true;
 		}
 
-		public static void Setup()
-		{
-			Part part;
-			Base.partsLoader.parts.TryGetValue("Telecommunication Dish", out part);
-
-			if (part == null)
-			{
-				Debug.Log("Telecommunication Dish not found!");
-				return;
-			}
-
-			part.gameObject.AddComponent<TelecommunicationDishModule>();
-
-			Base.partsLoader.parts.TryGetValue("Antenna", out part);
-
-			if (part == null)
-			{
-				Debug.Log("Antenna not found!");
-				return;
-			}
-
-			part.gameObject.AddComponent<TelecommunicationDishModule>();
-
-			Debug.Log("Telecommunication Dish component added!");
-			Debug.Log("Antenna component added!");
-		}
-	
 	}
 }

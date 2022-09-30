@@ -136,6 +136,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 0
+  physicsCollider: 0
   clickArea: 0
   baseDepth: 0
   composedBaseDepth:
@@ -143,7 +144,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 2
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 0
   width_a:
     variables: {fileID: 7062449513941958936}
@@ -309,6 +313,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0
   composedBaseDepth:
@@ -316,7 +321,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 1
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   width_a:
     variables: {fileID: 7062449513941958936}
@@ -465,6 +473,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 0
   baseDepth: 0
   composedBaseDepth:
@@ -472,7 +481,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 0
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 7062449513941958936}
@@ -701,6 +713,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 0
+  physicsCollider: 0
   clickArea: 0
   baseDepth: 0
   composedBaseDepth:
@@ -708,7 +721,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 2
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 0
   width_a:
     variables: {fileID: 7062449513941958936}
@@ -874,6 +890,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 0
   baseDepth: 0
   composedBaseDepth:
@@ -881,7 +898,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 0
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 7062449513941958936}
@@ -1074,6 +1094,7 @@ GameObject:
   - component: {fileID: 5700136436372710172}
   - component: {fileID: 7281608166575621481}
   - component: {fileID: 4068594087124507037}
+  - component: {fileID: -8585623062992180042}
   m_Layer: 8
   m_Name: Rotor
   m_TagString: Untagged
@@ -1267,6 +1288,20 @@ MonoBehaviour:
     input: 1
   playOnStart: 0
   loop: 1
+--- !u!114 &-8585623062992180042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3860136810057135241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 761233564, guid: e292dbfaf1e185f408821a10d1d06a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinMorePartsVersion: 2.1.1
+  modules: 01000000
 --- !u!1 &6637922154549019874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1352,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 0
   baseDepth: 0
   composedBaseDepth:
@@ -1324,7 +1360,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 0
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 7062449513941958936}
@@ -1637,6 +1676,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 0
   baseDepth: 0
   composedBaseDepth:
@@ -1644,7 +1684,10 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   depthMultiplier: 0
+  advancedCut: 0
   cut: 0
+  advancedCutData:
+    cuts: []
   reduceResolution: 1
   composedShape:
     variables: {fileID: 7062449513941958936}
@@ -1873,6 +1916,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0.5
   composedBaseDepth:
@@ -1912,6 +1956,8 @@ MonoBehaviour:
   - {x: 0.16965039, y: 0.0015592235}
   - {x: 0.16965039, y: -0.061471492}
   texture: {fileID: 11400000, guid: 08081d836a40e5245ad846b79a817781, type: 2}
+  type: 0
+  colorBasic: {r: 1, g: 1, b: 1, a: 1}
   colorModule: {fileID: 0}
 --- !u!114 &2028056920859637217
 MonoBehaviour:

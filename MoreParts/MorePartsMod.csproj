@@ -128,7 +128,6 @@
     <Compile Include="ARPA\Node.cs" />
     <Compile Include="Buildings\VABComponent.cs" />
     <Compile Include="Buildings\SolarPanelComponent.cs" />
-    <Compile Include="CustomModulesManager.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
     <Compile Include="Parts\RotorModule.cs" />
@@ -148,7 +147,12 @@
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MorePartsUnity\MorePartsUnity.csproj">
+      <Project>{d7f01875-66b5-41c2-a3f3-0dcbc3ae2216}</Project>
+      <Name>MorePartsUnity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- After build copy dll file into managed folder and start the game -->
   <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

@@ -170,22 +170,6 @@ namespace MorePartsMod.Parts
 			Vector2 relativePoint = this._rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(this.transform, this._rb2d, new Vector2(0,0)));
 			this._rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
 		}
-
-		public static void Setup()
-		{
-			Part part;
-			Base.partsLoader.parts.TryGetValue("Rotor", out part);
-
-			if (part == null)
-			{
-				Debug.Log("Rotor not found!");
-				return;
-			}
-
-			part.gameObject.AddComponent<RotorModule>();
-
-			Debug.Log("Rotor component added!");
-		}
 	
 	}
 }

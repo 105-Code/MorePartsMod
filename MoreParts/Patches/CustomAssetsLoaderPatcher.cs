@@ -6,7 +6,6 @@ using SFS;
 using SFS.Parts;
 using System;
 using UnityEngine;
-using static MorePartsMod.CustomModulesManager;
 
 namespace MorePartsMod.Patches
 {
@@ -23,34 +22,38 @@ namespace MorePartsMod.Patches
         {
             // add components
             Debug.Log("Adding moreparts components");
-            BalloonModule.Setup();
-            TelecommunicationDishModule.Setup();
-            RotorModule.Setup();
-
-            // add Components to parts from other mods
-            Debug.Log("Add Modreparts modules to external parts");
-            foreach( CustomModuleData item in MorePartsModMain.Main.CustomModules.CustomModulesQueue)
+            MorePartsInjector injector;
+            foreach ( Part part in Base.partsLoader.parts.Values)
             {
-                Part part;
-                Base.partsLoader.parts.TryGetValue(item.partName, out part);
+                injector = part.GetComponent<MorePartsInjector>();
+                if (injector)
+                {
+                    
+                    foreach (Modules module in injector.modules)
+                    {
+                        Debug.Log(part.name + " adding "+module.ToString());
+                        if (module == Modules.BallonModule)
+                        {
+                            part.GetOrAddComponent<BalloonModule>();
+                        }
 
-                if (part == null)
-                {
-                    Debug.Log(item.partName + " not found!");
-                    continue;
+                        if (module == Modules.TelecomunicationModule)
+                        {
+                            part.GetOrAddComponent<TelecommunicationDishModule>();
+                        }
+
+                        if (module == Modules.RotorModule)
+                        {
+                            part.GetOrAddComponent<RotorModule>();
+                        }
+
+                    }
                 }
-                try
-                {
-                    part.gameObject.AddComponent(item.customModule);
-                    Debug.Log(item.customModule.ToString() + " added to" + item.partName);
-                }
-                catch( Exception error)
-                {
-                    Debug.Log("Error attaching custom module to external part");
-                    Debug.LogError(error);
-                }
+
             }
-            Debug.Log("Add MorePart modules done");
+            
         }
+
+  
     }
 }

@@ -127,22 +127,5 @@ namespace MorePartsMod.Parts
 		{
 			base.enabled = this._isOpen = (this._targetState.Value == 1f);
 		}
-
-		public static void Setup()
-		{
-			Part balloon;
-			Base.partsLoader.parts.TryGetValue("Balloon", out balloon);
-
-			if(balloon == null)
-			{
-				Debug.Log("Balloon not found!");
-				return;
-			}
-
-			balloon.gameObject.AddComponent<BalloonModule>();
-			
-			Debug.Log("Balloon component added!");
-		}
-
 	}
 }
