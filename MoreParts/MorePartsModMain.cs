@@ -20,8 +20,6 @@ namespace MorePartsMod
     {
         public static MorePartsModMain Main;
 
-        public CustomModulesManager CustomModules;
-
         public List<ColonyBuildingData> Buildings { get => this._buldingsList; }
         
         public List<ColonyData> ColoniesInfo { get => this._coloniesInfo; }
@@ -54,7 +52,6 @@ namespace MorePartsMod
         public MorePartsModMain()
         {
             Main = this;
-            this.CustomModules = new CustomModulesManager();
         }
 
         public override void Early_Load()
