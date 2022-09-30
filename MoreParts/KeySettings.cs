@@ -43,7 +43,7 @@ namespace MorePartsMod
 
 		private FilePath GetPath(Mod mod)
 		{
-			return new FolderPath(mod.ModFolder).Extend("Settings").ExtendToFile(mod.ModNameID + "  keybindings.json");
+			return new FolderPath(mod.ModFolder).ExtendToFile("keybindings.json");
 		}
 
 		public KeybindingsPC.Key Toggle_Telecommunication_Dish = KeyCode.Y;

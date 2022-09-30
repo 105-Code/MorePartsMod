@@ -41,7 +41,7 @@ namespace MorePartsMod
 
         public override string MinimumGameVersionNecessary => "0.3.7";
 
-        public override string ModVersion => "v2.1.0";
+        public override string ModVersion => "2.1.1";
 
         public override string Description => "Add special features to the MoreParts Pack";
 
