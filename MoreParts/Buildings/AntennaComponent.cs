@@ -30,6 +30,10 @@ namespace MorePartsMod.Buildings
 
 		private void Awake()
 		{
+			if (GameManager.main == null)
+			{
+				return;
+			}
 			main = this;
 			this._position = this.GetComponent<WorldLocation>();
 			this._network = new ARPANET(this._position);
