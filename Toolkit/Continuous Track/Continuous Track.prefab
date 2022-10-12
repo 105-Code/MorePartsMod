@@ -50,8 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3000
-  traction: 50
-  maxAngularVelocity: 1000
+  traction: 100
+  maxAngularVelocity: 600
   wheelSize: 0.65
   angularVelocity: 0
   on:
@@ -236,8 +236,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3000
-  traction: 50
-  maxAngularVelocity: 1000
+  traction: 100
+  maxAngularVelocity: 600
   wheelSize: 0.65
   angularVelocity: 0
   on:
@@ -453,7 +453,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6563611863976281597}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -499,7 +499,7 @@ MonoBehaviour:
     input: 0
   height_b:
     variables: {fileID: 6202661881478926578}
-    input: 0.2
+    input: 0.25
 --- !u!114 &2478730331660998969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,6 +598,7 @@ GameObject:
   - component: {fileID: -1777736922084461513}
   - component: {fileID: 6202661881478926578}
   - component: {fileID: 2130059140044947486}
+  - component: {fileID: 6691085828881708113}
   m_Layer: 8
   m_Name: Continuous Track
   m_TagString: Untagged
@@ -667,25 +668,13 @@ MonoBehaviour:
   onPartUsed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5520825586004707597}
-        m_TargetAssemblyTypeName: SFS.Parts.WheelModule, Assembly-CSharp
-        m_MethodName: ToggleEnabled
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 9198944903556191337}
-        m_TargetAssemblyTypeName: SFS.Parts.WheelModule, Assembly-CSharp
-        m_MethodName: ToggleEnabled
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -750,6 +739,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6691085828881708113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133912042625520222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinMorePartsVersion: 2.2.0
+  modules: 03000000
 --- !u!1 &8318565617546471681
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,16 +35,25 @@ namespace MorePartsMod.Patches
                         if (module == Modules.BallonModule)
                         {
                             part.GetOrAddComponent<BalloonModule>();
+                            continue;
                         }
 
                         if (module == Modules.TelecomunicationModule)
                         {
                             part.GetOrAddComponent<TelecommunicationDishModule>();
+                            continue;
                         }
 
                         if (module == Modules.RotorModule)
                         {
                             part.GetOrAddComponent<RotorModule>();
+                            continue;
+                        }
+
+                        if (module == Modules.ContinuosTrackModule)
+                        {
+                            part.GetOrAddComponent<ContinuousTrackModule>();
+                            continue;
                         }
 
                     }

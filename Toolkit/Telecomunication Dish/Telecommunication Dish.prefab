@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 5662358357611772582}
   - component: {fileID: 4382373109341745631}
   - component: {fileID: 7985950641479228873}
-  - component: {fileID: 7208617288816878212}
+  - component: {fileID: 605210654529112584}
   m_Layer: 8
   m_Name: Telecommunication Dish
   m_TagString: Untagged
@@ -720,7 +720,7 @@ MonoBehaviour:
     state:
       value: 0
     sources: []
---- !u!114 &7208617288816878212
+--- !u!114 &605210654529112584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -729,10 +729,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4903166738067769997}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: e292dbfaf1e185f408821a10d1d06a98, type: 3}
+  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMorePartsVersion: 2.1.1
+  MinMorePartsVersion: 2.2.0
   modules: 02000000
 --- !u!1 &6243192004553079864
 GameObject:

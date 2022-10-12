@@ -1297,10 +1297,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3860136810057135241}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: e292dbfaf1e185f408821a10d1d06a98, type: 3}
+  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMorePartsVersion: 2.1.1
+  MinMorePartsVersion: 2.2.0
   modules: 01000000
 --- !u!1 &6637922154549019874
 GameObject:

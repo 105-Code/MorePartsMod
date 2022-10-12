@@ -130,10 +130,12 @@
     <Compile Include="Buildings\SolarPanelComponent.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
+    <Compile Include="Parts\ContinuousTrackModule.cs" />
     <Compile Include="Parts\RotorModule.cs" />
     <Compile Include="Patches\RocketManagerPatcher.cs" />
     <Compile Include="Patches\MapManagerPatcher.cs" />
     <Compile Include="Patches\BuildManagerPatcher.cs" />
+    <Compile Include="Patches\ModKeybindingsPatcher.cs" />
     <Compile Include="Patches\SpaceCenterPatcher.cs" />
     <Compile Include="Patches\CustomAssetsLoaderPatcher.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
