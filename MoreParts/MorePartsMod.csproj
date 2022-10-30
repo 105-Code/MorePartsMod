@@ -128,19 +128,20 @@
     <Compile Include="ARPA\Node.cs" />
     <Compile Include="Buildings\VABComponent.cs" />
     <Compile Include="Buildings\SolarPanelComponent.cs" />
+    <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
     <Compile Include="Parts\ContinuousTrackModule.cs" />
     <Compile Include="Parts\RotorModule.cs" />
+    <Compile Include="Parts\ScannerModule.cs" />
     <Compile Include="Patches\RocketManagerPatcher.cs" />
     <Compile Include="Patches\MapManagerPatcher.cs" />
     <Compile Include="Patches\BuildManagerPatcher.cs" />
-    <Compile Include="Patches\ModKeybindingsPatcher.cs" />
     <Compile Include="Patches\SpaceCenterPatcher.cs" />
     <Compile Include="Patches\CustomAssetsLoaderPatcher.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
     <Compile Include="UI\ColonyGUI.cs" />
-    <Compile Include="WorldBuildings.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="Buildings\ColonyComponent.cs" />
     <Compile Include="KeySettings.cs" />
     <Compile Include="MorePartsModMain.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Parts\BallonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\PlanetResourceData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MorePartsUnity\MorePartsUnity.csproj">

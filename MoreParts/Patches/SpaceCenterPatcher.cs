@@ -19,7 +19,7 @@ namespace MorePartsMod.Patches
             gameObject.transform.parent = __instance.transform;
             gameObject.SetActive(true);
 
-            WorldBuildings.addBuildingToWorld(gameObject, "Model", spaceCenter.address.GetPlanet(), spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0));
+            Utils.AddBuildingToWorld(gameObject, "Model", spaceCenter.address.GetPlanet(), spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0));
 
             StaticWorldObject buildingObject = gameObject.GetComponent<StaticWorldObject>();
             WorldLoader worldLoader = gameObject.GetComponent<WorldLoader>();

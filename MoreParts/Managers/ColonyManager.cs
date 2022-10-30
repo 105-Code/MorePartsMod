@@ -76,7 +76,7 @@ namespace MorePartsMod.Managers
             foreach (ColonyData colony in MorePartsModMain.Main.ColoniesInfo)
             {
                 GameObject colonyGameObject = GameObject.Instantiate(colonyPrefab);
-                WorldBuildings.addBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
+                Utils.AddBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
                 GameObject holder = colonyGameObject.transform.FindChild("Holder").gameObject;
                 holder.transform.eulerAngles = new Vector3(0, 0, colony.angle);
                 ColonyComponent component = holder.AddComponent<ColonyComponent>();
@@ -255,7 +255,7 @@ namespace MorePartsMod.Managers
 
             GameObject colony = GameObject.Instantiate(MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Colony"));
 
-            WorldBuildings.addBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
+            Utils.AddBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
             
             GameObject holder = colony.transform.FindChild("Holder").gameObject;
             holder.transform.eulerAngles = new Vector3(0, 0, this._newColony.angle);
@@ -284,6 +284,14 @@ namespace MorePartsMod.Managers
                 }
             }
             return true;
+        }
+
+        public void DrawInMap()
+        {
+            foreach (ColonyComponent colony in main.Colonies)
+            {
+                Utils.DrawLandmarkInPlanet(colony.data.getPlanet(), colony.data.LandmarkAngle, colony.data.position, colony.data.name, Color.white);
+            }
         }
 
     }
