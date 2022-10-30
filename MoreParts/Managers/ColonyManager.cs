@@ -105,7 +105,7 @@ namespace MorePartsMod.Managers
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             this.SaveColonies();
         }
