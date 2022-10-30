@@ -23,20 +23,19 @@ namespace MorePartsMod.Managers
         public Player_Local player;
 
         public List<ColonyBuildingData> Buildings { get => MorePartsModMain.Main.Buildings; }
-        public List<ColonyComponent> Colonies { get => this._colonies; }
+        public List<ColonyComponent> Colonies { get; private set; }
 
         //private
         private SFS.UI.ModGUI.Button _createColonyButton;
         private ColonyData _newColony;
         private ColonyGUI _ui;
         private GameObject _holder;
-        private List<ColonyComponent> _colonies;
 
         private void Awake()
         {
             main = this;
             this.player = PlayerController.main.player;
-            this._colonies = new List<ColonyComponent>();
+            this.Colonies = new List<ColonyComponent>();
             this.InitGUI();
         }
 
@@ -62,7 +61,7 @@ namespace MorePartsMod.Managers
 
         public void SaveColonies()
         {
-            MorePartsModMain.Main.SaveColonyInfo(this._colonies);
+            MorePartsModMain.Main.SaveColonyInfo(this.Colonies);
         }
 
         private void LoadColonies()
@@ -96,7 +95,7 @@ namespace MorePartsMod.Managers
                     }
                 }
                 component.RestoreBuildings();
-                this._colonies.Add(component);
+                this.Colonies.Add(component);
             }
 
             if (flag)
@@ -265,7 +264,7 @@ namespace MorePartsMod.Managers
             component.data = this._newColony;
             component.RestoreBuildings();
             this.Colonies.Add(component);
-            MorePartsModMain.Main.SaveColonyInfo(this._colonies);
+            MorePartsModMain.Main.SaveColonyInfo(this.Colonies);
         }
 
         private bool CheckColonyDistance(string address,Double2 colonyPosition)
