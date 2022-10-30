@@ -31,7 +31,7 @@ namespace MorePartsMod.Patches
                     
                     foreach (Modules module in injector.modules)
                     {
-                        Debug.Log(part.name + " adding "+module.ToString());
+                        Debug.Log("Adding "+ module.ToString() + " to "+ part.name);
                         if (module == Modules.BallonModule)
                         {
                             part.GetOrAddComponent<BalloonModule>();
@@ -53,6 +53,12 @@ namespace MorePartsMod.Patches
                         if (module == Modules.ContinuosTrackModule)
                         {
                             part.GetOrAddComponent<ContinuousTrackModule>();
+                            continue;
+                        }
+
+                        if (module == Modules.ScannerModule)
+                        {
+                            part.GetOrAddComponent<ScannerModule>();
                             continue;
                         }
 
