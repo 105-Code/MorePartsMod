@@ -124,6 +124,19 @@ namespace MorePartsMod.Buildings
 
                 this.checkSolarPanel(building);
                 buildingTransform.gameObject.SetActive(building.state);
+
+                if (building.hidden)
+                {
+                    for(int index =0; index < buildingTransform.childCount; index++)
+                    {
+                        SpriteRenderer render = buildingTransform.GetChild(index).GetComponent<SpriteRenderer>();
+                        if(render == null)
+                        {
+                            continue;
+                        }
+                        render.enabled = false;
+                    }
+                }
             }
             this.InjectData();
         }
@@ -285,6 +298,7 @@ namespace MorePartsMod.Buildings
 
         public class ColonyBuildingData
         {
+            public bool hidden;
             public bool state;
             public string name;
             public ColonyBuildingCost cost;
@@ -298,12 +312,14 @@ namespace MorePartsMod.Buildings
                 this.state = state;
                 this.cost = cost;
                 this.offset = pos;
+                this.hidden = false;
             }
             public ColonyBuildingData(bool state, string name, ColonyBuildingCost cost)
             {
                 this.name = name;
                 this.state = state;
                 this.cost = cost;
+                this.hidden = false;
             }
 
 
