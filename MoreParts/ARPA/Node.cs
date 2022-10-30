@@ -10,26 +10,21 @@ namespace MorePartsMod.ARPA
 {
     public class Node
     {
-        private WorldLocation _worldLocation;
-        private bool _isOrigin;
-        private int _id;
 
-        public Node next;
-        public bool mark;
-
-        public int Id { get => this._id; }
-        public bool IsOrigin { get => this._isOrigin; }
-        public WorldLocation WorlLocation {  get => this._worldLocation; }
-      
+        public Node Next { set; get; }
+        public bool Mark { set; get; }
+        public int Id { get; private set; }
+        public bool IsOrigin { get; private set; }
+        public WorldLocation WorlLocation { get; private set; } 
 
 
         public Node(int id, WorldLocation worldLocation, bool isOrigin =false)
         {
-            this._id = id;
-            this.mark = false;
-            this.next = null;
-            this._worldLocation = worldLocation;
-            this._isOrigin = isOrigin;
+            this.Id = id;
+            this.Mark = false;
+            this.Next = null;
+            this.WorlLocation = worldLocation;
+            this.IsOrigin = isOrigin;
         }
 
         public bool IsAvailableTo(Node target)
@@ -67,7 +62,6 @@ namespace MorePartsMod.ARPA
                 return false;
             }
 
-            // el error esta aquí
             float originToPlanet = Vector2.Distance(origin, planetCenter);
             float originToTarget = Vector2.Distance(origin, target);
             if (originToTarget < originToPlanet)
@@ -88,7 +82,7 @@ namespace MorePartsMod.ARPA
 
         public Double2 GetAbsolutePosition()
         {       
-            return this._worldLocation.planet.Value.GetSolarSystemPosition() + this._worldLocation.Value.position;
+            return this.WorlLocation.planet.Value.GetSolarSystemPosition() + this.WorlLocation.Value.position;
         }
 
     }

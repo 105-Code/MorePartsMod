@@ -19,8 +19,7 @@ namespace MorePartsMod.Parts
 		private VariableList<double>.Variable _flowRate;
 		private VariableList<double>.Variable _state;
 		private VariableList<double>.Variable _targetState;
-		private Node _rocketNode;
-		private Rocket _rocket;
+		private Node RocketNode;
 		private bool _notifyDisconnection;
 		private bool _notifyConnection;
 		private float _time = 3f;
@@ -28,8 +27,8 @@ namespace MorePartsMod.Parts
 		private int _maxTimeWarp;
 		private FlowModule _source;
 
-		public Node Node { get => this._rocketNode; }
-		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
+		public Node Node { get => this.RocketNode; }
+		public Rocket Rocket { set; get; }
 		
 		public bool IsActive { get => this._isOn.Value; }
 		public bool IsConnected { get => !this._notifyConnection; }
@@ -38,7 +37,7 @@ namespace MorePartsMod.Parts
 		{
 			get
 			{
-				if (!this._rocket.isPlayer)
+				if (!this.Rocket.isPlayer)
 				{
 					return new MsgNone();
 				}
@@ -75,14 +74,14 @@ namespace MorePartsMod.Parts
 			if (this._isOn.Value) // telecommunication dish is on 
 			{
 				this._flowRate.Value = 0.1;
-				this._rocketNode = AntennaComponent.main.AddNode(this);
+				this.RocketNode = AntennaComponent.main.AddNode(this);
 			}
 			else
 			{
 				this._flowRate.Value = 0;
-				if (this._rocket.isPlayer)
+				if (this.Rocket.isPlayer)
 				{
-					this._rocket.hasControl.Value = false;
+					this.Rocket.hasControl.Value = false;
 				}
 			}
 		}
@@ -95,7 +94,7 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-			if (!this._rocket.isPlayer || !this._isOn.Value ) //if is not the player or dish is off
+			if (!this.Rocket.isPlayer || !this._isOn.Value ) //if is not the player or dish is off
 			{
 				return;
 			}
@@ -113,7 +112,7 @@ namespace MorePartsMod.Parts
 			}
 			this._time = 0;
 
-			if (AntennaComponent.main.IsConnected(this._rocketNode))
+			if (AntennaComponent.main.IsConnected(this.RocketNode))
 			{
 				if (this._notifyConnection)
 				{
@@ -122,7 +121,7 @@ namespace MorePartsMod.Parts
 					this._notifyConnection = false;
 					this._notifyDisconnection = true;
 				}
-				this._rocket.hasControl.Value = true;
+				this.Rocket.hasControl.Value = true;
 				return;
 			}
 			this.DoDisconnection();
@@ -130,7 +129,7 @@ namespace MorePartsMod.Parts
 
 		private void DoDisconnection()
 		{
-			this._rocket.hasControl.Value = false;
+			this.Rocket.hasControl.Value = false;
 			if (this._notifyDisconnection)
 			{
 				AntennaComponent.main.ShowTelecommunicationLines = false;
@@ -148,7 +147,7 @@ namespace MorePartsMod.Parts
 				this._isOn.Value = false;
 				this._targetState.Value = 0;
 				this._flowRate.Value = 0;
-				this._rocket.hasControl.Value = false;
+				this.Rocket.hasControl.Value = false;
 			}
 		}
 
@@ -159,7 +158,7 @@ namespace MorePartsMod.Parts
 
 		public void _toggle()
 		{
-			if (!this._rocket.isPlayer)
+			if (!this.Rocket.isPlayer)
 			{
 				return;
 			}
@@ -168,7 +167,7 @@ namespace MorePartsMod.Parts
 			{
 				AntennaComponent.main.RemoveNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish Off");
-				this._rocketNode = null;
+				this.RocketNode = null;
 				this._notifyDisconnection = true;
 				this.DoDisconnection(); 
 				this._flowRate.Value = 0;
@@ -177,7 +176,7 @@ namespace MorePartsMod.Parts
 			}
 			else
 			{
-				this._rocketNode = AntennaComponent.main.AddNode(this);
+				this.RocketNode = AntennaComponent.main.AddNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish On");
 				this._notifyDisconnection = true;
 				this._notifyConnection = true; 

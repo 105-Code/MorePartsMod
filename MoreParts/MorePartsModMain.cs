@@ -4,10 +4,12 @@ using ModLoader.Helpers;
 using MorePartsMod.Buildings;
 using MorePartsMod.Managers;
 using MorePartsMod.Parts;
+using MorePartsMod.World;
 using SFS;
 using SFS.IO;
 using SFS.Parsers.Json;
 using SFS.Parts;
+using SFS.WorldBase;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,19 +20,20 @@ namespace MorePartsMod
 {
     public class MorePartsModMain : Mod
     {
+        #region variables
         public static MorePartsModMain Main;
 
-        public List<ColonyBuildingData> Buildings { get => this._buldingsList; }
+        public List<ColonyBuildingData> Buildings { private set; get; }
         
-        public List<ColonyData> ColoniesInfo { get => this._coloniesInfo; }
+        public List<ColonyData> ColoniesInfo { private set; get; }
+
+        
 
         public ColonyData spawnPoint;
 
-        public AssetBundle Assets
-        {
-            get { return this._assets; }
-        }
+        public AssetBundle Assets { private set; get; }
 
+        #region mod information
         public override string ModNameID => "morepartsmod";
 
         public override string DisplayName => "MoreParts Mod";
@@ -43,11 +46,9 @@ namespace MorePartsMod
 
         public override string Description => "Add special features to the MoreParts Pack";
 
-        private AssetBundle _assets;
+        #endregion
 
-        private List<ColonyBuildingData> _buldingsList;
-
-        private List<ColonyData> _coloniesInfo;
+        #endregion
 
         public MorePartsModMain()
         {
@@ -62,7 +63,7 @@ namespace MorePartsMod
             {
                 throw new Exception("Assets file not found");
             }
-            this._assets = assets;
+            this.Assets = assets;
 
             SceneHelper.OnWorldSceneLoaded += this.OnWorld;
             SceneHelper.OnBuildSceneLoaded += this.OnBuild;
@@ -75,19 +76,24 @@ namespace MorePartsMod
         {
             KeySettings.Setup();
 
-            this._buldingsList = new List<ColonyBuildingData>();
-            this._buldingsList.Add(new ColonyBuildingData(false, "Refinery", new ColonyBuildingCost(10, 12) ));
-            this._buldingsList.Add(new ColonyBuildingData(false, "Solar Panels", new ColonyBuildingCost(13, 4) ));
-            this._buldingsList.Add(new ColonyBuildingData(false, "VAB", new ColonyBuildingCost(4, 10) ));
-            this._buldingsList.Add(new ColonyBuildingData(false, "Launch Pad", new ColonyBuildingCost(1, 20), new Double2(100, 3)));
+            this.Buildings = new List<ColonyBuildingData>();
+            this.Buildings.Add(new ColonyBuildingData(false, "Refinery", new ColonyBuildingCost(10, 12) ));
+            this.Buildings.Add(new ColonyBuildingData(false, "Solar Panels", new ColonyBuildingCost(13, 4) ));
+            this.Buildings.Add(new ColonyBuildingData(false, "VAB", new ColonyBuildingCost(4, 10) ));
+            this.Buildings.Add(new ColonyBuildingData(false, "Launch Pad", new ColonyBuildingCost(1, 20), new Double2(100, 3)));
 
         }
 
+
+        #region Listeners
+
         private void OnWorld()
         {
+            Debug.Log("Loading Colonies info");
             this.LoadColonyInfo();
-            GameObject colonyManager = GameObject.Instantiate(new GameObject("Colony Manager"));
+            GameObject colonyManager = GameObject.Instantiate(new GameObject("MorepartsManagers"));
             colonyManager.AddComponent<ColonyManager>();
+            colonyManager.AddComponent<ResourcesManger>();
         }
 
         private void OnBuild()
@@ -95,39 +101,60 @@ namespace MorePartsMod
             this.LoadColonyInfo();
         }
 
+        #endregion
+
+
+        #region worlds files
+
+        public static void SaveWorldPersistent(string filename, object data)
+        {
+            FilePath file = Base.worldBase.paths.worldPersistentPath.ExtendToFile(filename);
+            JsonWrapper.SaveAsJson(file, data, true);
+        }
+
+        public static bool LoadWorldPersistent<T>(string filename, out T result)
+        {
+            result = default;
+            FilePath file = Base.worldBase.paths.worldPersistentPath.ExtendToFile(filename);
+            if (!file.FileExists())
+            {
+                return false;
+            }
+            JsonWrapper.TryLoadJson(file, out result);
+            return true;
+        }
+
+        #region colonies information
+
         public void SaveColonyInfo(List<ColonyComponent> colonies)
         {
-            FilePath file = Base.worldBase.paths.worldPersistentPath.ExtendToFile("Colonies.json");
             List<ColonyData> data = new List<ColonyData>();
             foreach (ColonyComponent colony in colonies)
             {
                 data.Add(colony.data);
             }
-            JsonWrapper.SaveAsJson(file, data, true);
-            this._coloniesInfo = data;
+            this.ColoniesInfo = data;
+            SaveWorldPersistent("Colonies.json", data);
         }
 
         public void LoadColonyInfo()
         {
-            if(this._coloniesInfo != null)
-            {
-                return;
-            }
-
-            FilePath file = Base.worldBase.paths.worldPersistentPath.ExtendToFile("Colonies.json");
-            if (!file.FileExists())
+            if(this.ColoniesInfo != null)
             {
                 return;
             }
             List<ColonyData> data;
-            JsonWrapper.TryLoadJson(file, out data);
+            LoadWorldPersistent<List<ColonyData>>("Colonies.json", out data);
             if (data == null)
             {
                 return;
             }
-            this._coloniesInfo = data;
-            
+            this.ColoniesInfo = data;   
         }
 
+        #endregion
+
+        #endregion
+    
     }
 }
