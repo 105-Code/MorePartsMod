@@ -125,19 +125,39 @@ namespace MorePartsMod.Buildings
                 this.checkSolarPanel(building);
                 buildingTransform.gameObject.SetActive(building.state);
 
-                if (building.hidden)
+                if (this.data.hidden)
                 {
                     for(int index =0; index < buildingTransform.childCount; index++)
                     {
-                        SpriteRenderer render = buildingTransform.GetChild(index).GetComponent<SpriteRenderer>();
+                        Transform buildingGameobject = buildingTransform.GetChild(index);
+                        SpriteRenderer render = buildingGameobject.GetComponent<SpriteRenderer>();
                         if(render == null)
                         {
+                            for (int sub_index = 0; sub_index < buildingGameobject.childCount; sub_index++)
+                            {
+                                render = buildingGameobject.GetChild(sub_index).GetComponent<SpriteRenderer>();
+                                if (render == null)
+                                {
+                                    continue;
+                                }
+                                render.enabled = false;
+                            }
                             continue;
                         }
                         render.enabled = false;
                     }
                 }
             }
+
+            if (this.data.hidden)
+            {
+                SpriteRenderer render = this.transform.Find("Colony Base").Find("Building").GetComponent<SpriteRenderer>();
+                if (render != null)
+                {
+                    render.enabled = false;
+                }
+            }
+
             this.InjectData();
         }
 
@@ -227,10 +247,12 @@ namespace MorePartsMod.Buildings
             public string andress;
             public string name;
             public double rocketParts;
+            public bool hidden;
             public List<ColonyBuildingData> buildings;
 
             public ColonyData() {
                 this.buildings = new List<ColonyBuildingData>();
+                this.hidden = false;
             }
 
             public ColonyData(string name,float angle, WorldLocation worldLocation)
@@ -240,6 +262,7 @@ namespace MorePartsMod.Buildings
                 this.position = worldLocation.position.Value;
                 this.andress = worldLocation.planet.Value.codeName;
                 this.buildings = new List<ColonyBuildingData>();
+                this.hidden = false;
             }
 
             public ColonyData(float angle,string planetName, Double2 position)
@@ -248,6 +271,7 @@ namespace MorePartsMod.Buildings
                 this.position = position;
                 this.andress = planetName;
                 this.buildings = new List<ColonyBuildingData>();
+                this.hidden = false;
             }
 
             public Planet getPlanet()
@@ -298,7 +322,6 @@ namespace MorePartsMod.Buildings
 
         public class ColonyBuildingData
         {
-            public bool hidden;
             public bool state;
             public string name;
             public ColonyBuildingCost cost;
@@ -312,14 +335,12 @@ namespace MorePartsMod.Buildings
                 this.state = state;
                 this.cost = cost;
                 this.offset = pos;
-                this.hidden = false;
             }
             public ColonyBuildingData(bool state, string name, ColonyBuildingCost cost)
             {
                 this.name = name;
                 this.state = state;
                 this.cost = cost;
-                this.hidden = false;
             }
 
 
