@@ -1,52 +1,35 @@
-﻿using MorePartsMod.ARPA;
-using MorePartsMod.Buildings;
-using MorePartsMod.Managers;
-using SFS;
+﻿using MorePartsMod.Managers;
+using MorePartsMod.Parts.Types;
 using SFS.Parts;
-using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
-using UnityEngine;
-using static SFS.Parts.Modules.FlowModule;
 using static SFS.World.Rocket;
+
 
 namespace MorePartsMod.Parts
 {
-    class ScannerModule : MonoBehaviour, INJ_Rocket,INJ_Location
+    class ScannerModule : ElectricalModule, INJ_Rocket, INJ_Location
     {
+
         private VariableList<bool>.Variable _active;
         private VariableList<double>.Variable _flowRate;
-        private FlowModule _source;
-        public Rocket Rocket { set; get; }
 
-        private I_MsgLogger Logger
-        {
-            get
-            {
-                if (!this.Rocket.isPlayer)
-                {
-                    return new MsgNone();
-                }
-                return MsgDrawer.main;
-            }
-        }
+        public Rocket Rocket { set; get; }
 
         public Location Location { set; get; }
 
-        private void Awake()
+        public override void Awake()
         {
-            Part part = this.GetComponent<Part>();
-            this._source = this.GetComponent<FlowModule>();
-
-            this._active = part.variablesModule.boolVariables.GetVariable("active");
-            this._flowRate = part.variablesModule.doubleVariables.GetVariable("flow_rate");
-            part.onPartUsed.AddListener(this.OnPartUsed);
+            base.Awake();
+            this._active = this.getBoolVariable("active");
+            this._flowRate = this.getDoubleVariable("flow_rate");
+            this.Part.onPartUsed.AddListener(this.OnPartUsed);
         }
 
         private void Start()
         {
-            this._source.onStateChange += this.CheckOutOfElectricity;
+            this.FlowModule.onStateChange += this.CheckOutOfFuel;
         }
 
         private void Update()
@@ -75,18 +58,13 @@ namespace MorePartsMod.Parts
 
         }
 
-        private void CheckOutOfElectricity()
+        public override void CheckOutOfFuel()
         {
-            if (this._active.Value && !this.HasElectricity(this.Logger))
+            if (this._active.Value && !this.HasFuel(this.Logger))
             {
                 this._active.Value = false;
                 this._flowRate.Value = 0;
             }
-        }
-
-        private bool HasElectricity(I_MsgLogger logger)
-        {
-            return this._source.CanFlow(logger);
         }
 
         public bool IsActive()
@@ -107,7 +85,6 @@ namespace MorePartsMod.Parts
             this._flowRate.Value = 0.2;
         }
 
-
 		public void OnPartUsed(UsePartData data)
 		{
             if (this._active.Value)
@@ -118,11 +95,9 @@ namespace MorePartsMod.Parts
             {
                 this.Toggle("Part turn ON", true);
             }
-            this.CheckOutOfElectricity();
+            this.CheckOutOfFuel();
             data.successfullyUsedPart = true;
 		}
 
-
-
-	}
+    }
 }

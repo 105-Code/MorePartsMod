@@ -1,18 +1,13 @@
-﻿using SFS.Parts;
-using SFS.Translations;
+﻿using MorePartsMod.Parts.Types;
+using SFS.Parts;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace MorePartsMod.Parts
 {
-    class ContinuousTrackModule : MonoBehaviour, Rocket.INJ_TurnAxisWheels
+    class ContinuousTrackModule : ElectricalModule, Rocket.INJ_TurnAxisWheels
     {
 
         private WheelModule _wheel;
@@ -21,15 +16,19 @@ namespace MorePartsMod.Parts
 
         public float TurnAxis { get; set; }
 
+        public override void Awake()
+        {
+            base.Awake();
+        }
+
         public void Start()
         {
-            Part part = this.GetComponent<Part>();
-            part.onPartUsed.AddListener(this.ToggleEnabled);
+            this.Part.onPartUsed.AddListener(this.ToggleEnabled);
             this._animator = this.GetComponent<Animator>();
 
-            this._on = part.variablesModule.boolVariables.GetVariable("wheel_on");
+            this._on = this.Part.variablesModule.boolVariables.GetVariable("wheel_on");
 
-            this._wheel = part.GetModules<WheelModule>()[0];
+            this._wheel = this.Part.GetModules<WheelModule>()[0];
         }
 
         public void ToggleEnabled(UsePartData data)
@@ -67,7 +66,12 @@ namespace MorePartsMod.Parts
             this._animator.SetInteger("velocity", 0);
             this._animator.speed = 0;
 
-
         }
+
+        public override void CheckOutOfFuel()
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }
