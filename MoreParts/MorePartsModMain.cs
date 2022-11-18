@@ -31,6 +31,8 @@ namespace MorePartsMod
 
         public ColonyData spawnPoint;
 
+        private GameObject _managers;
+
         public AssetBundle Assets { private set; get; }
 
         #region mod information
@@ -65,8 +67,10 @@ namespace MorePartsMod
             }
             this.Assets = assets;
 
-            SceneHelper.OnWorldSceneLoaded += this.OnWorld;
-            SceneHelper.OnBuildSceneLoaded += this.OnBuild;
+            SceneHelper.OnWorldSceneLoaded += this.LoadWorld;
+            SceneHelper.OnWorldSceneUnloaded += this.UnloadWorld;
+            SceneHelper.OnHubSceneLoaded += this.OnHub;
+            SceneHelper.OnHomeSceneLoaded += this.OnHome;
 
             Harmony harmony = new Harmony("morepartsmod.danielrojas.website");
             harmony.PatchAll();
@@ -86,18 +90,28 @@ namespace MorePartsMod
 
 
         #region Listeners
-
-        private void OnWorld()
+        private void OnHome()
         {
-            Debug.Log("Loading Colonies info");
-            this.LoadColonyInfo();
-            GameObject colonyManager = GameObject.Instantiate(new GameObject("MorepartsManagers"));
-            colonyManager.AddComponent<ColonyManager>();
-            colonyManager.AddComponent<ResourcesManger>();
+            Debug.Log("Removing Colonies info");
+            this.ColoniesInfo = null;
         }
 
-        private void OnBuild()
+        private void LoadWorld()
         {
+            this._managers = GameObject.Instantiate(new GameObject("MorepartsManagers"));
+            this._managers.AddComponent<ColonyManager>();
+            this._managers.AddComponent<ResourcesManger>();
+        }
+
+        private void UnloadWorld()
+        {
+            GameObject.Destroy(this._managers);
+            this._managers = null;
+        }
+
+        private void OnHub()
+        {
+            Debug.Log("Loading Colonies info");
             this.LoadColonyInfo();
         }
 
