@@ -48,6 +48,12 @@ namespace MorePartsMod.Parts
 			this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == 3 ? 5 : 3;
 		}
 
+		public void OnDestroy()
+		{
+			AntennaComponent.main.RemoveNode(this);
+			this.Node = null;
+		}
+
 		private void Start()
 		{
 			if (GameManager.main == null)
