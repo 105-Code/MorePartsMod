@@ -29,6 +29,7 @@ namespace MorePartsMod.Managers
 
         public Planet CurrentPlanet { set; get; }
 
+        public ReourceDeposit CurrentDeposit { private set; get; }
 
 
         private void Awake()
@@ -44,6 +45,11 @@ namespace MorePartsMod.Managers
             Debug.Log("Loading Planet Resources");
             this.LoadPlanetResourcesInfo();
             this.Player.OnChange += this.OnPlayerChange;
+        }
+
+        private void OnDestroy()
+        {
+            this.SavePlanetResourcesInfo();
         }
 
         public bool AnalyzePlanet(WorldLocation location)
@@ -63,9 +69,8 @@ namespace MorePartsMod.Managers
 
                 if (intersect)
                 {
-                    Debug.Log("Rocket:" + origin.ToString() + "  Planet:" + target.ToString() + " deposit" + deposit.Location.ToString() + " Angle:" + deposit.AngleDegree);
-
                     deposit.Discovered = true;
+                    this.SavePlanetResourcesInfo();
                     return true;
                 }
 
@@ -73,16 +78,61 @@ namespace MorePartsMod.Managers
             return false; 
         }
 
+        public void Update()
+        {
+            if(GameManager.main == null || this.Player.Value == null)
+            {
+                return;
+            }
+
+            if (this.CurrentDeposit == null)
+            {
+                foreach (ReourceDeposit deposit in this.PlanetResourcesData[this.CurrentPlanet.codeName].ResourceDeposits)
+                {
+                    if(Vector2.Distance(deposit.Location, this.Player.Value.location.Value.position) > deposit.Size)
+                    {
+                        continue;
+                    }
+
+                    MsgDrawer.main.Log("Enter resource deposit");
+                    this.CurrentDeposit = deposit;
+                    break;
+                }
+                return;
+            }
+
+            if (Vector2.Distance(this.CurrentDeposit.Location, this.Player.Value.location.Value.position) > this.CurrentDeposit.Size)
+            {
+                MsgDrawer.main.Log("Exit resource deposit");
+                this.CurrentDeposit = null;
+            }
+
+
+        }
+
+        #region Listeners
+
         public void OnPlayerChange()
         {
+            this.CurrentDeposit = null;
+            if (this.Player.Value == null)
+            {
+                return;
+            }
+
             this.Player.Value.location.planet.OnChange += this.OnPlanetChange;
            
         }
 
         public void OnPlanetChange()
         {
+            this.CurrentDeposit = null;
             this.CurrentPlanet = this.Player.Value.location.planet.Value;
         }
+
+        #endregion
+
+        #region Map Drawers
 
         public void DrawInMap()
         {
@@ -119,11 +169,13 @@ namespace MorePartsMod.Managers
 
         }
 
+        #endregion
 
-        public void SavePlanetResourcesInfo(Dictionary<string, PlanetResourceData> deposits)
+        #region Save Resources info
+
+        public void SavePlanetResourcesInfo()
         {
-            this.PlanetResourcesData = deposits;
-            MorePartsModMain.SaveWorldPersistent("PlanetResources.json", deposits);
+            MorePartsModMain.SaveWorldPersistent("PlanetResources.json", this.PlanetResourcesData);
         }
 
         public void LoadPlanetResourcesInfo()
@@ -149,7 +201,9 @@ namespace MorePartsMod.Managers
                 data.Add(planet.codeName, resources);
             }
             this.PlanetResourcesData = data;
-            this.SavePlanetResourcesInfo(this.PlanetResourcesData);
+            this.SavePlanetResourcesInfo();
         }
+
+        #endregion
     }
 }
