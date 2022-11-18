@@ -14,5 +14,6 @@ public enum Modules{
     RotorModule,
     TelecomunicationModule,
     ContinuosTrackModule,
-    ScannerModule
+    ScannerModule,
+    ExcavatorModule
 }
