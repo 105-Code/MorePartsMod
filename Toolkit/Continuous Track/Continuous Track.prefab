@@ -554,8 +554,8 @@ GameObject:
   - component: {fileID: 6202661881478926578}
   - component: {fileID: 2130059140044947486}
   - component: {fileID: 6691085828881708113}
-  - component: {fileID: 4818188584168551403}
   - component: {fileID: 6949257965782735611}
+  - component: {fileID: 2537801614488303520}
   m_Layer: 8
   m_Name: Continuous Track
   m_TagString: Untagged
@@ -718,32 +718,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinMorePartsVersion: 2.2.0
   modules: 03000000
---- !u!61 &4818188584168551403
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7133912042625520222}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0055351257, y: -0.7013197}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.2545218, y: 0.070580006}
-  m_EdgeRadius: 0
 --- !u!114 &6949257965782735611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,6 +743,22 @@ MonoBehaviour:
     state:
       value: 0
     sources: []
+--- !u!70 &2537801614488303520
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133912042625520222}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.003979155, y: -0.43277246}
+  m_Size: {x: 2.546283, y: 0.64304024}
+  m_Direction: 1
 --- !u!1 &8318565617546471681
 GameObject:
   m_ObjectHideFlags: 0
