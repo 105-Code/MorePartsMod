@@ -49,14 +49,14 @@ namespace MorePartsMod.World
 
         public class ReourceDeposit
         {
-            public int Amount;
+            public float Amount;
             public bool Active;
             public Double2 Location;
             public bool Discovered;
             public int Size;
             public float AngleDegree;
 
-            public ReourceDeposit(int amount, Double2 location, int size, float angleDegree)
+            public ReourceDeposit(float amount, Double2 location, int size, float angleDegree)
             {
                 this.Amount = amount;
                 this.Active = true;
@@ -66,9 +66,21 @@ namespace MorePartsMod.World
                 this.AngleDegree = angleDegree;
             }
 
-            public ReourceDeposit()
-            {
+            public ReourceDeposit() {}
 
+            /**
+             * reduce resources in this deposit
+             * <returns> True if there are more resources</returns>
+             */
+            public bool takeRsources(float quantity)
+            {
+                this.Amount -= quantity;
+                if(this.Amount < 0)
+                {
+                    this.Active = false;
+                    return false;
+                }
+                return true;
             }
         }
 

@@ -132,7 +132,7 @@
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
     <Compile Include="Parts\ContinuousTrackModule.cs" />
-    <Compile Include="Parts\ExtractorModule.cs" />
+    <Compile Include="Parts\ExcavatorModule.cs" />
     <Compile Include="Parts\RotorModule.cs" />
     <Compile Include="Parts\ScannerModule.cs" />
     <Compile Include="Parts\Types\BaseModule.cs" />
@@ -142,6 +142,7 @@
     <Compile Include="Patches\BuildManagerPatcher.cs" />
     <Compile Include="Patches\SpaceCenterPatcher.cs" />
     <Compile Include="Patches\CustomAssetsLoaderPatcher.cs" />
+    <Compile Include="ResourcesTypes.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
     <Compile Include="UI\ColonyGUI.cs" />
     <Compile Include="Utils.cs" />

@@ -62,13 +62,17 @@ namespace MorePartsMod.Patches
                             continue;
                         }
 
+                        if (module == Modules.ExcavatorModule)
+                        {
+                            part.GetOrAddComponent<ExcavatorModule>();
+                            continue;
+                        }
+
                     }
                 }
 
             }
             
         }
-
-  
     }
 }
