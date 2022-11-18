@@ -34,7 +34,7 @@ namespace MorePartsMod.Parts
 
         private void Update()
         {
-            if(GameManager.main == null || !this._active.Value)
+            if(GameManager.main == null || !this._active.Value || this.Location == null)
             {
                 return;
             }
