@@ -13,9 +13,7 @@ namespace MorePartsMod.Buildings
 
         private bool _playerNear;
         private bool _playerInPlanet;
-        private bool _hasEnergy;
         private ResourceModule _rocketTanks;
-        private Rocket _rocket;
 
         public bool PlayerNear { 
             set
@@ -32,12 +30,12 @@ namespace MorePartsMod.Buildings
             }
         }
 
-        public Rocket Rocket { set => this._rocket = value; }
-        public bool HasEnergy { set => this._hasEnergy = value; }
+        public Rocket Rocket { set; get; }
+        public bool HasEnergy { set; get; }
 
         private void FixedUpdate()
         {
-            if(!this._playerNear || !this._playerInPlanet || !this._hasEnergy)
+            if(!this._playerNear || !this._playerInPlanet || !this.HasEnergy)
             {
                 return;
             }
@@ -53,12 +51,12 @@ namespace MorePartsMod.Buildings
                 return;
             }
  
-            this._rocketTanks.AddResource(0.02);
+            this._rocketTanks.AddResource(0.005 * WorldTime.main.timewarpSpeed);
         }
 
         private ResourceModule GetRocketTanks()
         {
-            foreach (ResourceModule resource in this._rocket.resources.globalGroups)
+            foreach (ResourceModule resource in this.Rocket.resources.globalGroups)
             {
                 if (resource.resourceType.name == "Liquid_Fuel")
                 {

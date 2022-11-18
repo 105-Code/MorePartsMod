@@ -42,8 +42,8 @@ namespace MorePartsMod.Buildings
             {
                 return;
             }
- 
-            this._rocketBateries.AddResource(0.02);
+
+            this._rocketBateries.AddResource(0.005 * WorldTime.main.timewarpSpeed);
         }
 
         private ResourceModule GetRocketBateries()
