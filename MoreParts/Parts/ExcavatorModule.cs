@@ -26,7 +26,9 @@ namespace MorePartsMod.Parts
         public Location Location { set; get; }
         public Rocket Rocket { set; get; }
 
-        public ResourceModule[] _material_containers;
+        private const double _extractionCount = 0.009f;
+
+        public ResourceModule _material_container;
 
         public override void Awake()
         {
@@ -36,7 +38,14 @@ namespace MorePartsMod.Parts
 
         private void Start()
         {
-            this._material_containers = this.Rocket.partHolder.GetModules<ResourceModule>();
+            foreach (ResourceModule resourceModule in this.Rocket.resources.globalGroups)
+            {
+
+                if (resourceModule.resourceType.name == ResourcesTypes.MATERIAL)
+                {
+                    this._material_container = resourceModule;
+                }
+            }
             this._target_state = this.getDoubleVariable("target_state");
             this._state = this.getDoubleVariable("state");
             this._flow_rate = this.getDoubleVariable("flow_rate");
@@ -53,6 +62,13 @@ namespace MorePartsMod.Parts
                 return;
             }
 
+            if(this._material_container == null)
+            {
+                MsgDrawer.main.Log("There are Material container");
+                this._target_state.Value = 0;
+                return;
+            }
+
             ReourceDeposit deposit = ResourcesManger.Main.CurrentDeposit;
 
             if(deposit == null || !deposit.Active)
@@ -62,20 +78,18 @@ namespace MorePartsMod.Parts
                 return;
             }
 
-            bool thereAreMore = deposit.takeRsources(0.1f);
+            bool thereAreMore = deposit.takeRsources(_extractionCount);
             if (!thereAreMore)
             {
                 MsgDrawer.main.Log("Resource Deposit Exhausted!");
             }
-            foreach (ResourceModule resourceModule in this._material_containers)
-            {
-                if(resourceModule.resourceType.name == ResourcesTypes.MATERIAL)
-                {
-                    resourceModule.AddResource(resourceModule.ResourceSpace * 0.1f);
-                }
-            }
-            
 
+            this._material_container.AddResource(_extractionCount);
+            if (this._material_container.resourcePercent.Value == 1f)
+            {
+                MsgDrawer.main.Log("Container Full");
+                this._target_state.Value = 0;
+            }
         }
 
         private void Toggle(UsePartData data)
