@@ -49,7 +49,7 @@ namespace MorePartsMod.World
 
         public class ReourceDeposit
         {
-            public float Amount;
+            public double Amount;
             public bool Active;
             public Double2 Location;
             public bool Discovered;
@@ -72,7 +72,7 @@ namespace MorePartsMod.World
              * reduce resources in this deposit
              * <returns> True if there are more resources</returns>
              */
-            public bool takeRsources(float quantity)
+            public bool takeRsources(double quantity)
             {
                 this.Amount -= quantity;
                 if(this.Amount < 0)
