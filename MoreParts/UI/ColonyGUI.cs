@@ -56,7 +56,10 @@ namespace MorePartsMod.UI
         {
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Information");
             Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.data.name,this.onChangeColonyName);
-            Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Rocket Resource: "+this._colony.data.rocketParts);
+            foreach(string key in this._colony.data.resources.Keys)
+            {
+                Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, key + ": " +this._colony.data.resources[key]);
+            }
 
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Buildings");
 

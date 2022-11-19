@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using MorePartsMod.Buildings;
 using MorePartsMod.UI;
-using SFS;
 using SFS.Input;
-using SFS.IO;
-using SFS.Parsers.Json;
 using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.UI.ModGUI;
@@ -30,6 +27,7 @@ namespace MorePartsMod.Managers
         private ColonyData _newColony;
         private ColonyGUI _ui;
         private GameObject _holder;
+        private bool _extractFlow;
 
         private void Awake()
         {
@@ -37,6 +35,7 @@ namespace MorePartsMod.Managers
             this.player = PlayerController.main.player;
             this.Colonies = new List<ColonyComponent>();
             this.InitGUI();
+            this._extractFlow = true;
         }
 
         private void InitGUI()
@@ -56,6 +55,7 @@ namespace MorePartsMod.Managers
         {
             this.LoadColonies();
             KeySettings.AddOnKeyDown_World(KeySettings.Main.Open_Colony, this.OpenColony);
+            KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Colony_Flow, this.ToggleColonyFlow);
             this.player.OnChange += this.OnPlayerChange;
         }
 
@@ -64,13 +64,52 @@ namespace MorePartsMod.Managers
             MorePartsModMain.Main.SaveColonyInfo(this.Colonies);
         }
 
+        private void ToggleColonyFlow()
+        {
+            MsgDrawer.main.Log(this._extractFlow? "Filling rocket resources" : "Extracting rocket resources" );
+            foreach (ColonyComponent colony in this.Colonies)
+            {
+                if (colony.data.andress != this.player.Value.location.planet.Value.codeName)
+                {
+                    continue;
+                }
+
+                float distance = Vector2.Distance(colony.data.position, this.player.Value.location.position.Value);
+                if (distance > 100)
+                {
+                    continue;
+                }
+                Rocket rocket = (Rocket) this.player;
+                string typeName;
+                foreach (ResourceModule resource in rocket.resources.globalGroups)
+                {
+                    typeName = resource.resourceType.name;
+                    //Debug.Log(typeName);
+                    if (this._extractFlow)
+                    {
+                        double addToRocket = colony.data.takeResource(typeName, resource.TotalResourceCapacity);
+                        //Debug.Log("Adding "+ addToRocket+" "+ typeName);
+                        resource.AddResource(addToRocket);
+                        continue;
+                    }
+                    if (colony.data.addResource(typeName, resource.ResourceAmount))
+                    {
+                        resource.TakeResource(resource.ResourceAmount);
+                    }
+                }
+                this.SaveColonies();
+                //Debug.Log("ColonyData: "+colony.data.ToString());
+            }
+            this._extractFlow = !this._extractFlow;
+        }
+
         private void LoadColonies()
         {
             GameObject colonyPrefab = MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Colony");
             // setup buildings
             RefineryComponent.Setup(colonyPrefab);
             SolarPanelComponent.Setup(colonyPrefab);
-            VABComponent.Setup(colonyPrefab);
+            //VABComponent.Setup(colonyPrefab);
             bool flag = false;
             foreach (ColonyData colony in MorePartsModMain.Main.ColoniesInfo)
             {

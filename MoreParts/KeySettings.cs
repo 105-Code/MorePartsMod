@@ -27,6 +27,7 @@ namespace MorePartsMod
 			base.CreateUI_Keybinding(Toggle_Telecommunication_Dish, keySettings.Toggle_Telecommunication_Dish, "Toggle Telecommunication Dish");
 			base.CreateUI_Keybinding(Open_Colony, keySettings.Open_Colony, "Open Colony");
 			base.CreateUI_Keybinding(Toggle_Telecommunication_Lines, keySettings.Toggle_Telecommunication_Lines, "Toggle Telecommunication Lines");
+			base.CreateUI_Keybinding(Toggle_Colony_Flow, keySettings.Toggle_Colony_Flow, "Toggle Colony Extraction");
 		}
 
 		public void ToggleShowTelecommunicationLines()
@@ -49,6 +50,7 @@ namespace MorePartsMod
 		public KeybindingsPC.Key Toggle_Telecommunication_Dish = KeyCode.Y;
 		public KeybindingsPC.Key Open_Colony = KeyCode.U;
 		public KeybindingsPC.Key Toggle_Telecommunication_Lines = KeyCode.I;
+		public KeybindingsPC.Key Toggle_Colony_Flow = KeyCode.O;
 		public bool Show_Telecommunication_lines = true;
 	}
 }

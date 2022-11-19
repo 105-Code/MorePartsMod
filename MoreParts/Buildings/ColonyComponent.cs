@@ -8,6 +8,7 @@ using SFS.UI.ModGUI;
 using SFS.Variables;
 using SFS.World;
 using SFS.WorldBase;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -244,15 +245,29 @@ namespace MorePartsMod.Buildings
         {
             public float angle;
             public Double2 position;
-            public string andress;
+            public string address;
+            [Obsolete("Remove this for future version.")]
+            public string andress { set=>this.address=value; get=>this.address; }
+
+            [Obsolete("Remove this for future version.")]
+            public double rocketParts { set {
+                    if (this.resources.ContainsKey(ResourcesTypes.ROCKET_MATERIAL))
+                    {
+                        return;
+                    }
+                    this.resources.Add(ResourcesTypes.ROCKET_MATERIAL, value);
+
+                } get=>this.resources[ResourcesTypes.ROCKET_MATERIAL]; }
+            
             public string name;
-            public double rocketParts;
             public bool hidden;
             public List<ColonyBuildingData> buildings;
+            public Dictionary<string, double> resources;
 
             public ColonyData() {
                 this.buildings = new List<ColonyBuildingData>();
                 this.hidden = false;
+                this.resources = new Dictionary<string, double>();
             }
 
             public ColonyData(string name,float angle, WorldLocation worldLocation)
@@ -260,8 +275,9 @@ namespace MorePartsMod.Buildings
                 this.angle = angle;
                 this.name = name;
                 this.position = worldLocation.position.Value;
-                this.andress = worldLocation.planet.Value.codeName;
+                this.address = worldLocation.planet.Value.codeName;
                 this.buildings = new List<ColonyBuildingData>();
+                this.resources = new Dictionary<string, double>();
                 this.hidden = false;
             }
 
@@ -269,22 +285,23 @@ namespace MorePartsMod.Buildings
             {
                 this.angle = angle;
                 this.position = position;
-                this.andress = planetName;
+                this.address = planetName;
                 this.buildings = new List<ColonyBuildingData>();
+                this.resources = new Dictionary<string, double>();
                 this.hidden = false;
             }
 
             public Planet getPlanet()
             {
                 Planet planet;
-                Base.planetLoader.planets.TryGetValue(this.andress, out planet);
+                Base.planetLoader.planets.TryGetValue(this.address, out planet);
                 return planet;
             }
 
             public void setWorldLocation (WorldLocation location)
             {
                 this.position = location.position.Value;
-                this.andress = location.planet.Value.codeName;
+                this.address = location.planet.Value.codeName;
             }
 
             public Double2 getBuildingPosition(string buildingName, float height = 0)
@@ -317,7 +334,85 @@ namespace MorePartsMod.Buildings
                 return false;
             }
 
+            private bool isValidColonyResource(string resourceType)
+            {
+                if( ResourcesTypes.CONSTRUCTION_MATERIAL == resourceType)
+                {
+                    return true;
+                }
+
+                if (ResourcesTypes.ELECTRONIC_COMPONENT == resourceType)
+                {
+                    return true;
+                }
+
+                if (ResourcesTypes.MATERIAL == resourceType)
+                {
+                    return true;
+                }
+
+                if (ResourcesTypes.ROCKET_MATERIAL == resourceType)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            public bool addResource(string resourceType, double quantity)
+            {
+                if (!this.isValidColonyResource(resourceType))
+                {
+                    return false;
+                }
+                    
+                if (!this.resources.ContainsKey(resourceType))
+                {
+                    this.resources.Add(resourceType, quantity);
+                }
+                else
+                {
+                    this.resources[resourceType] += quantity;
+                }
+                return true;
+            }
+
+            public double takeResource(string resourceType, double quantity)
+            {
+                if (!this.isValidColonyResource(resourceType))
+                {
+                    return 0;
+                }
+              
+                if (!this.resources.ContainsKey(resourceType))
+                {
+                    this.resources.Add(resourceType, 0);
+                    return 0;
+                }
+
+                if(this.resources[resourceType] - quantity < 0)
+                {
+                    double total = this.resources[resourceType];
+                    this.resources[resourceType] -= this.resources[resourceType];
+                    return total;
+                }
+
+                this.resources[resourceType] -= quantity;
+                return quantity;
+            }
+
             public float LandmarkAngle { get => this.angle + 90; }
+
+            public override string ToString()
+            {
+                string result = "Colony " + this.name+"\n";
+                result += "address " + this.address + "\n";
+                result += "Resources\n";
+                foreach (string key in this.resources.Keys)
+                {
+                    result += key + ": " + this.resources[key] + "\n";
+                }
+                return result;
+            }
         }
 
         public class ColonyBuildingData
