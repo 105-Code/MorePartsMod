@@ -116,11 +116,9 @@ namespace MorePartsMod
                 return;
             }
 
-            Debug.Log("Converting to new Format");
             // Remove this for next version
             foreach (ColonyData colony in data)
             {
-                Debug.Log("Before \n"+colony.ToString());
                 if (colony.structures.Keys.Count == 0)
                 {
                     foreach (ColonyBuildingData building in colony.buildings)
@@ -137,9 +135,7 @@ namespace MorePartsMod
                 {
                     colony.address = colony.andress;
                 }
-                Debug.Log("After \n" + colony.ToString());
             }
-            Debug.Log("Complete");
 
             this.ColoniesInfo = data;
         }

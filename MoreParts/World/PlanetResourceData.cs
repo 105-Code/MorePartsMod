@@ -38,7 +38,6 @@ namespace MorePartsMod.World
                 float x = Mathf.Cos(radians);
                 float y = Mathf.Sin(radians);
                 Double2 position = new Double2(x, y)*(magnitude+this._planet.Radius);
-                //Debug.Log("Current:" + currentAngle + " Radians" + radians + " x:" + x + " y" + y + " position:" + position.ToString());
 
                 ReourceDeposit data = new ReourceDeposit(amount, position, (int) (amount * 0.2), currentAngle);
                 ResourceDeposits.Add(data);
