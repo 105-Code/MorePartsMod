@@ -128,7 +128,7 @@ namespace MorePartsMod.Patches
             Staging.CreateStages(blueprint, array);
             Rocket rocket = array4.FirstOrDefault((Rocket a) => a.hasControl.Value);
             PlayerController.main.player.Value = ((rocket != null) ? rocket : ((array4.Length != 0) ? array4[0] : null));
-            MorePartsModMain.Main.spawnPoint.rocketParts -= BuildManagerLaunch.RocketMass;
+            MorePartsModMain.Main.spawnPoint.takeResource(ResourcesTypes.ROCKET_MATERIAL, BuildManagerLaunch.RocketMass);
             MorePartsModMain.Main.spawnPoint = null;
             return false;
         }

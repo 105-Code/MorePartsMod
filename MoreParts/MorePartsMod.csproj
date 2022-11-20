@@ -128,6 +128,7 @@
     <Compile Include="ARPA\Node.cs" />
     <Compile Include="Buildings\VABComponent.cs" />
     <Compile Include="Buildings\SolarPanelComponent.cs" />
+    <Compile Include="ColonyBuildingFactory.cs" />
     <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />

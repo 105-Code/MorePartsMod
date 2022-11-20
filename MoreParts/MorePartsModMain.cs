@@ -22,12 +22,10 @@ namespace MorePartsMod
     {
         #region variables
         public static MorePartsModMain Main;
-
-        public List<ColonyBuildingData> Buildings { private set; get; }
         
-        public List<ColonyData> ColoniesInfo { private set; get; }
-
+        public List<ColonyData> ColoniesInfo { set; get; }
         
+        public ColonyBuildingFactory ColonyBuildingFactory { private set; get; }
 
         public ColonyData spawnPoint;
 
@@ -55,6 +53,7 @@ namespace MorePartsMod
         public MorePartsModMain()
         {
             Main = this;
+            this.ColonyBuildingFactory = new ColonyBuildingFactory();
         }
 
         public override void Early_Load()
@@ -63,7 +62,8 @@ namespace MorePartsMod
             AssetBundle assets = AssetBundle.LoadFromFile(assetFilePath);
             if (assets == null)
             {
-                throw new Exception("Assets file not found");
+
+                return;
             }
             this.Assets = assets;
 
@@ -79,13 +79,6 @@ namespace MorePartsMod
         public override void Load()
         {
             KeySettings.Setup();
-
-            this.Buildings = new List<ColonyBuildingData>();
-            this.Buildings.Add(new ColonyBuildingData(false, "Refinery", new ColonyBuildingCost(10, 12) ));
-            this.Buildings.Add(new ColonyBuildingData(false, "Solar Panels", new ColonyBuildingCost(13, 4) ));
-            this.Buildings.Add(new ColonyBuildingData(false, "VAB", new ColonyBuildingCost(4, 10) ));
-            this.Buildings.Add(new ColonyBuildingData(false, "Launch Pad", new ColonyBuildingCost(1, 20), new Double2(100, 3)));
-
         }
 
 
@@ -111,8 +104,44 @@ namespace MorePartsMod
 
         private void OnHub()
         {
+            if (this.ColoniesInfo != null)
+            {
+                return;
+            }
             Debug.Log("Loading Colonies info");
-            this.LoadColonyInfo();
+            List<ColonyData> data;
+            LoadWorldPersistent("Colonies.json", out data);
+            if (data == null)
+            {
+                return;
+            }
+
+            Debug.Log("Converting to new Format");
+            // Remove this for next version
+            foreach (ColonyData colony in data)
+            {
+                Debug.Log("Before \n"+colony.ToString());
+                if (colony.structures.Keys.Count == 0)
+                {
+                    foreach (ColonyBuildingData building in colony.buildings)
+                    {
+                        if (!building.state)
+                        {
+                            continue;
+                        }
+                        colony.structures.Add(building.name, new Building(building.offset));
+                    }
+                }
+
+                if(colony.address == "" || colony.address == null)
+                {
+                    colony.address = colony.andress;
+                }
+                Debug.Log("After \n" + colony.ToString());
+            }
+            Debug.Log("Complete");
+
+            this.ColoniesInfo = data;
         }
 
         #endregion
@@ -137,36 +166,6 @@ namespace MorePartsMod
             JsonWrapper.TryLoadJson(file, out result);
             return true;
         }
-
-        #region colonies information
-
-        public void SaveColonyInfo(List<ColonyComponent> colonies)
-        {
-            List<ColonyData> data = new List<ColonyData>();
-            foreach (ColonyComponent colony in colonies)
-            {
-                data.Add(colony.data);
-            }
-            this.ColoniesInfo = data;
-            SaveWorldPersistent("Colonies.json", data);
-        }
-
-        public void LoadColonyInfo()
-        {
-            if(this.ColoniesInfo != null)
-            {
-                return;
-            }
-            List<ColonyData> data;
-            LoadWorldPersistent<List<ColonyData>>("Colonies.json", out data);
-            if (data == null)
-            {
-                return;
-            }
-            this.ColoniesInfo = data;   
-        }
-
-        #endregion
 
         #endregion
     

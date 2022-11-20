@@ -63,21 +63,21 @@ namespace MorePartsMod.UI
 
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Buildings");
 
-            foreach(ColonyBuildingData building in this._colony.data.buildings)
+            foreach(string buildingName in MorePartsModMain.Main.ColonyBuildingFactory.GetBuildingsName())
             {
-                if (building.state)
+                if (this._colony.data.isBuildingActive(buildingName))
                 {
                     continue;
                 }
-                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this.OnClickButton(building), "Build " + building.name);
+                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this.OnClickButton(buildingName), "Build " + buildingName);
             }
 
             Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => ScreenManager.main.CloseCurrent(), "Close");
         }
 
-        private void OnClickButton(ColonyBuildingData building)
+        private void OnClickButton(string buildingName)
         {
-            if (this._colony.Build(building.name))
+            if (this._colony.Build(buildingName))
             {
                 ScreenManager.main.CloseCurrent();
             }
