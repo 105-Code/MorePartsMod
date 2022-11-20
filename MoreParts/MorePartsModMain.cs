@@ -34,15 +34,15 @@ namespace MorePartsMod
         public AssetBundle Assets { private set; get; }
 
         #region mod information
-        public override string ModNameID => "morepartsmod";
+        public override string ModNameID => "morepartsmod.danielrojas.website";
 
         public override string DisplayName => "MoreParts Mod";
 
         public override string Author => "dani0105";
 
-        public override string MinimumGameVersionNecessary => "0.3.7";
+        public override string MinimumGameVersionNecessary => "0.3.0";
 
-        public override string ModVersion => "2.1.1";
+        public override string ModVersion => "2.2.0";
 
         public override string Description => "Add special features to the MoreParts Pack";
 
@@ -72,7 +72,7 @@ namespace MorePartsMod
             SceneHelper.OnHubSceneLoaded += this.OnHub;
             SceneHelper.OnHomeSceneLoaded += this.OnHome;
 
-            Harmony harmony = new Harmony("morepartsmod.danielrojas.website");
+            Harmony harmony = new Harmony(this.ModNameID);
             harmony.PatchAll();
         }
 
