@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SFS;
 using SFS.Builds;
 using SFS.Parts;
 using SFS.Parts.Modules;
@@ -119,7 +120,7 @@ namespace MorePartsMod.Patches
             }
             blueprint.rotation = 0;
             
-            Double2 spawnPoint = target.getBuildingPosition("Launch Pad", (int)GetHeight(array3) >> 1);
+            Double2 spawnPoint = target.getBuildingPosition("Launch Pad", (int)GetHeight(array3));
             ClearLaunchPad(spawnPoint);
             Part_Utility.PositionParts(WorldView.ToLocalPosition(spawnPoint), new Vector2(0.5f, 0f), true, true, array3);
             List<JointGroup> groups;
