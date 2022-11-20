@@ -41,7 +41,7 @@ namespace MorePartsMod.Parts
             foreach (ResourceModule resourceModule in this.Rocket.resources.globalGroups)
             {
 
-                if (resourceModule.resourceType.name == ResourcesTypes.MATERIAL)
+                if (resourceModule.resourceType.name == MorePartsTypes.MATERIAL)
                 {
                     this._material_container = resourceModule;
                 }

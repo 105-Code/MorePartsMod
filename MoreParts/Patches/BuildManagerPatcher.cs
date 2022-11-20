@@ -63,13 +63,13 @@ namespace MorePartsMod.Patches
 
             RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
 
-            if (RocketMass > MorePartsModMain.Main.spawnPoint.getResource(ResourcesTypes.ROCKET_MATERIAL))
+            if (RocketMass > MorePartsModMain.Main.spawnPoint.getResource(MorePartsTypes.ROCKET_MATERIAL))
             {
                 ShowMenu("Insufficient rocket material on " + MorePartsModMain.Main.spawnPoint.name, "Ok");
                 return false;
             }
 
-            MorePartsModMain.Main.spawnPoint.takeResource(ResourcesTypes.ROCKET_MATERIAL, RocketMass);
+            MorePartsModMain.Main.spawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, RocketMass);
 
             return true;
         }
@@ -85,17 +85,17 @@ namespace MorePartsMod.Patches
 
         private static bool validResource(string resourceName)
         {
-            if (resourceName == ResourcesTypes.ROCKET_MATERIAL)
+            if (resourceName == MorePartsTypes.ROCKET_MATERIAL)
             {
                 return false;
             }
 
-            if (resourceName == ResourcesTypes.ELECTRONIC_COMPONENT)
+            if (resourceName == MorePartsTypes.ELECTRONIC_COMPONENT)
             {
                 return false;
             }
 
-            if (resourceName == ResourcesTypes.CONSTRUCTION_MATERIAL)
+            if (resourceName == MorePartsTypes.CONSTRUCTION_MATERIAL)
             {
                 return false;
             }

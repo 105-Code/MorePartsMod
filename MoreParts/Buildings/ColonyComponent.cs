@@ -255,14 +255,14 @@ namespace MorePartsMod.Buildings
             [Obsolete("Remove this for future version.")]
             public double rocketParts { 
                 set {
-                    if (this.resources.ContainsKey(ResourcesTypes.ROCKET_MATERIAL))
+                    if (this.resources.ContainsKey(MorePartsTypes.ROCKET_MATERIAL))
                     {
-                        this.resources[ResourcesTypes.ROCKET_MATERIAL] = value;
+                        this.resources[MorePartsTypes.ROCKET_MATERIAL] = value;
                         return;
                     }
-                    this.resources.Add(ResourcesTypes.ROCKET_MATERIAL, value);
+                    this.resources.Add(MorePartsTypes.ROCKET_MATERIAL, value);
                 } 
-                get => this.resources[ResourcesTypes.ROCKET_MATERIAL]; }
+                get => this.resources[MorePartsTypes.ROCKET_MATERIAL]; }
 
             public Dictionary<string, Building> structures;
 
@@ -343,22 +343,22 @@ namespace MorePartsMod.Buildings
 
             private bool isValidColonyResource(string resourceType)
             {
-                if (ResourcesTypes.CONSTRUCTION_MATERIAL == resourceType)
+                if (MorePartsTypes.CONSTRUCTION_MATERIAL == resourceType)
                 {
                     return true;
                 }
 
-                if (ResourcesTypes.ELECTRONIC_COMPONENT == resourceType)
+                if (MorePartsTypes.ELECTRONIC_COMPONENT == resourceType)
                 {
                     return true;
                 }
 
-                if (ResourcesTypes.MATERIAL == resourceType)
+                if (MorePartsTypes.MATERIAL == resourceType)
                 {
                     return true;
                 }
 
-                if (ResourcesTypes.ROCKET_MATERIAL == resourceType)
+                if (MorePartsTypes.ROCKET_MATERIAL == resourceType)
                 {
                     return true;
                 }

@@ -171,13 +171,13 @@ namespace MorePartsMod.Managers
             bool flag = false, flag2 = false;
             foreach(ResourceModule resource in resources)
             {
-                if (resource.resourceType.name == ResourcesTypes.ELECTRONIC_COMPONENT)
+                if (resource.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
                 {
                     flag = true;
                     continue;
                 }
 
-                if (resource.resourceType.name == ResourcesTypes.CONSTRUCTION_MATERIAL)
+                if (resource.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
                 {
                     flag2 = true;
                 }
@@ -224,7 +224,7 @@ namespace MorePartsMod.Managers
             ResourceModule construction = null;
             foreach (ResourceModule resourceGroup in rocket.resources.globalGroups)
             {
-                if(resourceGroup.resourceType.name == ResourcesTypes.ELECTRONIC_COMPONENT)
+                if(resourceGroup.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
                 {
                     if(resourceGroup.ResourceAmount < electronicRequired)
                     {
@@ -233,7 +233,7 @@ namespace MorePartsMod.Managers
                     electronic = resourceGroup;
                 }
 
-                if (resourceGroup.resourceType.name == ResourcesTypes.CONSTRUCTION_MATERIAL)
+                if (resourceGroup.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
