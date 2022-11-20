@@ -143,7 +143,7 @@
     <Compile Include="Patches\BuildManagerPatcher.cs" />
     <Compile Include="Patches\SpaceCenterPatcher.cs" />
     <Compile Include="Patches\CustomAssetsLoaderPatcher.cs" />
-    <Compile Include="ResourcesTypes.cs" />
+    <Compile Include="MorePartsTypes.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
     <Compile Include="UI\ColonyGUI.cs" />
     <Compile Include="Utils.cs" />

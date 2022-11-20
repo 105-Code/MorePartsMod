@@ -11,5 +11,8 @@
         public const string REFINERY_BUILDING = "Refinery";
         public const string VAB_BUILDING = "VAB";
         public const string LAUNCH_PAD_BUILDING = "Launch Pad";
+        public const string SOLAR_PANELS_BUILDING = "Solar Panels";
+
+        
     }
 }

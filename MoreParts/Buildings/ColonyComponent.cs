@@ -76,19 +76,38 @@ namespace MorePartsMod.Buildings
 
         }
 
+        private bool CheckAndReduceMaterials(float constructionMaterial, float electronicMaterial)
+        {
+            double constructionQuantity = this.data.getResource(MorePartsTypes.CONSTRUCTION_MATERIAL);
+            if(constructionQuantity - constructionMaterial < 0)
+            {
+                return false;
+            }
+            double electronicQuantity = this.data.getResource(MorePartsTypes.ELECTRONIC_COMPONENT);
+            if (electronicQuantity - electronicMaterial < 0)
+            {
+                return false;
+            }
+            this.data.takeResource(MorePartsTypes.CONSTRUCTION_MATERIAL, constructionMaterial);
+            this.data.takeResource(MorePartsTypes.ELECTRONIC_COMPONENT, electronicMaterial);
+            return true;
+        }
+
         public bool Build(string buildingName)
         {
             BuildingData data = MorePartsModMain.Main.ColonyBuildingFactory.getColonyBuilding(buildingName);
-            if (!ColonyManager.main.CheckAndReduceMaterials(data.constructionCost, data.electronicCost))
+
+            if (!this.CheckAndReduceMaterials(data.constructionCost, data.electronicCost))
             {
                 MsgDrawer.main.Log("Insufficient Materials");
                 return false;
             }
 
-            if(buildingName == "Solar Panels")
+            if(buildingName == MorePartsTypes.SOLAR_PANELS_BUILDING)
             {
                 this.checkSolarPanel(true);
             }
+
             this.data.structures.Add(buildingName, new Building(data.offset));
             ColonyManager.main.SaveColonies();
             this.transform.Find(buildingName).gameObject.SetActive(true);
