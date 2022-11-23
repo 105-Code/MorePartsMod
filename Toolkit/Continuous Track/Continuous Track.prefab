@@ -1,5 +1,152 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2603102528175642760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5760297715653139754}
+  - component: {fileID: 7053976066543650231}
+  - component: {fileID: 3335438657885853095}
+  - component: {fileID: 5965497960014368666}
+  - component: {fileID: 6813484578396762884}
+  m_Layer: 8
+  m_Name: Idler Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5760297715653139754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603102528175642760}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.994, y: -0.18306388, z: 0.04172185}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2047167290982731053}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7053976066543650231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603102528175642760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85fc94dccdd780049b4ac6eb441000b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachmentSurfaces: 0
+  dragSurfaces: 0
+  colliderArea: 1
+  physicsCollider: 0
+  clickArea: 1
+  baseDepth: 0
+  composedBaseDepth:
+    variables: {fileID: 6202661881478926578}
+    input: 
+  isComposedDepth: 0
+  polygonVertices:
+  - {x: -0.4, y: -0.12}
+  - {x: -0.4, y: 0.13}
+  - {x: -0.28999996, y: 0.28999996}
+  - {x: -0.14, y: 0.4}
+  - {x: 0.13, y: 0.4}
+  - {x: 0.32999992, y: 0.26999998}
+  - {x: 0.4, y: 0.13}
+  - {x: 0.4, y: -0.13}
+  - {x: 0.29999995, y: -0.29999995}
+  - {x: 0.16000001, y: -0.4}
+  - {x: -0.13, y: -0.4}
+  - {x: -0.30999994, y: -0.29999995}
+  edit: 1
+  view: 1
+  gridSize: 0.01
+--- !u!114 &3335438657885853095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603102528175642760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34e483146094b00478fb1e25d75f7031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderQueueOffset: 0
+  polygonModule: {fileID: 7053976066543650231}
+  UV_Mode: 0
+  bounds:
+  - {x: -0.4, y: -0.4}
+  - {x: -0.4, y: 0.4}
+  - {x: 0.4, y: 0.4}
+  - {x: 0.4, y: -0.4}
+  texture: {fileID: 11400000, guid: b95b574cd9a0fde4eb03f3cc6acffc38, type: 2}
+  type: 1
+  colorBasic: {r: 1, g: 1, b: 1, a: 1}
+  colorModule: {fileID: 0}
+--- !u!33 &5965497960014368666
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603102528175642760}
+  m_Mesh: {fileID: 0}
+--- !u!23 &6813484578396762884
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603102528175642760}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: e52d76acc88b7f1488d5339895c05236, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2923347336624996824
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,18 +205,18 @@ MonoBehaviour:
     input: 
   isComposedDepth: 0
   polygonVertices:
-  - {x: -0.31, y: -0.1}
-  - {x: -0.31, y: 0.1}
-  - {x: -0.22, y: 0.22}
-  - {x: -0.1, y: 0.31}
-  - {x: 0.1, y: 0.31}
-  - {x: 0.21999998, y: 0.22}
-  - {x: 0.31, y: 0.1}
-  - {x: 0.31, y: -0.1}
-  - {x: 0.21999997, y: -0.21}
-  - {x: 0.1, y: -0.31}
-  - {x: -0.1, y: -0.31}
-  - {x: -0.22, y: -0.20999998}
+  - {x: -0.4, y: -0.12}
+  - {x: -0.4, y: 0.13}
+  - {x: -0.28999996, y: 0.28999996}
+  - {x: -0.14, y: 0.4}
+  - {x: 0.13, y: 0.4}
+  - {x: 0.32999992, y: 0.26999998}
+  - {x: 0.4, y: 0.13}
+  - {x: 0.4, y: -0.13}
+  - {x: 0.29999995, y: -0.29999995}
+  - {x: 0.16000001, y: -0.4}
+  - {x: -0.13, y: -0.4}
+  - {x: -0.30999994, y: -0.29999995}
   edit: 1
   view: 1
   gridSize: 0.01
@@ -89,10 +236,10 @@ MonoBehaviour:
   polygonModule: {fileID: 7604467132136355526}
   UV_Mode: 0
   bounds:
-  - {x: -0.31, y: -0.31}
-  - {x: -0.31, y: 0.31}
-  - {x: 0.31, y: 0.31}
-  - {x: 0.31, y: -0.31}
+  - {x: -0.4, y: -0.4}
+  - {x: -0.4, y: 0.4}
+  - {x: 0.4, y: 0.4}
+  - {x: 0.4, y: -0.4}
   texture: {fileID: 11400000, guid: b95b574cd9a0fde4eb03f3cc6acffc38, type: 2}
   type: 1
   colorBasic: {r: 1, g: 1, b: 1, a: 1}
@@ -112,153 +259,6 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2923347336624996824}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: e52d76acc88b7f1488d5339895c05236, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &3471544400551508930
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2615468018941861191}
-  - component: {fileID: 1523077834968426037}
-  - component: {fileID: 7100592060551815528}
-  - component: {fileID: 5004041914735237838}
-  - component: {fileID: 5780788544623573699}
-  m_Layer: 8
-  m_Name: Idler Front
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2615468018941861191
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471544400551508930}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.994, y: -0.18306388, z: 0.04172185}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2047167290982731053}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1523077834968426037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471544400551508930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fc94dccdd780049b4ac6eb441000b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachmentSurfaces: 0
-  dragSurfaces: 0
-  colliderArea: 1
-  physicsCollider: 0
-  clickArea: 1
-  baseDepth: 0
-  composedBaseDepth:
-    variables: {fileID: 6202661881478926578}
-    input: 
-  isComposedDepth: 0
-  polygonVertices:
-  - {x: -0.31, y: -0.1}
-  - {x: -0.31, y: 0.1}
-  - {x: -0.22, y: 0.22}
-  - {x: -0.1, y: 0.31}
-  - {x: 0.1, y: 0.31}
-  - {x: 0.21999998, y: 0.22}
-  - {x: 0.31, y: 0.1}
-  - {x: 0.31, y: -0.1}
-  - {x: 0.21999997, y: -0.21}
-  - {x: 0.1, y: -0.31}
-  - {x: -0.1, y: -0.31}
-  - {x: -0.22, y: -0.20999998}
-  edit: 1
-  view: 1
-  gridSize: 0.01
---- !u!114 &7100592060551815528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471544400551508930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34e483146094b00478fb1e25d75f7031, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderQueueOffset: 0
-  polygonModule: {fileID: 1523077834968426037}
-  UV_Mode: 0
-  bounds:
-  - {x: -0.31, y: -0.31}
-  - {x: -0.31, y: 0.31}
-  - {x: 0.31, y: 0.31}
-  - {x: 0.31, y: -0.31}
-  texture: {fileID: 11400000, guid: b95b574cd9a0fde4eb03f3cc6acffc38, type: 2}
-  type: 1
-  colorBasic: {r: 1, g: 1, b: 1, a: 1}
-  colorModule: {fileID: 0}
---- !u!33 &5004041914735237838
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471544400551508930}
-  m_Mesh: {fileID: 0}
---- !u!23 &5780788544623573699
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471544400551508930}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -318,12 +318,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4576516129042763288}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.04761561, y: -0.23793612, z: -0.04172185}
+  m_LocalPosition: {x: -0.04761561, y: -0.387, z: -0.04172185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 221473139649926892}
-  - {fileID: 2615468018941861191}
+  - {fileID: 5760297715653139754}
   m_Father: {fileID: 7031478162706424578}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -351,8 +351,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4643279788323531989}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15363981, y: -0.343, z: 0.06571204}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.16, y: -0.473, z: 0}
+  m_LocalScale: {x: 1.05, y: 1.27, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 724747727513504311}
@@ -408,7 +408,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6563611863976281597}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -437,7 +437,7 @@ MonoBehaviour:
     variables: {fileID: 0}
     input: 
   isComposedDepth: 0
-  depthMultiplier: 1
+  depthMultiplier: 0
   advancedCut: 0
   cut: 0
   advancedCutData:
@@ -445,16 +445,16 @@ MonoBehaviour:
   reduceResolution: 1
   width_a:
     variables: {fileID: 6202661881478926578}
-    input: 2
+    input: 2.5
   width_b:
     variables: {fileID: 6202661881478926578}
-    input: 2
+    input: 2.5
   height_a:
     variables: {fileID: 6202661881478926578}
     input: 0
   height_b:
     variables: {fileID: 6202661881478926578}
-    input: 0.25
+    input: 0.3
 --- !u!114 &2478730331660998969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +599,8 @@ MonoBehaviour:
     TranslatableName: Caterpillar
   description:
     plainText: 1
-    TranslatableName: None
+    TranslatableName: Continuous track is a system of vehicle propulsion. This part
+      need electricity
   mass:
     variables: {fileID: 6202661881478926578}
     input: 4
@@ -610,7 +611,7 @@ MonoBehaviour:
       input: 0
     y:
       variables: {fileID: 6202661881478926578}
-      input: 0
+      input: -0.5
   orientation: {fileID: -1777736922084461513}
   variablesModule: {fileID: 6202661881478926578}
   variants:
@@ -756,8 +757,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.003979155, y: -0.43277246}
-  m_Size: {x: 2.546283, y: 0.64304024}
+  m_Offset: {x: 0.00040715036, y: -0.5756632}
+  m_Size: {x: 2.6820366, y: 0.7930863}
   m_Direction: 1
 --- !u!1 &8318565617546471681
 GameObject:
@@ -787,7 +788,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8318565617546471681}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.635, z: 0}
+  m_LocalPosition: {x: 0, y: -0.773, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -841,7 +842,7 @@ MonoBehaviour:
           input: 0
         y:
           variables: {fileID: 6202661881478926578}
-          input: 0.31
+          input: 0.33
     - variables: {fileID: 6202661881478926578}
       position:
         variables: {fileID: 6202661881478926578}
@@ -858,7 +859,7 @@ MonoBehaviour:
           input: 0
         y:
           variables: {fileID: 6202661881478926578}
-          input: 0.39
+          input: 0.45
     - variables: {fileID: 6202661881478926578}
       position:
         variables: {fileID: 6202661881478926578}
@@ -875,13 +876,13 @@ MonoBehaviour:
           input: 0
         y:
           variables: {fileID: 6202661881478926578}
-          input: 0.43
+          input: 0.56
     - variables: {fileID: 6202661881478926578}
       position:
         variables: {fileID: 6202661881478926578}
         x:
           variables: {fileID: 6202661881478926578}
-          input: 0.63
+          input: 0.68
         y:
           variables: {fileID: 6202661881478926578}
           input: 0.2
@@ -889,16 +890,16 @@ MonoBehaviour:
         variables: {fileID: 6202661881478926578}
         x:
           variables: {fileID: 6202661881478926578}
-          input: 0
+          input: 0.01
         y:
           variables: {fileID: 6202661881478926578}
-          input: 0.43
+          input: 0.56
     - variables: {fileID: 6202661881478926578}
       position:
         variables: {fileID: 6202661881478926578}
         x:
           variables: {fileID: 6202661881478926578}
-          input: 0.6500001
+          input: 0.7400001
         y:
           variables: {fileID: 6202661881478926578}
           input: 0.2000001
@@ -909,7 +910,7 @@ MonoBehaviour:
           input: 0
         y:
           variables: {fileID: 6202661881478926578}
-          input: 0.38
+          input: 0.4
   edit: 1
   view: 1
   gridSize: 0.01
