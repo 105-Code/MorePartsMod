@@ -55,8 +55,9 @@ MonoBehaviour:
     plainText: 1
     TranslatableName: Excavator
   description:
-    plainText: 0
-    TranslatableName: None
+    plainText: 1
+    TranslatableName: This part allows you to collect resources from the surface
+      of the planet. Need electricity
   mass:
     variables: {fileID: -5492550926258613974}
     input: 1
@@ -64,10 +65,10 @@ MonoBehaviour:
     variables: {fileID: -5492550926258613974}
     x:
       variables: {fileID: -5492550926258613974}
-      input: 0
+      input: 1
     y:
       variables: {fileID: -5492550926258613974}
-      input: 0
+      input: 0.5
   orientation: {fileID: 8408630642162459057}
   variablesModule: {fileID: -5492550926258613974}
   variants:
@@ -442,7 +443,7 @@ GameObject:
   - component: {fileID: 4037972541669619955}
   - component: {fileID: 6814797085608473641}
   m_Layer: 8
-  m_Name: stick
+  m_Name: Stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -486,7 +487,7 @@ MonoBehaviour:
     variables: {fileID: 0}
     input: 
   isComposedDepth: 0
-  depthMultiplier: 2
+  depthMultiplier: 1
   advancedCut: 0
   cut: 0
   advancedCutData:
@@ -603,7 +604,7 @@ GameObject:
   - component: {fileID: 47433860611120211}
   - component: {fileID: 2479487166561232798}
   m_Layer: 8
-  m_Name: excavator
+  m_Name: Excavator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,7 +642,7 @@ MonoBehaviour:
   colliderArea: 1
   physicsCollider: 0
   clickArea: 1
-  baseDepth: 1
+  baseDepth: 2
   composedBaseDepth:
     variables: {fileID: 0}
     input: 
