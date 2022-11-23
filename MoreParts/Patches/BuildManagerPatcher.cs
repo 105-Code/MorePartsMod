@@ -49,10 +49,9 @@ namespace MorePartsMod.Patches
             ResourceModule[] resources = __instance.buildGrid.activeGrid.partsHolder.GetModules<ResourceModule>();
             foreach (ResourceModule resource in resources)
             {
-                if (!validResource(resource.resourceType.name))
+                if (IsSpeacialResource(resource.resourceType.name))
                 {
-                    ShowMenu("You can't transport " + resource.resourceType.name, "Ok");
-                    return false;
+                    resource.resourcePercent.Value = 0;
                 }
 
                 if(resource.resourceType.resourceMass > 0)
@@ -83,24 +82,29 @@ namespace MorePartsMod.Patches
             MenuGenerator.ShowChoices(() => text, array);
         }
 
-        private static bool validResource(string resourceName)
+        private static bool IsSpeacialResource(string resourceName)
         {
             if (resourceName == MorePartsTypes.ROCKET_MATERIAL)
             {
-                return false;
+                return true;
             }
 
             if (resourceName == MorePartsTypes.ELECTRONIC_COMPONENT)
             {
-                return false;
+                return true;
             }
 
             if (resourceName == MorePartsTypes.CONSTRUCTION_MATERIAL)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            if (resourceName == MorePartsTypes.MATERIAL)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 
