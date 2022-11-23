@@ -30,6 +30,8 @@ namespace MorePartsMod.Parts
 
         public ResourceModule _material_container;
 
+        private Transform _excavator_object;
+
         public override void Awake()
         {
             base.Awake();
@@ -53,6 +55,8 @@ namespace MorePartsMod.Parts
             this.Part.onPartUsed.AddListener(this.Toggle);
             this.FlowModule.onStateChange += this.CheckOutOfFuel;
             this.CheckOutOfFuel();
+
+            this._excavator_object= this.transform.Find("Stick").Find("Excavator");
         }
 
         private void Update()
@@ -85,6 +89,7 @@ namespace MorePartsMod.Parts
             }
 
             this._material_container.AddResource(_extractionCount);
+            this._excavator_object.eulerAngles = new Vector3(0f, 0f, this._excavator_object.eulerAngles.z + 4);
             if (this._material_container.resourcePercent.Value == 1f)
             {
                 MsgDrawer.main.Log("Container Full");
