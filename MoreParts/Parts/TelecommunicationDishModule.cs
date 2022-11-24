@@ -68,10 +68,12 @@ namespace MorePartsMod.Parts
 			{
 				this._flowRate.Value = 0.1;
 				this.Node = AntennaComponent.main.AddNode(this);
+				this._targetState.Value = 1;
 			}
 			else
 			{
 				this._flowRate.Value = 0;
+				this._targetState.Value = 0;
 				if (this.Rocket.isPlayer)
 				{
 					this.Rocket.hasControl.Value = false;
