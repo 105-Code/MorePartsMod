@@ -280,8 +280,15 @@ namespace MorePartsMod.Buildings
                         return;
                     }
                     this.resources.Add(MorePartsTypes.ROCKET_MATERIAL, value);
+                }
+                get {
+                    if (this.resources.ContainsKey(MorePartsTypes.ROCKET_MATERIAL))
+                    {
+                        return this.resources[MorePartsTypes.ROCKET_MATERIAL];
+                    }
+                    return 0;
                 } 
-                get => this.resources[MorePartsTypes.ROCKET_MATERIAL]; }
+            }
 
             public Dictionary<string, Building> structures;
 
@@ -433,7 +440,12 @@ namespace MorePartsMod.Buildings
                     return 0;
                 }
 
-                return this.resources[resourceType];
+                if (this.resources.ContainsKey(resourceType))
+                {
+                    return this.resources[resourceType];
+                }
+                this.resources.Add(resourceType, 0);
+                return 0;
             }
 
             public float LandmarkAngle { get => this.angle + 90; }
