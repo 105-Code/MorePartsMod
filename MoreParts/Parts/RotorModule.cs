@@ -141,7 +141,7 @@ namespace MorePartsMod.Parts
 			{
 				return;
 			}
-
+			// check https://www.grc.nasa.gov/www/k-12/airplane/propth.html
 			float exitVelocity = (float) ((2 * this._rotorVelocity) - this.Location.VerticalVelocity);
 			float density = (float) this.Location.planet.GetAtmosphericDensity(this.Location.Height);
 			double thrust = 0.5 * density * this._area * ( (exitVelocity * exitVelocity) - (this.Location.VerticalVelocity * this.Location.VerticalVelocity));
