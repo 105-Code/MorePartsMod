@@ -44,10 +44,10 @@ namespace MorePartsMod.Parts
                 this.Toggle("You can't use in the atmosphere", false);
                 return;
             }
-
-            if(this.Location.Height > 200000)
+            double max_altitud = this.Location.planet.data.atmospherePhysics.height + 50000;
+            if (this.Location.Height > max_altitud)
             {
-                this.Toggle("Over max altitud 200km",false);
+                this.Toggle("Over max altitud "+ max_altitud+"km", false);
                 return;
             }
 
