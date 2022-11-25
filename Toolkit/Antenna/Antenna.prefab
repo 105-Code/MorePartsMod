@@ -843,6 +843,7 @@ GameObject:
   - component: {fileID: 4382373109341745631}
   - component: {fileID: 7985950641479228873}
   - component: {fileID: 1593681167461335796}
+  - component: {fileID: 7211047508386824652}
   m_Layer: 8
   m_Name: Antenna
   m_TagString: Untagged
@@ -1238,6 +1239,20 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     audioSource: {fileID: 4410246161525349936}
+--- !u!114 &7211047508386824652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903166738067769997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinMorePartsVersion: 2.2.0
+  modules: 02000000
 --- !u!1 &5812597954361658582
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using MorePartsMod.Buildings;
 using MorePartsMod.UI;
-using SFS;
 using SFS.Input;
-using SFS.IO;
-using SFS.Parsers.Json;
 using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.UI.ModGUI;
@@ -22,22 +19,22 @@ namespace MorePartsMod.Managers
         public static ColonyManager main;
         public Player_Local player;
 
-        public List<ColonyBuildingData> Buildings { get => MorePartsMod.Main.Buildings; }
-        public List<ColonyComponent> Colonies { get => this._colonies; }
+        public List<ColonyComponent> Colonies { get; private set; }
 
         //private
         private SFS.UI.ModGUI.Button _createColonyButton;
         private ColonyData _newColony;
         private ColonyGUI _ui;
         private GameObject _holder;
-        private List<ColonyComponent> _colonies;
+        private bool _extractFlow;
 
         private void Awake()
         {
             main = this;
             this.player = PlayerController.main.player;
-            this._colonies = new List<ColonyComponent>();
+            this.Colonies = new List<ColonyComponent>();
             this.InitGUI();
+            this._extractFlow = true;
         }
 
         private void InitGUI()
@@ -57,46 +54,79 @@ namespace MorePartsMod.Managers
         {
             this.LoadColonies();
             KeySettings.AddOnKeyDown_World(KeySettings.Main.Open_Colony, this.OpenColony);
+            KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Colony_Flow, this.ToggleColonyFlow);
             this.player.OnChange += this.OnPlayerChange;
         }
 
         public void SaveColonies()
         {
-            MorePartsMod.Main.SaveColonyInfo(this._colonies);
+            List<ColonyData> data = new List<ColonyData>();
+            foreach (ColonyComponent colony in this.Colonies)
+            {
+                data.Add(colony.data);
+            }
+            MorePartsModMain.Main.ColoniesInfo = data;
+            MorePartsModMain.SaveWorldPersistent("Colonies.json", data);
+        }
+
+        private void ToggleColonyFlow()
+        {
+            MsgDrawer.main.Log(this._extractFlow? "Filling rocket resources" : "Extracting rocket resources" );
+            foreach (ColonyComponent colony in this.Colonies)
+            {
+                if (colony.data.address != this.player.Value.location.planet.Value.codeName)
+                {
+                    continue;
+                }
+
+                float distance = Vector2.Distance(colony.data.position, this.player.Value.location.position.Value);
+                if (distance > 100)
+                {
+                    continue;
+                }
+                Rocket rocket = (Rocket) this.player;
+                string typeName;
+                foreach (ResourceModule resource in rocket.resources.globalGroups)
+                {
+                    typeName = resource.resourceType.name;
+                    //Debug.Log(typeName);
+                    if (this._extractFlow)
+                    {
+                        double addToRocket = colony.data.takeResource(typeName, resource.TotalResourceCapacity);
+                        //Debug.Log("Adding "+ addToRocket+" "+ typeName);
+                        resource.AddResource(addToRocket);
+                        continue;
+                    }
+                    if (colony.data.addResource(typeName, resource.ResourceAmount))
+                    {
+                        resource.TakeResource(resource.ResourceAmount);
+                    }
+                }
+                this.SaveColonies();
+                //Debug.Log("ColonyData: "+colony.data.ToString());
+            }
+            this._extractFlow = !this._extractFlow;
         }
 
         private void LoadColonies()
         {
-            GameObject colonyPrefab = MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony");
+            GameObject colonyPrefab = MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Colony");
             // setup buildings
             RefineryComponent.Setup(colonyPrefab);
             SolarPanelComponent.Setup(colonyPrefab);
-            VABComponent.Setup(colonyPrefab);
+            //VABComponent.Setup(colonyPrefab);
             bool flag = false;
-            foreach (ColonyData colony in MorePartsMod.Main.ColoniesInfo)
+            foreach (ColonyData colony in MorePartsModMain.Main.ColoniesInfo)
             {
                 GameObject colonyGameObject = GameObject.Instantiate(colonyPrefab);
-                WorldBuildings.addBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
-                GameObject holder = colonyGameObject.transform.FindChild("Holder").gameObject;
+                Utils.AddBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
+                GameObject holder = colonyGameObject.transform.Find("Holder").gameObject;
                 holder.transform.eulerAngles = new Vector3(0, 0, colony.angle);
                 ColonyComponent component = holder.AddComponent<ColonyComponent>();
                 component.data = colony;
                 
-                // check if the building quantity is diferent.(there is a new building)
-                if (component.data.buildings.Count < this.Buildings.Count)
-                {
-                    flag = true;
-                    foreach (ColonyBuildingData newBuilding in this.Buildings)
-                    {
-                        // colony don't have this building
-                        if (component.GetBuilding(newBuilding.name) == null)
-                        {
-                            component.data.buildings.Add(newBuilding);
-                        }
-                    }
-                }
                 component.RestoreBuildings();
-                this._colonies.Add(component);
+                this.Colonies.Add(component);
             }
 
             if (flag)
@@ -105,7 +135,7 @@ namespace MorePartsMod.Managers
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             this.SaveColonies();
         }
@@ -114,7 +144,7 @@ namespace MorePartsMod.Managers
         {
             foreach (ColonyComponent colony in this.Colonies)
             {
-                if (colony.data.andress != this.player.Value.location.planet.Value.codeName)
+                if (colony.data.address != this.player.Value.location.planet.Value.codeName)
                 {
                     continue;
                 }
@@ -141,13 +171,13 @@ namespace MorePartsMod.Managers
             bool flag = false, flag2 = false;
             foreach(ResourceModule resource in resources)
             {
-                if (resource.resourceType.name == "Electronic_Component")
+                if (resource.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
                 {
                     flag = true;
                     continue;
                 }
 
-                if (resource.resourceType.name == "Construction_Material")
+                if (resource.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
                 {
                     flag2 = true;
                 }
@@ -194,7 +224,7 @@ namespace MorePartsMod.Managers
             ResourceModule construction = null;
             foreach (ResourceModule resourceGroup in rocket.resources.globalGroups)
             {
-                if(resourceGroup.resourceType.name == "Electronic_Component")
+                if(resourceGroup.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
                 {
                     if(resourceGroup.ResourceAmount < electronicRequired)
                     {
@@ -203,7 +233,7 @@ namespace MorePartsMod.Managers
                     electronic = resourceGroup;
                 }
 
-                if (resourceGroup.resourceType.name == "Construction_Material")
+                if (resourceGroup.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
@@ -253,26 +283,25 @@ namespace MorePartsMod.Managers
         {
             this._newColony.name = "Name";
 
-            GameObject colony = GameObject.Instantiate(MorePartsMod.Main.Assets.LoadAsset<GameObject>("Colony"));
+            GameObject colony = GameObject.Instantiate(MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Colony"));
 
-            WorldBuildings.addBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
+            Utils.AddBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
             
-            GameObject holder = colony.transform.FindChild("Holder").gameObject;
+            GameObject holder = colony.transform.Find("Holder").gameObject;
             holder.transform.eulerAngles = new Vector3(0, 0, this._newColony.angle);
 
             ColonyComponent component = holder.AddComponent<ColonyComponent>();
-            this._newColony.buildings = new List<ColonyBuildingData>(this.Buildings);
             component.data = this._newColony;
             component.RestoreBuildings();
             this.Colonies.Add(component);
-            MorePartsMod.Main.SaveColonyInfo(this._colonies);
+            this.SaveColonies();
         }
 
         private bool CheckColonyDistance(string address,Double2 colonyPosition)
         {
             foreach(ColonyComponent colony in this.Colonies)
             {
-                if(colony.data.andress != address)
+                if(colony.data.address != address)
                 {
                     continue;
                 }
@@ -284,6 +313,14 @@ namespace MorePartsMod.Managers
                 }
             }
             return true;
+        }
+
+        public void DrawInMap()
+        {
+            foreach (ColonyComponent colony in main.Colonies)
+            {
+                Utils.DrawLandmarkInPlanet(colony.data.getPlanet(), colony.data.LandmarkAngle, colony.data.position, colony.data.name, Color.white);
+            }
         }
 
     }

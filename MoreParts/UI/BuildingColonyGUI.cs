@@ -37,7 +37,7 @@ namespace MorePartsMod.UI
 
         private void generateUI()
         {
-            foreach(ColonyData colony in MorePartsMod.Main.ColoniesInfo)
+            foreach(ColonyData colony in MorePartsModMain.Main.ColoniesInfo)
             {
                 if(!colony.isBuildingActive("Launch Pad") || !colony.isBuildingActive("VAB"))
                 {
@@ -51,7 +51,7 @@ namespace MorePartsMod.UI
 
         private void SetSpawnPoint(ColonyData spawnPoint)
         {
-            MorePartsMod.Main.spawnPoint = spawnPoint;
+            MorePartsModMain.Main.spawnPoint = spawnPoint;
             ScreenManager.main.CloseCurrent();
         }
     }

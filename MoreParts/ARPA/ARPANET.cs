@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace MorePartsMod.ARPA
 {
-    class ARPANET
+    public class ARPANET
     {
         private List<Node> _nodes; // all satellites
         private int _counter;
@@ -37,7 +37,7 @@ namespace MorePartsMod.ARPA
         {
             foreach (Node node in this._nodes)
             {
-                node.mark = false;
+                node.Mark = false;
             }
         }
 
@@ -46,7 +46,7 @@ namespace MorePartsMod.ARPA
             foreach (Node node in this._nodes)
             {
                 
-                if (node == origin || node.mark)
+                if (node == origin || node.Mark)
                 {
                     continue;
                 }
@@ -58,17 +58,17 @@ namespace MorePartsMod.ARPA
 
                 if (node.IsOrigin)
                 {
-                    origin.next = node;
+                    origin.Next = node;
                     return true;
                 }
 
-                node.mark = true;
+                node.Mark = true;
                 if (this.IsConnected(node))
                 {
-                    origin.next = node;
+                    origin.Next = node;
                     return true;
                 }
-                node.mark = false;
+                node.Mark = false;
             }
 
             return false;
@@ -84,11 +84,11 @@ namespace MorePartsMod.ARPA
                     return true;
                 }
 
-                if (!aux.IsAvailableTo(aux.next))
+                if (!aux.IsAvailableTo(aux.Next))
                 {
                     return false;
                 }
-                aux = aux.next;
+                aux = aux.Next;
             }
             return false;
         }
@@ -99,8 +99,8 @@ namespace MorePartsMod.ARPA
             {
                 return;
             }
-            this.ClearRoute(origin.next);
-            origin.next = null;
+            this.ClearRoute(origin.Next);
+            origin.Next = null;
         }
     
     }

@@ -40,7 +40,7 @@ namespace MorePartsMod.Patches
         [HarmonyPrefix]
         public static bool Prefix(BuildManager __instance)
         {
-            if (MorePartsMod.Main.spawnPoint == null)
+            if (MorePartsModMain.Main.spawnPoint == null)
             {
                 return true;
             }
@@ -49,21 +49,26 @@ namespace MorePartsMod.Patches
             ResourceModule[] resources = __instance.buildGrid.activeGrid.partsHolder.GetModules<ResourceModule>();
             foreach (ResourceModule resource in resources)
             {
-                if (!validResource(resource.resourceType.name))
+                if (IsSpeacialResource(resource.resourceType.name))
                 {
-                    ShowMenu("You can't transport " + resource.resourceType.name, "Ok");
-                    return false;
+                    resource.resourcePercent.Value = 0;
                 }
-                
-                resourcesWeight += resource.wetMass.Value - (resource.wetMass.Value * resource.dryMassPercent.Value);
+
+                if(resource.resourceType.resourceMass > 0)
+                {
+                    resourcesWeight += (resource.wetMass.Value - (resource.wetMass.Value * resource.dryMassPercent.Value)) * resource.resourcePercent.Value;
+                }
             }
+
             RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
 
-            if (RocketMass > MorePartsMod.Main.spawnPoint.rocketParts)
+            if (RocketMass > MorePartsModMain.Main.spawnPoint.getResource(MorePartsTypes.ROCKET_MATERIAL))
             {
-                ShowMenu("Insufficient rocket material on " + MorePartsMod.Main.spawnPoint.name, "Ok");
+                ShowMenu("Insufficient rocket material on " + MorePartsModMain.Main.spawnPoint.name, "Ok");
                 return false;
             }
+
+            MorePartsModMain.Main.spawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, RocketMass);
 
             return true;
         }
@@ -77,24 +82,29 @@ namespace MorePartsMod.Patches
             MenuGenerator.ShowChoices(() => text, array);
         }
 
-        private static bool validResource(string resourceName)
+        private static bool IsSpeacialResource(string resourceName)
         {
-            if (resourceName == "Rocket_Material")
+            if (resourceName == MorePartsTypes.ROCKET_MATERIAL)
             {
-                return false;
+                return true;
             }
 
-            if (resourceName == "Electronic_Component")
+            if (resourceName == MorePartsTypes.ELECTRONIC_COMPONENT)
             {
-                return false;
+                return true;
             }
 
-            if (resourceName == "Construction_Material")
+            if (resourceName == MorePartsTypes.CONSTRUCTION_MATERIAL)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            if (resourceName == MorePartsTypes.MATERIAL)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 

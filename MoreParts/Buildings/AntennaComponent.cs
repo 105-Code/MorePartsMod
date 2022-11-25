@@ -21,20 +21,23 @@ namespace MorePartsMod.Buildings
 		private WorldLocation _position;
 		private bool _hasTelecommunicationDish;
 		private Planet _sunPlanet;
-		private bool _showTelecomunicationLines;
 		private bool _enableTelecomunicationLines;
 		private Color _lineColor;
-		public bool ShowTelecommunicationLines { set => this._showTelecomunicationLines = value; }
+		public bool ShowTelecommunicationLines { set; private get; }
 
 
 
 		private void Awake()
 		{
+			if (GameManager.main == null)
+			{
+				return;
+			}
 			main = this;
 			this._position = this.GetComponent<WorldLocation>();
 			this._network = new ARPANET(this._position);
 			this._hasTelecommunicationDish = false;
-			this._showTelecomunicationLines = false;
+			this.ShowTelecommunicationLines = false;
 			this._enableTelecomunicationLines = KeySettings.Main.Show_Telecommunication_lines;
 			this._sunPlanet = Base.planetLoader.planets["Sun"];
 			this._lineColor = new Color(0.25f, 0.74f, 0.3f, 0.4f);
@@ -97,7 +100,7 @@ namespace MorePartsMod.Buildings
 			try
 			{
 				bool result;
-				if (origin.next != null)
+				if (origin.Next != null)
 				{
 					result = this._network.CheckRoute(origin);
 					if (result)
@@ -106,7 +109,7 @@ namespace MorePartsMod.Buildings
 					}
 					this._network.ClearRoute(origin);
 				}
-				origin.mark = true;
+				origin.Mark = true;
 				result = this._network.IsConnected(origin);
 				if (result)
 				{
@@ -137,28 +140,11 @@ namespace MorePartsMod.Buildings
 
 		public void DrawInMap()
 		{
-			this.DrawPointInMap();
+			Utils.DrawLandmarkInPlanet(this._position.planet.Value, (float)this._position.Value.position.AngleDegrees, this._position.Value.position, "Space Center", Color.white);
 
-			if (this._enableTelecomunicationLines && this._hasTelecommunicationDish && this._showTelecomunicationLines )
+			if (this._enableTelecomunicationLines && this._hasTelecommunicationDish && this.ShowTelecommunicationLines)
 			{
 				this.DrawTelecommunicationLines();
-			}
-		}
-		
-
-		private void DrawPointInMap()
-		{
-			Planet planet = this._position.planet.Value;
-			double num = planet.data.basics.radius * 6;
-			float num2 = Mathf.Min(MapDrawer.GetFadeIn(Map.view.view.distance, num * 0.5, num * 0.4), MapDrawer.GetFadeOut(Map.view.view.distance, 20000.0, 15000.0));
-			if (num2 > 0f)
-			{
-				Color color = new Color(1f, 1f, 1f, num2);
-				Vector2 normal = Double2.CosSin(this._position.Value.position.AngleRadians);
-				float x = (float)(planet.mapHolder.position.x + (this._position.Value.position.x / 1000));
-				float y = (float)(planet.mapHolder.position.y + (this._position.Value.position.y / 1000));
-				Vector2 position = new Vector2(x, y);
-				MapDrawer.DrawPointWithText(15, color, "Space Center", 40, color, position, normal, 4, 4);
 			}
 		}
 
@@ -180,7 +166,7 @@ namespace MorePartsMod.Buildings
 					break;
 				}
 
-				aux = aux.next;
+				aux = aux.Next;
 			}
 
 			Map.solidLine.DrawLine(points.ToArray(), this._sunPlanet, _lineColor, _lineColor);

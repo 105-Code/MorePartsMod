@@ -1,66 +1,48 @@
-﻿using SFS;
+﻿using MorePartsMod.Parts.Types;
+using SFS;
 using SFS.Parts;
-using SFS.Parts.Modules;
 using SFS.Translations;
-using SFS.UI;
 using SFS.Variables;
 using SFS.World;
 using System;
 using UnityEngine;
 using static SFS.World.Rocket;
 
+
 namespace MorePartsMod.Parts
 {
-	class RotorModule : MonoBehaviour, INJ_IsPlayer, INJ_Location, INJ_Throttle, INJ_Physics
+	public class RotorModule : ElectricalModule, INJ_Location, INJ_Throttle, INJ_Physics
 	{
-		private VariablesModule _variables;
-		private Part _part;
+
 		private Animator _animator;
+
 		private VariableList<bool>.Variable _isOn;
 		private VariableList<double>.Variable _throttle;
 		private VariableList<double>.Variable _flow_rate;
-		private FlowModule _source;
-		private Rigidbody2D _rb2d;
-		private Location _location;
-		private float _turn;
+
 		private Transform _base;
+
 		private const int RPM = 2800;
 		private const float Radius = 0.6f;
 		private float _area;
 		private float _rotorVelocity;
 
-		private bool _isPlayer;
-
-		private I_MsgLogger Logger
-		{
-			get
-			{
-				if (!this._isPlayer)
-				{
-					return new MsgNone();
-				}
-				return MsgDrawer.main;
-			}
-		}
-
-		public Rigidbody2D Rb2d { set => this._rb2d = value; }
-		public bool IsPlayer { set => this._isPlayer = value; }
-		public Location Location { set => this._location = value; }
+		public Rigidbody2D Rb2d { set; get; }
+		public Location Location { set; get; }
 		public float Throttle {set => this._throttle.Value = value;	}
 
 
-		private void Awake()
+		public override void Awake()
 		{
-			this._part = this.GetComponent<Part>();
+			base.Awake();
 			this._animator = this.GetComponent<Animator>();
-			this._source = this.GetComponent<FlowModule>();
-			this._variables = this._part.variablesModule;
 
-			this._isOn = this._variables.boolVariables.GetVariable("isOn");
+			this._isOn = this.getBoolVariable("isOn");
+			this._flow_rate = this.getDoubleVariable("flow_rate");
+			this._throttle = this.getDoubleVariable("throttle");
+
 			this._base = this.transform.FindChild("Base");
-			this._throttle = this._part.variablesModule.doubleVariables.GetVariable("throttle");
-			this._flow_rate = this._part.variablesModule.doubleVariables.GetVariable("flow_rate");
-			this._part.onPartUsed.AddListener(this.Toggle);
+
 			this._area = (float)(Math.PI * Radius * Radius);
 		}
 
@@ -71,11 +53,13 @@ namespace MorePartsMod.Parts
 				base.enabled = false;
 				return;
 			}
+
 			this.CheckOutOfFuel();
-			this._source.onStateChange += this.CheckOutOfFuel;
+			this.FlowModule.onStateChange += this.CheckOutOfFuel;
 			this._isOn.onValueChange += this.RecalculateRotorThrottle;
 			this._throttle.onValueChange += this.RecalculateRotorThrottle;
 			this._throttle.onValueChange += this.RecalculateMassFlow;
+			this.Part.onPartUsed.AddListener(this.Toggle);
 		}
 
 		private void RecalculateMassFlow()
@@ -105,7 +89,7 @@ namespace MorePartsMod.Parts
 			this._flow_rate.Value = 0f;
 		}
 
-		private void CheckOutOfFuel()
+		public override void CheckOutOfFuel()
 		{
 			if (this._isOn.Value && !this.HasFuel(this.Logger))
 			{
@@ -113,11 +97,6 @@ namespace MorePartsMod.Parts
 				this._flow_rate.Value = 0f;
 				this._animator.SetBool("isOn", false);
 			}
-		}
-
-		private bool HasFuel(I_MsgLogger logger)
-		{
-			return this._source.CanFlow(logger);
 		}
 
 		private void Toggle(UsePartData data)
@@ -158,34 +137,19 @@ namespace MorePartsMod.Parts
 
 		private void FixedUpdate()
 		{
-			if (this._rb2d == null || !this._isOn.Value || this._location.planet == null)
+			if (this.Rb2d == null || !this._isOn.Value || this.Location.planet == null)
 			{
 				return;
 			}
-			float exitVelocity = (float) ((2 * this._rotorVelocity) - this._location.VerticalVelocity);
-			float density = (float) this._location.planet.GetAtmosphericDensity(this._location.Height);
-			double thrust = 0.5 * density * this._area * ( (exitVelocity * exitVelocity) - (this._location.VerticalVelocity * this._location.VerticalVelocity));
+			// check https://www.grc.nasa.gov/www/k-12/airplane/propth.html
+			float exitVelocity = (float) ((2 * this._rotorVelocity) - this.Location.VerticalVelocity);
+			float density = (float) this.Location.planet.GetAtmosphericDensity(this.Location.Height);
+			double thrust = 0.5 * density * this._area * ( (exitVelocity * exitVelocity) - (this.Location.VerticalVelocity * this.Location.VerticalVelocity));
 
-			Vector2 force = this._base.transform.TransformVector(Vector2.up * (float)(thrust/this._rb2d.mass));
-			Vector2 relativePoint = this._rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(this.transform, this._rb2d, new Vector2(0,0)));
-			this._rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
+			Vector2 force = this._base.transform.TransformVector(Vector2.up * (float)(thrust/this.Rb2d.mass));
+			Vector2 relativePoint = this.Rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(this.transform, this.Rb2d, new Vector2(0,0)));
+			this.Rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
 		}
 
-		public static void Setup()
-		{
-			Part part;
-			Base.partsLoader.parts.TryGetValue("Rotor", out part);
-
-			if (part == null)
-			{
-				Debug.Log("Rotor not found!");
-				return;
-			}
-
-			part.gameObject.AddComponent<RotorModule>();
-
-			Debug.Log("Rotor component added!");
-		}
-	
 	}
 }

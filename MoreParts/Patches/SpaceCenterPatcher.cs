@@ -15,11 +15,11 @@ namespace MorePartsMod.Patches
         {
             SpaceCenterData spaceCenter = Base.planetLoader.spaceCenter;
 
-            GameObject gameObject = GameObject.Instantiate(MorePartsMod.Main.Assets.LoadAsset<GameObject>("Telecommunication Antenna"));
+            GameObject gameObject = GameObject.Instantiate(MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Telecommunication Antenna"));
             gameObject.transform.parent = __instance.transform;
             gameObject.SetActive(true);
 
-            WorldBuildings.addBuildingToWorld(gameObject, "Model", spaceCenter.address.GetPlanet(), spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0));
+            Utils.AddBuildingToWorld(gameObject, "Model", spaceCenter.address.GetPlanet(), spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0));
 
             StaticWorldObject buildingObject = gameObject.GetComponent<StaticWorldObject>();
             WorldLoader worldLoader = gameObject.GetComponent<WorldLoader>();

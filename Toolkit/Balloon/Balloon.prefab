@@ -314,6 +314,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0.5
   composedBaseDepth:
@@ -368,6 +369,8 @@ MonoBehaviour:
   - {x: 0.24, y: 1.0000001}
   - {x: 0.24, y: 0}
   texture: {fileID: 11400000, guid: 770230d52d3bb90419c7a3efd01f9b2e, type: 2}
+  type: 0
+  colorBasic: {r: 1, g: 1, b: 1, a: 1}
   colorModule: {fileID: 0}
 --- !u!33 &2213396640986247716
 MeshFilter:
@@ -432,6 +435,7 @@ GameObject:
   - component: {fileID: 609440245930085783}
   - component: {fileID: 1694083014706337627}
   - component: {fileID: 2616069240768654397}
+  - component: {fileID: 7795409871053759416}
   m_Layer: 8
   m_Name: Balloon
   m_TagString: Untagged
@@ -854,6 +858,20 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     audioSource: {fileID: 0}
+--- !u!114 &7795409871053759416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2725624275097492947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinMorePartsVersion: 2.2.0
+  modules: 00000000
 --- !u!1 &2844766885517252175
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,6 +923,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  physicsCollider: 0
   clickArea: 1
   baseDepth: 0.5
   composedBaseDepth:
@@ -961,6 +980,8 @@ MonoBehaviour:
   - {x: 0.24000002, y: 1.0000001}
   - {x: 0.24000002, y: 0}
   texture: {fileID: 11400000, guid: 770230d52d3bb90419c7a3efd01f9b2e, type: 2}
+  type: 0
+  colorBasic: {r: 1, g: 1, b: 1, a: 1}
   colorModule: {fileID: 0}
 --- !u!33 &3731634639669708870
 MeshFilter:

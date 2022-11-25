@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MoreParts
   m_EditorClassIdentifier: 
   DisplayName: MoreParts Pack
-  Version: v2.1.0
+  Version: v2.2.0
   Description: Add new parts!
   Author: dani0105
-  ShowIcon: 0
-  Icon: {fileID: 0}
+  ShowIcon: 1
+  Icon: {fileID: 2800000, guid: edfb648b3bbac7044bdd2d0dd9362105, type: 3}

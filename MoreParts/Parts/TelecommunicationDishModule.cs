@@ -1,65 +1,57 @@
 ﻿using MorePartsMod.ARPA;
 using MorePartsMod.Buildings;
+using MorePartsMod.Parts.Types;
 using SFS;
 using SFS.Parts;
-using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
 using UnityEngine;
-using static SFS.Parts.Modules.FlowModule;
 using static SFS.World.Rocket;
+
 
 namespace MorePartsMod.Parts
 {
-	class TelecommunicationDishModule : MonoBehaviour, INJ_Rocket
+	public class TelecommunicationDishModule : ElectricalModule, INJ_Rocket
 	{
-		private Part _part;
+
 		private VariableList<bool>.Variable _isOn;
 		private VariableList<double>.Variable _flowRate;
 		private VariableList<double>.Variable _state;
 		private VariableList<double>.Variable _targetState;
-		private Node _rocketNode;
-		private Rocket _rocket;
+
 		private bool _notifyDisconnection;
 		private bool _notifyConnection;
 		private float _time = 3f;
 		private const float _ping = 3f;
 		private int _maxTimeWarp;
-		private FlowModule _source;
 
-		public Node Node { get => this._rocketNode; }
-		public Rocket Rocket { set => this._rocket = value; get => this._rocket; }
+		public Node Node { private set; get; }
+		
+		public Rocket Rocket { set; get; }
 		
 		public bool IsActive { get => this._isOn.Value; }
+		
 		public bool IsConnected { get => !this._notifyConnection; }
 
-		private I_MsgLogger Logger
+		public override void Awake()
 		{
-			get
-			{
-				if (!this._rocket.isPlayer)
-				{
-					return new MsgNone();
-				}
-				return MsgDrawer.main;
-			}
-		}
-
-
-		private void Awake()
-		{
-			this._part = this.GetComponent<Part>();
-			this._source = this.GetComponent<FlowModule>();
-			this._isOn = this._part.variablesModule.boolVariables.GetVariable("isOn");
-			this._flowRate = this._part.variablesModule.doubleVariables.GetVariable("flow_rate");
-			this._state = this._part.variablesModule.doubleVariables.GetVariable("state");
-			this._targetState = this._part.variablesModule.doubleVariables.GetVariable("target_state");
-			this._part.onPartUsed.AddListener(this.Toggle);
+			base.Awake();
+			this._isOn = this.getBoolVariable("isOn");
+			this._flowRate = this.getDoubleVariable("flow_rate");
+			this._state = this.getDoubleVariable("state");
+			this._targetState = this.getDoubleVariable("target_state");
+			this.Part.onPartUsed.AddListener(this.Toggle);
 
 			this._notifyConnection = true;
 			this._notifyDisconnection = true;
 			this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == 3 ? 5 : 3;
+		}
+
+		public void OnDestroy()
+		{
+			AntennaComponent.main.RemoveNode(this);
+			this.Node = null;
 		}
 
 		private void Start()
@@ -69,20 +61,22 @@ namespace MorePartsMod.Parts
 				base.enabled = false;
 				return;
 			}
-			this._source.onStateChange += this.CheckOutOfElectricity;
-			this.CheckOutOfElectricity();
+			this.FlowModule.onStateChange += this.CheckOutOfFuel;
+			this.CheckOutOfFuel();
 			
 			if (this._isOn.Value) // telecommunication dish is on 
 			{
 				this._flowRate.Value = 0.1;
-				this._rocketNode = AntennaComponent.main.AddNode(this);
+				this.Node = AntennaComponent.main.AddNode(this);
+				this._targetState.Value = 1;
 			}
 			else
 			{
 				this._flowRate.Value = 0;
-				if (this._rocket.isPlayer)
+				this._targetState.Value = 0;
+				if (this.Rocket.isPlayer)
 				{
-					this._rocket.hasControl.Value = false;
+					this.Rocket.hasControl.Value = false;
 				}
 			}
 		}
@@ -95,7 +89,7 @@ namespace MorePartsMod.Parts
 				return;
 			}
 
-			if (!this._rocket.isPlayer || !this._isOn.Value ) //if is not the player or dish is off
+			if (!this.IsPlayer || !this._isOn.Value ) //if is not the player or dish is off
 			{
 				return;
 			}
@@ -113,7 +107,7 @@ namespace MorePartsMod.Parts
 			}
 			this._time = 0;
 
-			if (AntennaComponent.main.IsConnected(this._rocketNode))
+			if (AntennaComponent.main.IsConnected(this.Node))
 			{
 				if (this._notifyConnection)
 				{
@@ -122,7 +116,7 @@ namespace MorePartsMod.Parts
 					this._notifyConnection = false;
 					this._notifyDisconnection = true;
 				}
-				this._rocket.hasControl.Value = true;
+				this.Rocket.hasControl.Value = true;
 				return;
 			}
 			this.DoDisconnection();
@@ -130,7 +124,7 @@ namespace MorePartsMod.Parts
 
 		private void DoDisconnection()
 		{
-			this._rocket.hasControl.Value = false;
+			this.Rocket.hasControl.Value = false;
 			if (this._notifyDisconnection)
 			{
 				AntennaComponent.main.ShowTelecommunicationLines = false;
@@ -141,25 +135,21 @@ namespace MorePartsMod.Parts
 			}
 		}
 
-		private void CheckOutOfElectricity()
+		public override void CheckOutOfFuel()
 		{
-			if (this._isOn.Value && !this.HasElectricity(this.Logger))
+			if (this._isOn.Value && !this.HasFuel(this.Logger))
 			{
 				this._isOn.Value = false;
 				this._targetState.Value = 0;
 				this._flowRate.Value = 0;
-				this._rocket.hasControl.Value = false;
+				this.Rocket.hasControl.Value = false;
 			}
 		}
 
-		private bool HasElectricity(I_MsgLogger logger)
-		{
-			return this._source.CanFlow(logger);
-		}
 
 		public void _toggle()
 		{
-			if (!this._rocket.isPlayer)
+			if (!this.Rocket.isPlayer)
 			{
 				return;
 			}
@@ -168,7 +158,7 @@ namespace MorePartsMod.Parts
 			{
 				AntennaComponent.main.RemoveNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish Off");
-				this._rocketNode = null;
+				this.Node = null;
 				this._notifyDisconnection = true;
 				this.DoDisconnection(); 
 				this._flowRate.Value = 0;
@@ -177,7 +167,7 @@ namespace MorePartsMod.Parts
 			}
 			else
 			{
-				this._rocketNode = AntennaComponent.main.AddNode(this);
+				this.Node = AntennaComponent.main.AddNode(this);
 				MsgDrawer.main.Log("Telecommunication Dish On");
 				this._notifyDisconnection = true;
 				this._notifyConnection = true; 
@@ -185,7 +175,7 @@ namespace MorePartsMod.Parts
 				this._targetState.Value = 1;
 			}
 			this._isOn.Value = !this._isOn.Value;
-			this.CheckOutOfElectricity();
+			this.CheckOutOfFuel();
 		}
 
 		public void Toggle(UsePartData data)
@@ -194,32 +184,5 @@ namespace MorePartsMod.Parts
 			data.successfullyUsedPart = true;
 		}
 
-		public static void Setup()
-		{
-			Part part;
-			Base.partsLoader.parts.TryGetValue("Telecommunication Dish", out part);
-
-			if (part == null)
-			{
-				Debug.Log("Telecommunication Dish not found!");
-				return;
-			}
-
-			part.gameObject.AddComponent<TelecommunicationDishModule>();
-
-			Base.partsLoader.parts.TryGetValue("Antenna", out part);
-
-			if (part == null)
-			{
-				Debug.Log("Antenna not found!");
-				return;
-			}
-
-			part.gameObject.AddComponent<TelecommunicationDishModule>();
-
-			Debug.Log("Telecommunication Dish component added!");
-			Debug.Log("Antenna component added!");
-		}
-	
 	}
 }

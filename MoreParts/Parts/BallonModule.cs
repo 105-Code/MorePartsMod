@@ -1,4 +1,5 @@
-﻿using SFS;
+﻿using MorePartsMod.Parts.Types;
+using SFS;
 using SFS.Parts;
 using SFS.Parts.Modules;
 using SFS.UI;
@@ -10,37 +11,31 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    class BalloonModule : MonoBehaviour, INJ_Location, INJ_Physics
+    public class BalloonModule : BaseModule, INJ_Location, INJ_Physics
 	{
 		private OrientationModule _orientation;
-		private VariablesModule _variables;
-		private Part _part;
 
 		private VariableList<double>.Variable _state;
 		private VariableList<double>.Variable _targetState;
 
 		private Transform _balloon;
-		private Location _location;
-		private Rigidbody2D _rb2d;
 
 		private double _volumn = 1.33f * Math.PI * Math.Pow(300, 3);
 		private bool _isOpen;
 
-		public Location Location { get => this._location; set => this._location = value; }
-		public Rigidbody2D Rb2d{ get =>	this._rb2d;	set =>	this._rb2d = value;	}
+		public Location Location { get; set; }
+		public Rigidbody2D Rb2d{ get; set;	}
 
-		private void Awake()
+		public override void Awake()
 		{
-			this._part = this.GetComponent<Part>();
-
-			this._variables = this._part.variablesModule;
-			this._orientation = this._part.orientation;
+			base.Awake();
+			this._orientation = this.Part.orientation;
 			this._isOpen = false;
 
-			this._part.onPartUsed.AddListener(this.Deploy);
+			this.Part.onPartUsed.AddListener(this.Deploy);
 			this._balloon = this.transform.FindChild("Deployed Ballon");
-			this._state = this._variables.doubleVariables.GetVariable("state");
-			this._targetState = this._variables.doubleVariables.GetVariable("state_target");
+			this._state = this.getDoubleVariable("state");
+			this._targetState = this.getDoubleVariable("state_target");
 		}
 
 		private void Start()
@@ -56,35 +51,35 @@ namespace MorePartsMod.Parts
 
 		private void FixedUpdate()
 		{
-			if (!this._isOpen || this.Location.planet == null || this._location == null)
+			if (!this._isOpen || this.Location.planet == null || this.Location == null)
 			{
 				return;
 			}
 
 			Vector2 force;
 			
-			float airDensity = (float) this._location.planet.GetAtmosphericDensity(this._location.Height);
-			float gravity = (float) this._location.planet.GetGravity(this._location.position).y * -1;
-			float ascensionForce = ((airDensity * gravity  * (float)this._volumn) - this._rb2d.mass* gravity * 1000)/1000;
-			float aceleration = (float)Math.Sqrt(ascensionForce / 0.5f * this._rb2d.mass);
+			float airDensity = (float) this.Location.planet.GetAtmosphericDensity(this.Location.Height);
+			float gravity = (float) this.Location.planet.GetGravity(this.Location.position).y * -1;
+			float ascensionForce = ((airDensity * gravity  * (float)this._volumn) - this.Rb2d.mass* gravity * 1000)/1000;
+			float aceleration = (float)Math.Sqrt(ascensionForce / 0.5f * this.Rb2d.mass);
 
-			if (this._location.VerticalVelocity < 30)
+			if (this.Location.VerticalVelocity < 30)
 				force = this._balloon.transform.TransformVector(Vector2.up * (aceleration-gravity));
 			else
 				force = this._balloon.transform.TransformVector(Vector2.up);
 
-			Vector2 relativePoint = this._rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(base.transform, this._rb2d, new Vector2(-0.5f, -0.047f)));
-			this._rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
+			Vector2 relativePoint = this.Rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(base.transform, this.Rb2d, new Vector2(-0.5f, -0.047f)));
+			this.Rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
 		}
 
 		private void LateUpdate()
 		{
-			if (GameManager.main == null || this.Location.planet == null || this._location == null)
+			if (GameManager.main == null || this.Location.planet == null || this.Location == null)
 			{
 				return;
 			}
 
-			float newRotation = (this._orientation.orientation.Value.z * -1 * this._orientation.orientation.Value.x) - (this._rb2d.transform.localEulerAngles.z * this._orientation.orientation.Value.x) ;
+			float newRotation = (this._orientation.orientation.Value.z * -1 * this._orientation.orientation.Value.x) - (this.Rb2d.transform.localEulerAngles.z * this._orientation.orientation.Value.x) ;
 			this._balloon.localEulerAngles = new Vector3(1, 1, newRotation + Mathf.Sin(Time.time) * 3f * this._balloon.parent.lossyScale.x * this._balloon.parent.lossyScale.y);
 		}
 	
@@ -127,22 +122,5 @@ namespace MorePartsMod.Parts
 		{
 			base.enabled = this._isOpen = (this._targetState.Value == 1f);
 		}
-
-		public static void Setup()
-		{
-			Part balloon;
-			Base.partsLoader.parts.TryGetValue("Balloon", out balloon);
-
-			if(balloon == null)
-			{
-				Debug.Log("Balloon not found!");
-				return;
-			}
-
-			balloon.gameObject.AddComponent<BalloonModule>();
-			
-			Debug.Log("Balloon component added!");
-		}
-
 	}
 }

@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="UniTask">
       <HintPath>..\Dependencies\UniTask.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Dependencies\UnityEngine.dll</HintPath>
@@ -63,6 +64,7 @@
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>..\Dependencies\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
       <HintPath>..\Dependencies\UnityEngine.AssetBundleModule.dll</HintPath>
@@ -78,9 +80,11 @@
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>..\Dependencies\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
       <HintPath>..\Dependencies\UnityEngine.InputModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
       <HintPath>..\Dependencies\UnityEngine.Physics2DModule.dll</HintPath>
@@ -88,15 +92,19 @@
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>..\Dependencies\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextCoreFontEngineModule">
       <HintPath>..\Dependencies\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextCoreTextEngineModule">
       <HintPath>..\Dependencies\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\Dependencies\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Dependencies\UnityEngine.UI.dll</HintPath>
@@ -104,12 +112,15 @@
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
       <HintPath>..\Dependencies\UnityEngine.UIElementsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIElementsNativeModule">
       <HintPath>..\Dependencies\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
       <HintPath>..\Dependencies\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -117,26 +128,40 @@
     <Compile Include="ARPA\Node.cs" />
     <Compile Include="Buildings\VABComponent.cs" />
     <Compile Include="Buildings\SolarPanelComponent.cs" />
+    <Compile Include="ColonyBuildingFactory.cs" />
+    <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
     <Compile Include="Buildings\RefineryComponent.cs" />
+    <Compile Include="Parts\ContinuousTrackModule.cs" />
+    <Compile Include="Parts\ExcavatorModule.cs" />
     <Compile Include="Parts\RotorModule.cs" />
+    <Compile Include="Parts\ScannerModule.cs" />
+    <Compile Include="Parts\Types\BaseModule.cs" />
+    <Compile Include="Parts\Types\ElectricalModule.cs" />
     <Compile Include="Patches\RocketManagerPatcher.cs" />
     <Compile Include="Patches\MapManagerPatcher.cs" />
     <Compile Include="Patches\BuildManagerPatcher.cs" />
     <Compile Include="Patches\SpaceCenterPatcher.cs" />
     <Compile Include="Patches\CustomAssetsLoaderPatcher.cs" />
+    <Compile Include="MorePartsTypes.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
     <Compile Include="UI\ColonyGUI.cs" />
-    <Compile Include="WorldBuildings.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="Buildings\ColonyComponent.cs" />
     <Compile Include="KeySettings.cs" />
-    <Compile Include="MorePartsMod.cs" />
+    <Compile Include="MorePartsModMain.cs" />
     <Compile Include="Buildings\AntennaComponent.cs" />
     <Compile Include="Parts\BallonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="World\PlanetResourceData.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MorePartsUnity\MorePartsUnity.csproj">
+      <Project>{d7f01875-66b5-41c2-a3f3-0dcbc3ae2216}</Project>
+      <Name>MorePartsUnity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- After build copy dll file into managed folder and start the game -->
   <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
