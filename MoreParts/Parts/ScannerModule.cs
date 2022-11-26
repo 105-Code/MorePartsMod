@@ -44,7 +44,7 @@ namespace MorePartsMod.Parts
                 this.Toggle("You can't use in the atmosphere", false);
                 return;
             }
-            double max_altitud = this.Location.planet.data.atmospherePhysics.height + 50000;
+            double max_altitud = this.Location.planet.data.basics.timewarpHeight + 50000;
             if (this.Location.Height > max_altitud)
             {
                 this.Toggle("Over max altitud "+ max_altitud+"km", false);
@@ -89,11 +89,11 @@ namespace MorePartsMod.Parts
 		{
             if (this._active.Value)
             {
-                this.Toggle("Part turn OFF", false);
+                this.Toggle("GeoEye turn OFF", false);
             }
             else
             {
-                this.Toggle("Part turn ON", true);
+                this.Toggle("GeoEye turn ON", true);
             }
             this.CheckOutOfFuel();
             data.successfullyUsedPart = true;
