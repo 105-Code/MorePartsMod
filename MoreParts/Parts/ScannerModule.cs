@@ -47,7 +47,7 @@ namespace MorePartsMod.Parts
             double max_altitud = this.Location.planet.data.basics.timewarpHeight + 50000;
             if (this.Location.Height > max_altitud)
             {
-                this.Toggle("Over max altitud "+ max_altitud+"km", false);
+                this.Toggle("Max altitude " + max_altitud/1000+"km", false);
                 return;
             }
 
