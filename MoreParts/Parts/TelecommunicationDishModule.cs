@@ -17,7 +17,6 @@ namespace MorePartsMod.Parts
 
 		private VariableList<bool>.Variable _isOn;
 		private VariableList<double>.Variable _flowRate;
-		private VariableList<double>.Variable _state;
 		private VariableList<double>.Variable _targetState;
 
 		private bool _notifyDisconnection;
@@ -39,7 +38,6 @@ namespace MorePartsMod.Parts
 			base.Awake();
 			this._isOn = this.getBoolVariable("isOn");
 			this._flowRate = this.getDoubleVariable("flow_rate");
-			this._state = this.getDoubleVariable("state");
 			this._targetState = this.getDoubleVariable("target_state");
 			this.Part.onPartUsed.AddListener(this.Toggle);
 
@@ -63,22 +61,30 @@ namespace MorePartsMod.Parts
 			}
 			this.FlowModule.onStateChange += this.CheckOutOfFuel;
 			this.CheckOutOfFuel();
-			
-			if (this._isOn.Value) // telecommunication dish is on 
+
+			if (this.Rocket.isPlayer)
 			{
-				this._flowRate.Value = 0.1;
-				this.Node = AntennaComponent.main.AddNode(this);
-				this._targetState.Value = 1;
+				if (this._isOn.Value)
+				{
+					this._flowRate.Value = 0.1;
+					this._targetState.Value = 1;
+					this.Node = AntennaComponent.main.AddNode(this);
+				}
+				else
+				{
+					this._flowRate.Value = 0;
+					this._targetState.Value = 0;
+				}
 			}
 			else
 			{
-				this._flowRate.Value = 0;
-				this._targetState.Value = 0;
-				if (this.Rocket.isPlayer)
-				{
-					this.Rocket.hasControl.Value = false;
-				}
+				this._isOn.Value = true;
+				this._flowRate.Value = 0.1;
+				this._targetState.Value = 1;
+				this.Rocket.hasControl.Value = true;
+				this.Node = AntennaComponent.main.AddNode(this);
 			}
+
 		}
 
 		private void FixedUpdate()
