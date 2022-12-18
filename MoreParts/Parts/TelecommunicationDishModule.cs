@@ -48,8 +48,11 @@ namespace MorePartsMod.Parts
 
 		public void OnDestroy()
 		{
-			AntennaComponent.main.RemoveNode(this);
-			this.Node = null;
+			if(this.Node != null)
+			{
+				AntennaComponent.main.RemoveNode(this);
+				this.Node = null;
+			}
 		}
 
 		private void Start()
