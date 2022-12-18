@@ -27,6 +27,8 @@ namespace MorePartsMod
 
         public AssetBundle Assets { private set; get; }
 
+        public PlatformUtilities TokenUtil { private set; get; }
+
         #region mod information
         public override string ModNameID => "morepartsmod.danielrojas.website";
 
@@ -48,6 +50,7 @@ namespace MorePartsMod
         {
             Main = this;
             this.ColonyBuildingFactory = new ColonyBuildingFactory();
+            this.TokenUtil = new PlatformUtilities();
         }
 
         public override void Early_Load()
@@ -73,6 +76,9 @@ namespace MorePartsMod
         public override void Load()
         {
             KeySettings.Setup();
+
+            this.TokenUtil.useSocial = true;
+            this.TokenUtil.Initialize();
         }
 
 
@@ -108,27 +114,6 @@ namespace MorePartsMod
             if (data == null)
             {
                 return;
-            }
-
-            // Remove this for next version
-            foreach (ColonyData colony in data)
-            {
-                if (colony.structures.Keys.Count == 0)
-                {
-                    foreach (ColonyBuildingData building in colony.buildings)
-                    {
-                        if (!building.state)
-                        {
-                            continue;
-                        }
-                        colony.structures.Add(building.name, new Building(building.offset));
-                    }
-                }
-
-                if(colony.address == "" || colony.address == null)
-                {
-                    colony.address = colony.andress;
-                }
             }
 
             this.ColoniesInfo = data;
