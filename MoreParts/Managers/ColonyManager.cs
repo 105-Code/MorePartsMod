@@ -71,7 +71,7 @@ namespace MorePartsMod.Managers
 
         private void ToggleColonyFlow()
         {
-            MsgDrawer.main.Log(this._extractFlow? "Filling rocket resources" : "Extracting rocket resources" );
+            MsgDrawer.main.Log(this._extractFlow? "Refilling rocket resources" : "Extracting rocket resources" );
             foreach (ColonyComponent colony in this.Colonies)
             {
                 if (colony.data.address != this.player.Value.location.planet.Value.codeName)
@@ -267,7 +267,7 @@ namespace MorePartsMod.Managers
 
             if (!CheckAndReduceMaterials(7, 7))
             {
-                MsgDrawer.main.Log("Insufficient Materials");
+                MsgDrawer.main.Log("Insufficient materials");
                 return;
             }
 

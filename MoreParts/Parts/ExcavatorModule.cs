@@ -68,7 +68,7 @@ namespace MorePartsMod.Parts
 
             if(this._material_container == null)
             {
-                MsgDrawer.main.Log("There are Material container");
+                MsgDrawer.main.Log("You need a Material Container");
                 this._target_state.Value = 0;
                 return;
             }
@@ -77,7 +77,7 @@ namespace MorePartsMod.Parts
 
             if(deposit == null || !deposit.Active)
             {
-                MsgDrawer.main.Log("There are not Resource Deposit");
+                MsgDrawer.main.Log("There is not Resource Deposit");
                 this._target_state.Value = 0;
                 return;
             }
