@@ -126,7 +126,7 @@ namespace MorePartsMod.Patches
             List<JointGroup> groups;
             new JointGroup(RocketManager.GenerateJoints(array3), array3.ToList<Part>()).RecreateGroups(out groups);
             Rocket[] array4 = SpawnRockets(groups);
-            Staging.CreateStages(blueprint, array);
+            Staging.CreateStages(blueprint.stages, array);
             Rocket rocket = array4.FirstOrDefault((Rocket a) => a.hasControl.Value);
             PlayerController.main.player.Value = ((rocket != null) ? rocket : ((array4.Length != 0) ? array4[0] : null));
             MorePartsModMain.Main.spawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, BuildManagerLaunch.RocketMass);
