@@ -48,8 +48,11 @@ namespace MorePartsMod.Parts
 
 		public void OnDestroy()
 		{
-			AntennaComponent.main.RemoveNode(this);
-			this.Node = null;
+			if(this.Node != null)
+			{
+				AntennaComponent.main.RemoveNode(this);
+				this.Node = null;
+			}
 		}
 
 		private void Start()
@@ -74,6 +77,7 @@ namespace MorePartsMod.Parts
 				{
 					this._flowRate.Value = 0;
 					this._targetState.Value = 0;
+					this.Rocket.hasControl.Value = false;
 				}
 			}
 			else

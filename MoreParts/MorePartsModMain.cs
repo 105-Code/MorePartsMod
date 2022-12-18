@@ -1,16 +1,10 @@
 ﻿using HarmonyLib;
 using ModLoader;
 using ModLoader.Helpers;
-using MorePartsMod.Buildings;
 using MorePartsMod.Managers;
-using MorePartsMod.Parts;
-using MorePartsMod.World;
 using SFS;
 using SFS.IO;
 using SFS.Parsers.Json;
-using SFS.Parts;
-using SFS.WorldBase;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -33,6 +27,8 @@ namespace MorePartsMod
 
         public AssetBundle Assets { private set; get; }
 
+        public PlatformUtilities TokenUtil { private set; get; }
+
         #region mod information
         public override string ModNameID => "morepartsmod.danielrojas.website";
 
@@ -40,9 +36,9 @@ namespace MorePartsMod
 
         public override string Author => "dani0105";
 
-        public override string MinimumGameVersionNecessary => "0.3.0";
+        public override string MinimumGameVersionNecessary => "1.5.9.6";
 
-        public override string ModVersion => "2.2.0";
+        public override string ModVersion => "3.0.0";
 
         public override string Description => "Add special features to the MoreParts Pack";
 
@@ -54,6 +50,7 @@ namespace MorePartsMod
         {
             Main = this;
             this.ColonyBuildingFactory = new ColonyBuildingFactory();
+            this.TokenUtil = new PlatformUtilities();
         }
 
         public override void Early_Load()
@@ -79,6 +76,9 @@ namespace MorePartsMod
         public override void Load()
         {
             KeySettings.Setup();
+
+            this.TokenUtil.useSocial = true;
+            this.TokenUtil.Initialize();
         }
 
 
@@ -114,27 +114,6 @@ namespace MorePartsMod
             if (data == null)
             {
                 return;
-            }
-
-            // Remove this for next version
-            foreach (ColonyData colony in data)
-            {
-                if (colony.structures.Keys.Count == 0)
-                {
-                    foreach (ColonyBuildingData building in colony.buildings)
-                    {
-                        if (!building.state)
-                        {
-                            continue;
-                        }
-                        colony.structures.Add(building.name, new Building(building.offset));
-                    }
-                }
-
-                if(colony.address == "" || colony.address == null)
-                {
-                    colony.address = colony.andress;
-                }
             }
 
             this.ColoniesInfo = data;

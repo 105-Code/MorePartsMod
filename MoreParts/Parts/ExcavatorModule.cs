@@ -40,14 +40,7 @@ namespace MorePartsMod.Parts
 
         private void Start()
         {
-            foreach (ResourceModule resourceModule in this.Rocket.resources.globalGroups)
-            {
-
-                if (resourceModule.resourceType.name == MorePartsTypes.MATERIAL)
-                {
-                    this._material_container = resourceModule;
-                }
-            }
+            this._material_container = this.GetMaterialContainer();
             this._target_state = this.getDoubleVariable("target_state");
             this._state = this.getDoubleVariable("state");
             this._flow_rate = this.getDoubleVariable("flow_rate");
@@ -59,6 +52,23 @@ namespace MorePartsMod.Parts
             this._excavator_object= this.transform.Find("Stick").Find("Excavator");
         }
 
+        private ResourceModule GetMaterialContainer() {
+            if(this.Rocket == null || this.Rocket.resources == null)
+            {
+                return null;
+            }
+
+            foreach (ResourceModule resourceModule in this.Rocket.resources.globalGroups)
+            {
+
+                if (resourceModule.resourceType.name == MorePartsTypes.MATERIAL)
+                {
+                    return resourceModule;
+                }
+            }
+            return null;
+        }
+
         private void Update()
         {
             if (GameManager.main == null || this._state.Value == 0 || this.Location == null)
@@ -68,16 +78,21 @@ namespace MorePartsMod.Parts
 
             if(this._material_container == null)
             {
-                MsgDrawer.main.Log("There are Material container");
-                this._target_state.Value = 0;
-                return;
+                this._material_container = this.GetMaterialContainer();
+                if(this._material_container == null)
+                {
+                    MsgDrawer.main.Log("You need a Material Container");
+                    this._target_state.Value = 0;
+                    return;
+                }
             }
+
 
             ReourceDeposit deposit = ResourcesManger.Main.CurrentDeposit;
 
             if(deposit == null || !deposit.Active)
             {
-                MsgDrawer.main.Log("There are not Resource Deposit");
+                MsgDrawer.main.Log("There is not Resource Deposit");
                 this._target_state.Value = 0;
                 return;
             }
