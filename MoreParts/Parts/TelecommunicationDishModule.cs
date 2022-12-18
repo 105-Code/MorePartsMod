@@ -77,6 +77,7 @@ namespace MorePartsMod.Parts
 				{
 					this._flowRate.Value = 0;
 					this._targetState.Value = 0;
+					this.Rocket.hasControl.Value = false;
 				}
 			}
 			else
