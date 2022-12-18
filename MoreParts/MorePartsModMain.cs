@@ -1,16 +1,10 @@
 ﻿using HarmonyLib;
 using ModLoader;
 using ModLoader.Helpers;
-using MorePartsMod.Buildings;
 using MorePartsMod.Managers;
-using MorePartsMod.Parts;
-using MorePartsMod.World;
 using SFS;
 using SFS.IO;
 using SFS.Parsers.Json;
-using SFS.Parts;
-using SFS.WorldBase;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -40,9 +34,9 @@ namespace MorePartsMod
 
         public override string Author => "dani0105";
 
-        public override string MinimumGameVersionNecessary => "0.3.0";
+        public override string MinimumGameVersionNecessary => "1.5.9.6";
 
-        public override string ModVersion => "2.2.0";
+        public override string ModVersion => "3.0.0";
 
         public override string Description => "Add special features to the MoreParts Pack";
 
