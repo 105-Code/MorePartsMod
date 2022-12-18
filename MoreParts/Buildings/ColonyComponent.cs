@@ -265,41 +265,14 @@ namespace MorePartsMod.Buildings
             public Double2 position;
             public string name;
             public bool hidden;
-
-            [Obsolete("Remove this for future version.")]
-            public string andress;
-
             public string address;
 
-            [Obsolete("Remove this for future version.")]
-            public double rocketParts { 
-                set {
-                    if (this.resources.ContainsKey(MorePartsTypes.ROCKET_MATERIAL))
-                    {
-                        this.resources[MorePartsTypes.ROCKET_MATERIAL] = value;
-                        return;
-                    }
-                    this.resources.Add(MorePartsTypes.ROCKET_MATERIAL, value);
-                }
-                get {
-                    if (this.resources.ContainsKey(MorePartsTypes.ROCKET_MATERIAL))
-                    {
-                        return this.resources[MorePartsTypes.ROCKET_MATERIAL];
-                    }
-                    return 0;
-                } 
-            }
-
             public Dictionary<string, Building> structures;
-
-            [Obsolete("Remove for the next version")]
-            public List<ColonyBuildingData> buildings;
 
             public Dictionary<string, double> resources;
 
             public ColonyData()
             {
-                this.buildings = new List<ColonyBuildingData>(); // remove this
                 this.structures = new Dictionary<string, Building>();
                 this.hidden = false;
                 this.resources = new Dictionary<string, double>();
@@ -311,7 +284,6 @@ namespace MorePartsMod.Buildings
                 this.name = name;
                 this.position = worldLocation.position.Value;
                 this.address = worldLocation.planet.Value.codeName;
-                this.buildings = new List<ColonyBuildingData>(); // remove this 
                 this.structures = new Dictionary<string, Building>();
                 this.resources = new Dictionary<string, double>();
                 this.hidden = false;
@@ -322,7 +294,6 @@ namespace MorePartsMod.Buildings
                 this.angle = angle;
                 this.position = position;
                 this.address = planetName;
-                this.buildings = new List<ColonyBuildingData>(); // remove this 
                 this.structures = new Dictionary<string, Building>();
                 this.resources = new Dictionary<string, double>();
                 this.hidden = false;
@@ -474,41 +445,6 @@ namespace MorePartsMod.Buildings
 
             public Building()
             {
-            }
-        }
-
-        [Obsolete("Remove for the next version")]
-        public class ColonyBuildingData
-        {
-            public bool state;
-            public string name;
-            public ColonyBuildingCost cost;
-            public Double2 offset;
-            public ColonyBuildingData() { }
-            public ColonyBuildingData(bool state, string name, ColonyBuildingCost cost, Double2 pos)
-            {
-                this.name = name;
-                this.state = state;
-                this.cost = cost;
-                this.offset = pos;
-            }
-            public ColonyBuildingData(bool state, string name, ColonyBuildingCost cost)
-            {
-                this.name = name;
-                this.state = state;
-                this.cost = cost;
-            }
-        }
-
-        [Obsolete("Remove for the next version")]
-        public class ColonyBuildingCost
-        {
-            public float constructionCost;
-            public float electronicCost;
-            public ColonyBuildingCost(float electronic, float construction)
-            {
-                this.constructionCost = construction;
-                this.electronicCost = electronic;
             }
         }
 
