@@ -12,6 +12,7 @@ namespace MorePartsMod
 {
     public class Utils
     {
+        // Adds a building to the world at a specified location
         public static void AddBuildingToWorld(GameObject building,string holder,Planet planet,Double2 position)
         {
             WorldLocation location = building.AddComponent<WorldLocation>();
@@ -27,9 +28,11 @@ namespace MorePartsMod
             // set the antenna in the world
             buildingObject.location.Value = new Location(planet, position, default(Double2));
         }
-
+        // Creates a landmark on a planet's map
         public static void DrawLandmarkInPlanet(Planet planet,float degreeAngle, Double2 location,string text,Color color)
         {
+            // Calculate the fade in and fade out values for the landmark
+            
             //float angle = degreeAngle * Mathf.Deg2Rad;
             double num = planet.data.basics.radius * 6;
             float num2 = Mathf.Min(MapDrawer.GetFadeIn(Map.view.view.distance, num * 0.5, num * 0.4), MapDrawer.GetFadeOut(Map.view.view.distance, 20000.0, 15000.0));
@@ -45,6 +48,7 @@ namespace MorePartsMod
             }
         }
 
+        // No idea what this does
         public static bool LineIntersectCircle(double radius, Double2 circleCenter, Double2 pointA, Double2 pointB)
         {
             double m = (pointB.y - pointA.y) / (pointB.x - pointA.x);
