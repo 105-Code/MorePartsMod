@@ -94,7 +94,7 @@ namespace MorePartsMod.Managers
                         continue;
                     }
 
-                    MsgDrawer.main.Log("Enter resource deposit");
+                    MsgDrawer.main.Log("Entred resource deposit");
                     this.CurrentDeposit = deposit;
                     break;
                 }
@@ -103,7 +103,7 @@ namespace MorePartsMod.Managers
 
             if (Vector2.Distance(this.CurrentDeposit.Location, this.Player.Value.location.Value.position) > this.CurrentDeposit.Size)
             {
-                MsgDrawer.main.Log("Exit resource deposit");
+                MsgDrawer.main.Log("Left resource deposit");
                 this.CurrentDeposit = null;
             }
 
