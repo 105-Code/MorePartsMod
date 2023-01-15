@@ -34,7 +34,7 @@ namespace MorePartsMod.Parts
 
         private void Update()
         {
-            if(GameManager.main == null || !this._active.Value || this.Location == null || this.Location.planet == null)
+            if(GameManager.main == null || !this._active.Value || this.Location == null || this.Location.planet == null || this.Rocket.location == null)
             {
                 return;
             }
