@@ -69,7 +69,7 @@ namespace MorePartsMod.Patches
 
             foreach(Rocket rocket in rockets)
             {
-                RocketManager.DestroyRocket(rocket, DestructionReason.Intentional, false);
+                RocketManager.DestroyRocket(rocket, DestructionReason.Intentional);
             }
         }
 
