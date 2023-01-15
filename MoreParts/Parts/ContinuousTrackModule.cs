@@ -45,7 +45,7 @@ namespace MorePartsMod.Parts
         public void ToggleEnabled(UsePartData data)
         {
             this._on.Value = !this._on.Value;
-            MsgDrawer.main.Log(this._on.Value? "Turn On": "Turn off");
+            MsgDrawer.main.Log(this._on.Value? "On": "Off");
             data.successfullyUsedPart = true;
         }
 
