@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MoreParts
   m_EditorClassIdentifier: 
   DisplayName: MoreParts Pack
-  Version: v2.2.0
+  Version: v3.0.0
   Description: Add new parts!
   Author: dani0105
   ShowIcon: 1

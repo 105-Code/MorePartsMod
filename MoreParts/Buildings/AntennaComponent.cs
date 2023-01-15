@@ -39,8 +39,20 @@ namespace MorePartsMod.Buildings
 			this._hasTelecommunicationDish = false;
 			this.ShowTelecommunicationLines = false;
 			this._enableTelecomunicationLines = KeySettings.Main.Show_Telecommunication_lines;
-			this._sunPlanet = Base.planetLoader.planets["Sun"];
+			this._sunPlanet = this.getPrimaryPlanet();
 			this._lineColor = new Color(0.25f, 0.74f, 0.3f, 0.4f);
+		}
+
+		private Planet getPrimaryPlanet()
+		{
+			foreach(Planet planet in Base.planetLoader.planets.Values)
+			{
+				if (planet.parentBody == null)
+				{
+					return planet;
+				}
+			}
+			return null;
 		}
 
 		private void Start()
