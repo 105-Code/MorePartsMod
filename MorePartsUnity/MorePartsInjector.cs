@@ -4,7 +4,7 @@ using UnityEngine;
 public class MorePartsInjector : MonoBehaviour
 {
 
-    public string MinMorePartsVersion = "2.2.0";
+    public string MinMorePartsVersion = "3.0.0";
 
     public List<Modules> modules;
 }
@@ -15,5 +15,6 @@ public enum Modules{
     TelecomunicationModule,
     ContinuosTrackModule,
     ScannerModule,
-    ExcavatorModule
+    ExcavatorModule,
+    HingeModule
 }

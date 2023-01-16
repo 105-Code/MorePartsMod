@@ -25,6 +25,7 @@ namespace MorePartsMod.Patches
             MorePartsInjector injector;
             foreach ( Part part in Base.partsLoader.parts.Values)
             {
+                Type type = typeof(TelecommunicationDishModule);
                 injector = part.GetComponent<MorePartsInjector>();
                 if (injector)
                 {
@@ -65,6 +66,12 @@ namespace MorePartsMod.Patches
                         if (module == Modules.ExcavatorModule)
                         {
                             part.GetOrAddComponent<ExcavatorModule>();
+                            continue;
+                        }
+
+                        if (module == Modules.HingeModule)
+                        {
+                            part.GetOrAddComponent<HingeModule>();
                             continue;
                         }
 
