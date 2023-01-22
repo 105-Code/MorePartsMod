@@ -31,6 +31,11 @@ namespace MorePartsMod.Parts
 
         public void Start()
         {
+            if (GameManager.main == null)
+            {
+                base.enabled = false;
+                return;
+            }
             this.Part.onPartUsed.AddListener(this.ToggleEnabled);
             this._on = this.getBoolVariable("wheel_on");
             this._traction = this.getDoubleVariable("traction");

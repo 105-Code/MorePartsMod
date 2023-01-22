@@ -40,6 +40,11 @@ namespace MorePartsMod.Parts
 
         private void Start()
         {
+            if (GameManager.main == null)
+            {
+                base.enabled = false;
+                return;
+            }
             this._material_container = this.GetMaterialContainer();
             this._target_state = this.getDoubleVariable("target_state");
             this._state = this.getDoubleVariable("state");

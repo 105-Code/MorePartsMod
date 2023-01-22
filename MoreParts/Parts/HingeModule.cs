@@ -43,8 +43,12 @@ namespace MorePartsMod.Parts
 
         private void Start()
         {
-            
-            if(this._max_opening.Value > 180)
+            if (GameManager.main == null)
+            {
+                base.enabled = false;
+                return;
+            }
+            if (this._max_opening.Value > 180)
             {
                 this._max_opening.Value = 180;
             }
