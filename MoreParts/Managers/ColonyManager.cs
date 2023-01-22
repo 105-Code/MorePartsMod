@@ -89,11 +89,9 @@ namespace MorePartsMod.Managers
                 foreach (ResourceModule resource in rocket.resources.globalGroups)
                 {
                     typeName = resource.resourceType.name;
-                    //Debug.Log(typeName);
                     if (this._extractFlow)
                     {
                         double addToRocket = colony.data.takeResource(typeName, resource.TotalResourceCapacity);
-                        //Debug.Log("Adding "+ addToRocket+" "+ typeName);
                         resource.AddResource(addToRocket);
                         continue;
                     }
@@ -103,7 +101,6 @@ namespace MorePartsMod.Managers
                     }
                 }
                 this.SaveColonies();
-                //Debug.Log("ColonyData: "+colony.data.ToString());
             }
             this._extractFlow = !this._extractFlow;
         }

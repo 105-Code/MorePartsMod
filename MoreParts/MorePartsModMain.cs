@@ -36,7 +36,7 @@ namespace MorePartsMod
 
         public override string Author => "dani0105";
 
-        public override string MinimumGameVersionNecessary => "1.5.9.6";
+        public override string MinimumGameVersionNecessary => "1.5.9.8";
 
         public override string ModVersion => "3.0.0";
 

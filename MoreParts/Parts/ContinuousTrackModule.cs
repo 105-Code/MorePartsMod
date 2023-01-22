@@ -105,7 +105,6 @@ namespace MorePartsMod.Parts
             {
                 this._idlers[index] = idlers.GetChild(index);
             }
-            Debug.Log(this._idlers.Length);
         }
 
         private void OnCollisionStay2D(Collision2D collision)

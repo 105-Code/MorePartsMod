@@ -88,7 +88,6 @@ namespace MorePartsMod.Parts
         {
             float x = this._orientation.orientation.Value.x, y = this._orientation.orientation.Value.y, z = this._orientation.orientation.Value.z;
 
-            Debug.Log("Original:"+x+ "," + y + "," + z);
             if(z == 90)
             {
                 y = 0;
@@ -138,7 +137,6 @@ namespace MorePartsMod.Parts
             Quaternion rotation;
             Vector3 hingePosition = this.Part.transform.localPosition;
             Orientation hingeOrientation = this.getAbsoluteOrientation();
-            Debug.Log(hingeOrientation.x + "," + hingeOrientation.y + "," + hingeOrientation.z);
             if (hingeOrientation.y == 0)
             {
                 hingePosition.x += hingeOrientation.x * 0.25f;
