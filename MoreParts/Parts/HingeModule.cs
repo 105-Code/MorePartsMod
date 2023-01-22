@@ -1,8 +1,6 @@
-﻿using MorePartsMod.Managers;
-using MorePartsMod.Parts.Types;
+﻿using MorePartsMod.Parts.Types;
 using SFS.Parts;
 using SFS.Parts.Modules;
-using SFS.UI;
 using SFS.Variables;
 using SFS.World;
 using System;
@@ -19,12 +17,13 @@ namespace MorePartsMod.Parts
 
         private VariableList<double>.Variable _max_opening;
         private VariableList<double>.Variable _opening;
-        private VariableList<double>.Variable _width;
         private OrientationModule _orientation;
         private HingeGroup _topGroup;
         private bool _isMoving;
         private bool _isClosing;
         private Transform _connector;
+        private float _openingVelocity;
+        private bool _validGroup;
 
         public Rocket Rocket { set; get; }
 
@@ -32,7 +31,6 @@ namespace MorePartsMod.Parts
         {
             base.Awake();
             this._orientation = this.Part.orientation;
-            this._width = this.getDoubleVariable("width");
             this._opening = this.getDoubleVariable("opening");
             this._max_opening = this.getDoubleVariable("max_opening");
             this.Part.onPartUsed.AddListener(this.OnPartUsed);
@@ -40,6 +38,7 @@ namespace MorePartsMod.Parts
             this._isMoving = false;
             this._isClosing = true;
             this._connector = this.transform.Find("Connector");
+            this._openingVelocity = 2;
         }
 
         private void Start()
@@ -50,9 +49,14 @@ namespace MorePartsMod.Parts
                 this._max_opening.Value = 180;
             }
 
-            this._topGroup.basePart = this.getTopParts(this._orientation.orientation.Value.z).ToArray();
-            this.getTopPartGroup(this._topGroup.basePart);
-            this._isClosing = this._opening.Value != this._max_opening.Value;
+            this._topGroup.basePart = this.getTopParts(this.getPartRotation()).ToArray();
+            this._validGroup = this.getTopPartGroup(this._topGroup.basePart);
+            
+            this._isClosing = this._opening.Value >= this._max_opening.Value;
+            if (this._isClosing)
+            {
+                this._connector.transform.localEulerAngles = new Vector3(0, 0, (float)this._opening.Value);
+            }
         }
 
         private void Update()
@@ -65,54 +69,207 @@ namespace MorePartsMod.Parts
 
             if (this._isMoving)
             {
-                if (this._isClosing)
-                {
-                    this._opening.Value = 0;
-                }
-                else
-                {
-                    this._opening.Value = this._max_opening.Value;
-                }
                 this.MoveParts();
                 
             }
 
         }
 
-        private void MoveParts()
+        private float getPartRotation()
         {
-            Orientation partOrientation;
-            Part part;
-            Vector2 partPosition;
-            Vector2 hingePosition = this.Part.transform.localPosition;
-            float x, y;
-            foreach (Tuple<Vector2,Part> value in this._topGroup.getParts())
+            if (this._orientation.orientation.Value.y < 0)
             {
-                part = value.Item2;
-                partPosition = part.transform.localPosition;
-                partOrientation = part.orientation.orientation.Value;
-                partOrientation.z = (float)this._opening.Value;
-                part.transform.localEulerAngles = new Vector3(partOrientation.x, partOrientation.y, (float)this._opening.Value);
+                return Mathf.Abs(180 - this._orientation.orientation.Value.z);
+            }
+            return this._orientation.orientation.Value.z;
+        }
 
-                if (this._isClosing)
+        private Orientation getAbsoluteOrientation()
+        {
+            float x = this._orientation.orientation.Value.x, y = this._orientation.orientation.Value.y, z = this._orientation.orientation.Value.z;
+
+            Debug.Log("Original:"+x+ "," + y + "," + z);
+            if(z == 90)
+            {
+                y = 0;
+                if (x < 0)
                 {
-                    x = partPosition.y - hingePosition.y - 1.25f;
-                    y = -partPosition.x + hingePosition.y - 0.75f;
+                    x = 1;
                 }
                 else
                 {
-                    x = -partPosition.y + hingePosition.y - 0.75f;
-                    y = partPosition.x + hingePosition.y + 1.25f; 
+                    x = -1;
                 }
-                part.transform.localPosition = new Vector2(x, y);
+                
             }
-            this._connector.localEulerAngles = new Vector3(this._orientation.orientation.Value.x, this._orientation.orientation.Value.y, (float)this._opening.Value);
-            this._isMoving = false;
+
+            if (z == 270)
+            {
+                y = 0;
+                if(x < 0)
+                {
+                    x = 1;
+                }
+            }
+
+
+            if (z == 180)
+            {
+                if (y > 0)
+                {
+                    y = -1;
+                }
+                else
+                {
+                    y = 1;
+                }
+                x = y * x;
+            }
+
+            return new Orientation(x,y,z);
+        }
+
+        private void MoveParts()
+        {
+            // esto es una mierda de código y lo tengo que arreglar en el futuro.
+
+            Orientation partOrientation;
+            Part part;
+            Quaternion rotation;
+            Vector3 hingePosition = this.Part.transform.localPosition;
+            Orientation hingeOrientation = this.getAbsoluteOrientation();
+            Debug.Log(hingeOrientation.x + "," + hingeOrientation.y + "," + hingeOrientation.z);
+            if (hingeOrientation.y == 0)
+            {
+                hingePosition.x += hingeOrientation.x * 0.25f;
+            }
+            hingePosition.y += hingeOrientation.y * 0.25f;
+
+
+            if (!this._isClosing)
+            {
+                this._opening.Value -= this._openingVelocity;
+                //rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                if(hingeOrientation.x > 0)
+                {
+                    if (hingeOrientation.y == 0 && hingeOrientation.z == 90 || hingeOrientation.z == 270)
+                    {
+                        rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.forward);
+                    }
+                    else
+                    {
+                        if (hingeOrientation.y < 0)
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.forward);
+                        }
+                        else
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    if (hingeOrientation.y == 0 && hingeOrientation.z == 90 || hingeOrientation.z == 270)
+                    {
+                        rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                    }
+                    else
+                    {
+                        if (hingeOrientation.y < 0)
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                        }
+                        else
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.forward);
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                this._opening.Value += this._openingVelocity;
+                if (hingeOrientation.x > 0)
+                {
+                    if(hingeOrientation.y == 0 && hingeOrientation.z == 90 || hingeOrientation.z == 270)
+                    {
+                        rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                    }
+                    else
+                    {
+                        if (hingeOrientation.y < 0)
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                        }
+                        else
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.forward);
+                        }
+                    }
+                }
+                else
+                {
+                    if (hingeOrientation.y == 0 && hingeOrientation.z == 90 || hingeOrientation.z == 270)
+                    {
+                        rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.forward);
+                    }
+                    else
+                    {
+                        if (hingeOrientation.y <= 0)
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.forward);
+                        }
+                        else
+                        {
+                            rotation = Quaternion.AngleAxis(this._openingVelocity, Vector3.back);
+                        }
+                    }
+                }
+            }
+            
+            float y = hingeOrientation.y == 0? hingeOrientation.z == 90 || hingeOrientation.z == 270? -1: 1: hingeOrientation.y;
+            foreach (Tuple<Vector2,Part> value in this._topGroup.getParts())
+            {
+                part = value.Item2;
+                partOrientation = part.orientation.orientation.Value;
+
+                if (!this._isClosing)
+                {
+                    partOrientation.z -= y * hingeOrientation.x*  this._openingVelocity;
+                }
+                else
+                {
+                    partOrientation.z += y * hingeOrientation.x *  this._openingVelocity;
+                }
+     
+                part.transform.localEulerAngles = new Vector3(0,0, partOrientation.z);
+
+                // movement
+                Vector3 hingeToPart = part.transform.localPosition - hingePosition;
+                part.transform.localPosition = (rotation* hingeToPart) + hingePosition;
+            }
+
+            this._connector.localEulerAngles = new Vector3(0,0, (float) this._opening.Value);
+
+
+            if (this._opening.Value >= this._max_opening.Value || this._opening.Value <= 0)
+            {
+                this._isMoving = false;
+            }
         }
 
         private List<Part> getTopParts(float z)
         {
             List<Part> result = new List<Part>();
+            if (this.Rocket == null)
+            {
+                Debug.Log("Rocket null");
+                return result;
+            }
+          
             foreach (PartJoint partJoint in this.Rocket.jointsGroup.GetConnectedJoints(this.Part))
             {
                 if (partJoint.a == this.Part)
@@ -213,8 +370,11 @@ namespace MorePartsMod.Parts
 
 		public void OnPartUsed(UsePartData data)
         {
-            this._isMoving = true;
-            this._isClosing = !this._isClosing;
+            if (this._validGroup)
+            {
+                this._isMoving = true;
+                this._isClosing = !this._isClosing;
+            }
             data.successfullyUsedPart = true;
 		}
 
