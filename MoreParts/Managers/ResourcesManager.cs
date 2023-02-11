@@ -127,6 +127,10 @@ namespace MorePartsMod.Managers
         public void OnPlanetChange()
         {
             this.CurrentDeposit = null;
+            if (this.Player.Value == null)
+            {
+                return;
+            }
             this.CurrentPlanet = this.Player.Value.location.planet.Value;
         }
 
