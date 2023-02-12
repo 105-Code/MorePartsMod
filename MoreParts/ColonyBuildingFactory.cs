@@ -11,10 +11,10 @@ namespace MorePartsMod
         public ColonyBuildingFactory()
         {
             this._buildings = new Dictionary<string, BuildingData>();
-            this._buildings.Add("Refinery", new BuildingData(10, 12));
-            this._buildings.Add("Solar Panels", new BuildingData( 13, 4));
-            this._buildings.Add("VAB", new BuildingData( 4, 10));
-            this._buildings.Add("Launch Pad", new BuildingData( 1, 20, new Double2(100, 3) ) );
+            this._buildings.Add("Refinery", new BuildingData(12,10));
+            this._buildings.Add("Solar Panels", new BuildingData(  4, 13));
+            this._buildings.Add("VAB", new BuildingData( 10, 4));
+            this._buildings.Add("Launch Pad", new BuildingData(  20, 1, new Double2(100, 3) ) );
         }
 
         public BuildingData getColonyBuilding(string name)
