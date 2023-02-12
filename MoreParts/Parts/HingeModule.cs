@@ -17,16 +17,17 @@ namespace MorePartsMod.Parts
     {
 
         private VariableList<double>.Variable _max_opening;
+        private VariableList<double>.Variable _opening_velocity;
         private VariableList<double>.Variable _opening;
         private OrientationModule _orientation;
         private HingeGroup _topGroup;
         private bool _isMoving;
         private bool _isClosing;
         private Transform _connector;
-        private float _openingVelocity;
         private bool _validGroup;
         private const float radians = 0.01745f;
-
+        public float OpeningVelocity { set => this._opening_velocity.Value = value; get => (float)this._opening_velocity.Value; }
+        public float MaxOpening { set => this._max_opening.Value = value; get => (float)this._max_opening.Value; }
         public Rocket Rocket { set; get; }
 
    
@@ -37,12 +38,12 @@ namespace MorePartsMod.Parts
             this._orientation = this.Part.orientation;
             this._opening = this.getDoubleVariable("opening");
             this._max_opening = this.getDoubleVariable("max_opening");
+            this._opening_velocity = this.getDoubleVariable("opening_velocity");
             this.Part.onPartUsed.AddListener(this.OnPartUsed);
             this._topGroup = new HingeGroup();
             this._isMoving = false;
             this._isClosing = false;
             this._connector = this.transform.Find("Connector");
-            this._openingVelocity = 2;
         }
 
         private void Start()
@@ -108,13 +109,13 @@ namespace MorePartsMod.Parts
            
             if (this._isClosing)
             {
-                this._opening.Value -= this._openingVelocity;
-                rotation = Quaternion.AngleAxis(this._openingVelocity, new Vector3(0, 0, orientation.y * orientation.x * - 1) );
+                this._opening.Value -= this.OpeningVelocity;
+                rotation = Quaternion.AngleAxis(this.OpeningVelocity, new Vector3(0, 0, orientation.y * orientation.x * - 1) );
             }
             else
             {
-                this._opening.Value += this._openingVelocity;
-                rotation = Quaternion.AngleAxis(this._openingVelocity, new Vector3(0, 0, orientation.y * orientation.x * 1));
+                this._opening.Value += this.OpeningVelocity;
+                rotation = Quaternion.AngleAxis(this.OpeningVelocity, new Vector3(0, 0, orientation.y * orientation.x * 1));
             }
             
 
@@ -123,11 +124,11 @@ namespace MorePartsMod.Parts
                 partOrientation = part.orientation.orientation.Value;
                 if (this._isClosing)
                 {
-                    partOrientation.z -= orientation.y * orientation.x * this._openingVelocity;
+                    partOrientation.z -= orientation.y * orientation.x * this.OpeningVelocity;
                 }
                 else
                 {
-                    partOrientation.z += orientation.y * orientation.x * this._openingVelocity;
+                    partOrientation.z += orientation.y * orientation.x * this.OpeningVelocity;
                 }
 
                 part.transform.localEulerAngles = new Vector3(0,0, partOrientation.z);
@@ -138,7 +139,7 @@ namespace MorePartsMod.Parts
             // el -90 puede arreglarse si cambio la parte para que este en 0 grados de rotación
             this._connector.localEulerAngles = new Vector3(0,0, -90+(float) this._opening.Value);
 
-            if(this._opening.Value >= this._max_opening.Value || this._opening.Value <= 0)
+            if(this._opening.Value >= this.MaxOpening || this._opening.Value <= 0)
             {
                 this._isClosing = !this._isClosing;
                 this._isMoving = false;
@@ -246,19 +247,21 @@ namespace MorePartsMod.Parts
         {
             if (settings.build)
             {
-                float GetFillPercentage() => (float)(this._max_opening.Value / 360);
-                drawer.DrawSlider(1, () => "Max Opening: "+  (int)this._max_opening.Value, () => "", GetFillPercentage, this.UpdateValue, update => this._max_opening.onValueChange += update, update => this._max_opening.onValueChange -= update);
+                float GetMaxOpeningPercentage() => (float)(this.MaxOpening / 360);
+                float GetMaxVelocityPercentage() => (float)(this._opening_velocity.Value / 10);
+                drawer.DrawSlider(1, () => "Max Opening: "+  (int)this.MaxOpening, () => "", GetMaxOpeningPercentage, this.UpdateMaxOpeningValue, update => this._max_opening.onValueChange += update, update => this._max_opening.onValueChange -= update);
+                drawer.DrawSlider(2, () => "Opening Velocity: " + (int)this._opening_velocity.Value, () => "", GetMaxVelocityPercentage, this.UpdateOpeningVelocityValue, update => this._opening_velocity.onValueChange += update, update => this._opening_velocity.onValueChange -= update);
             }
         }
 
-        /*public static string temp(this float a, bool forceDecimals)
+        private void UpdateMaxOpeningValue(float newValue, bool value)
         {
-            return Loc.main.Separation_Force.Inject(a.ToString(1, forceDecimals), "value");
-        }*/
+            this.MaxOpening = newValue * 360;
+        }
 
-        private void UpdateValue(float newValue, bool value)
+        private void UpdateOpeningVelocityValue(float newValue, bool value)
         {
-            this._max_opening.Value = newValue * 360;
+            this._opening_velocity.Value = newValue * 10;
         }
 
         private class HingeGroup
