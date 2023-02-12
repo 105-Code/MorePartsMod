@@ -58,6 +58,17 @@ namespace MorePartsMod.Managers
             this.player.OnChange += this.OnPlayerChange;
         }
 
+        public bool DeleteColony(ColonyComponent colony)
+        {
+            bool result = this.Colonies.Remove(colony);
+            if (result)
+            {
+                GameObject.Destroy(colony.gameObject);
+                this.SaveColonies();
+            }
+            return result;
+        }
+
         public void SaveColonies()
         {
             List<ColonyData> data = new List<ColonyData>();

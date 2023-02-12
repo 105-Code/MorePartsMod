@@ -87,8 +87,10 @@ namespace MorePartsMod.UI
                 Builder.CreateButton(this._holder.ChildrenHolder, 480, 40, 0, 0, () => this.generateResource(MorePartsTypes.ELECTRONIC_COMPONENT), "+100 Electronic material");
                 Builder.CreateButton(this._holder.ChildrenHolder, 480, 40, 0, 0, () => this.generateResource(MorePartsTypes.ROCKET_MATERIAL), "+100 Rocket material");
             }
-
+            Builder.CreateSpace(this._holder.ChildrenHolder, 480, 30);
             Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => ScreenManager.main.CloseCurrent(), "Save");
+            Builder.CreateSpace(this._holder.ChildrenHolder, 480, 15);
+            Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => this.OnDelete(), "Delete");
         }
 
         private void generateResource(string resourcesType, int toGenerate = 100)
@@ -111,6 +113,17 @@ namespace MorePartsMod.UI
             this._colony.data.takeResource(MorePartsTypes.MATERIAL, toGenerate);
             this._colony.data.addResource(resourcesType, toGenerate);
             this.Reload();
+        }
+
+        private void OnDelete()
+        {
+            Debug.Log("Destroying colony!");
+            if (ColonyManager.main.DeleteColony(this._colony))
+            {
+                ScreenManager.main.CloseCurrent();
+                return;
+            }
+            Debug.Log("Error distroying colony!");
         }
 
         private void OnClickButton(string buildingName)
