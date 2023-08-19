@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MorePartsMod", "MoreParts\MorePartsMod.csproj", "{BA241F55-D6BB-4E78-956A-28F3204FEC8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MorePartsUnity", "MorePartsUnity\MorePartsUnity.csproj", "{D7F01875-66B5-41C2-A3F3-0DCBC3AE2216}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
