@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using MorePartsMod.Buildings;
 using SFS.Builds;
 using SFS.Parts;
 using SFS.Parts.Modules;
@@ -9,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Patches
 {

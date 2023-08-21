@@ -13,24 +13,25 @@ namespace MorePartsMod.Buildings
         private ResourceModule _rocketBateries;
         private Rocket _rocket;
 
-        public bool PlayerNear { 
+        public bool PlayerNear
+        {
             set
             {
                 this._rocketBateries = null;
                 this._playerNear = value;
-            } 
+            }
         }
 
         public Rocket Rocket { set => this._rocket = value; }
 
         private void FixedUpdate()
         {
-            if(!this._playerNear)
+            if (!this._playerNear)
             {
                 return;
             }
 
-            if(this._rocketBateries == null)
+            if (this._rocketBateries == null)
             {
                 this._rocketBateries = this.GetRocketBateries();
                 return;
@@ -50,17 +51,12 @@ namespace MorePartsMod.Buildings
             {
                 if (resource.resourceType.name == "Electricity_Resource")
                 {
-                    return resource; 
+                    return resource;
                 }
             }
 
             return null;
         }
 
-        public static void Setup(GameObject colonyPrefab)
-        {
-            GameObject building = colonyPrefab.transform.FindChild("Holder").gameObject.transform.FindChild("Solar Panels").gameObject;
-            building.AddComponent<SolarPanelComponent>();
-        }
     }
 }

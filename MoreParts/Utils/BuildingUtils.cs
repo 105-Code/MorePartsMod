@@ -12,20 +12,11 @@ namespace MorePartsMod.Utils
 {
     public class BuildingUtils
     {
-        public static void AddBuildingToWorld(GameObject building, string holder, Planet planet, Double2 position)
+
+        public static void AddBuildingToWorld(GameObject building, Planet planet, Double2 position)
         {
-            WorldLocation location = building.AddComponent<WorldLocation>();
-
-            WorldLoader worldLoader = building.AddComponent<WorldLoader>();
-            worldLoader.location = location; // where is the antenna placed
-            worldLoader.loadDistance = 8000; // max render distance
-            worldLoader.holder = building.transform.FindChild(holder).gameObject;
-
-            StaticWorldObject buildingObject = building.AddComponent<StaticWorldObject>();
-            buildingObject.location = location;
-
-            // set the antenna in the world
-            buildingObject.location.Value = new Location(planet, position, default(Double2));
+            WorldLocation location = building.GetComponent<WorldLocation>();
+            location.Value = new Location(planet, position, default(Double2));
         }
 
         public static void DrawLandmarkInPlanet(Planet planet, float degreeAngle, Double2 location, string text, Color color)
