@@ -126,7 +126,10 @@
     <Compile Include="MorePartsTypes.cs" />
     <Compile Include="UI\BuildingColonyGUI.cs" />
     <Compile Include="UI\ColonyGUI.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\BuildingUtils.cs" />
+    <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\MockMod.cs" />
+    <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Buildings\ColonyComponent.cs" />
     <Compile Include="KeySettings.cs" />
     <Compile Include="MorePartsPack.cs" />

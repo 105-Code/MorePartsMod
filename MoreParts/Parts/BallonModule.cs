@@ -1,6 +1,5 @@
 ﻿
 using SFS.Parts;
-using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;

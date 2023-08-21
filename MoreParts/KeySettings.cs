@@ -10,11 +10,16 @@ namespace MorePartsMod
     {
         public static KeySettings Main;
 
+        public KeybindingsPC.Key Toggle_Telecommunication_Dish = KeyCode.Y;
+        public KeybindingsPC.Key Open_Colony = KeyCode.U;
+        public KeybindingsPC.Key Toggle_Telecommunication_Lines = KeyCode.I;
+        public KeybindingsPC.Key Toggle_Colony_Flow = KeyCode.O;
+        public bool Show_Telecommunication_lines = true;
+
         public static void Setup()
         {
             Main = SetupKeybindings<KeySettings>(MorePartsPack.Main.Mod);
         }
-
 
         public override void CreateUI()
         {
@@ -42,13 +47,5 @@ namespace MorePartsMod
         {
             return new FolderPath(Mod.ModFolder).ExtendToFile("keybindings.json");
         }
-
-        public KeybindingsPC.Key Toggle_Telecommunication_Dish = KeyCode.Y;
-        public KeybindingsPC.Key Open_Colony = KeyCode.U;
-        public KeybindingsPC.Key Toggle_Telecommunication_Lines = KeyCode.I;
-        public KeybindingsPC.Key Toggle_Colony_Flow = KeyCode.O;
-        public bool Show_Telecommunication_lines = true;
-
-        
     }
 }

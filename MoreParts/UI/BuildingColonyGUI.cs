@@ -49,7 +49,7 @@ namespace MorePartsMod.UI
 
         private void SetSpawnPoint(ColonyData spawnPoint)
         {
-            MorePartsPack.Main.spawnPoint = spawnPoint;
+            MorePartsPack.Main.SpawnPoint = spawnPoint;
             ScreenManager.main.CloseCurrent();
         }
     }

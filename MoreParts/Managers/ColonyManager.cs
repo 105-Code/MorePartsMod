@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MorePartsMod.Buildings;
-//using MorePartsMod.UI;
-//using SFS.Input;
+using MorePartsMod.UI;
+using SFS.Input;
 using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.UI.ModGUI;
@@ -10,6 +10,7 @@ using SFS.World;
 using SFS.WorldBase;
 
 using static MorePartsMod.Buildings.ColonyComponent;
+using MorePartsMod.Utils;
 
 namespace MorePartsMod.Managers
 {
@@ -24,7 +25,7 @@ namespace MorePartsMod.Managers
         //private
         private SFS.UI.ModGUI.Button _createColonyButton;
         private ColonyData _newColony;
-        //private ColonyGUI _ui;
+        private ColonyGUI _ui;
         private GameObject _holder;
         private bool _extractFlow;
 
@@ -47,7 +48,7 @@ namespace MorePartsMod.Managers
             this._holder = new GameObject("Colony Menu");
             this._holder.transform.localScale = new Vector3(0.9f, 0.9f);
             Builder.AttachToCanvas(this._holder, Builder.SceneToAttach.CurrentScene);
-            //this._ui = this._holder.AddComponent<ColonyGUI>();
+            this._ui = this._holder.AddComponent<ColonyGUI>();
         }
 
         private void Start()
@@ -77,7 +78,7 @@ namespace MorePartsMod.Managers
                 data.Add(colony.data);
             }
             MorePartsPack.Main.ColoniesInfo = data;
-            MorePartsPack.SaveWorldPersistent("Colonies.json", data);
+            FileUtils.SaveWorldPersistent("Colonies.json", data);
         }
 
         private void ToggleColonyFlow()
@@ -120,14 +121,14 @@ namespace MorePartsMod.Managers
         {
             GameObject colonyPrefab = MorePartsPack.Main.ColonyPrefab;
             // setup buildings
-            //RefineryComponent.Setup(colonyPrefab);
-            //SolarPanelComponent.Setup(colonyPrefab);
+            RefineryComponent.Setup(colonyPrefab);
+            SolarPanelComponent.Setup(colonyPrefab);
             //VABComponent.Setup(colonyPrefab);
             bool flag = false;
             foreach (ColonyData colony in MorePartsPack.Main.ColoniesInfo)
             {
                 GameObject colonyGameObject = GameObject.Instantiate(colonyPrefab);
-                Utils.AddBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
+                BuildingUtils.AddBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
                 GameObject holder = colonyGameObject.transform.Find("Holder").gameObject;
                 holder.transform.eulerAngles = new Vector3(0, 0, colony.angle);
                 ColonyComponent component = holder.AddComponent<ColonyComponent>();
@@ -162,8 +163,8 @@ namespace MorePartsMod.Managers
                 {
                     continue;
                 }
-                //this._ui.Colony = colony;
-                //ScreenManager.main.OpenScreen(() => this._ui);
+                this._ui.Colony = colony;
+                ScreenManager.main.OpenScreen(() => this._ui);
                 break;
             }
         }
@@ -293,7 +294,7 @@ namespace MorePartsMod.Managers
 
             GameObject colony = GameObject.Instantiate(MorePartsPack.Main.ColonyPrefab);
 
-            Utils.AddBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
+            BuildingUtils.AddBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
 
             GameObject holder = colony.transform.Find("Holder").gameObject;
             holder.transform.eulerAngles = new Vector3(0, 0, this._newColony.angle);
@@ -327,7 +328,7 @@ namespace MorePartsMod.Managers
         {
             foreach (ColonyComponent colony in main.Colonies)
             {
-                Utils.DrawLandmarkInPlanet(colony.data.getPlanet(), colony.data.LandmarkAngle, colony.data.position, colony.data.name, Color.white);
+                BuildingUtils.DrawLandmarkInPlanet(colony.data.getPlanet(), colony.data.LandmarkAngle, colony.data.position, colony.data.name, Color.white);
             }
         }
 

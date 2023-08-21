@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using SFS;
 using SFS.Builds;
 using SFS.Parts;
 using SFS.Parts.Modules;
@@ -82,7 +81,7 @@ namespace MorePartsMod.Patches
         [HarmonyPrefix]
         public static bool Prefix(ref Blueprint blueprint)
         {
-            ColonyData target = MorePartsPack.Main.spawnPoint;
+            ColonyData target = MorePartsPack.Main.SpawnPoint;
 
             if (target == null)
             {
@@ -129,8 +128,8 @@ namespace MorePartsMod.Patches
             Staging.CreateStages(blueprint.stages, array);
             Rocket rocket = array4.FirstOrDefault((Rocket a) => a.hasControl.Value);
             PlayerController.main.player.Value = ((rocket != null) ? rocket : ((array4.Length != 0) ? array4[0] : null));
-            MorePartsPack.Main.spawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, BuildManagerLaunch.RocketMass);
-            MorePartsPack.Main.spawnPoint = null;
+            MorePartsPack.Main.SpawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, BuildManagerLaunch.RocketMass);
+            MorePartsPack.Main.SpawnPoint = null;
             return false;
         }
     }

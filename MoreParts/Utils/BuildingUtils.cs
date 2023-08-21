@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace MorePartsMod
+namespace MorePartsMod.Utils
 {
-    public class Utils
+    public class BuildingUtils
     {
-        public static void AddBuildingToWorld(GameObject building,string holder,Planet planet,Double2 position)
+        public static void AddBuildingToWorld(GameObject building, string holder, Planet planet, Double2 position)
         {
             WorldLocation location = building.AddComponent<WorldLocation>();
 
@@ -28,7 +28,7 @@ namespace MorePartsMod
             buildingObject.location.Value = new Location(planet, position, default(Double2));
         }
 
-        public static void DrawLandmarkInPlanet(Planet planet,float degreeAngle, Double2 location,string text,Color color)
+        public static void DrawLandmarkInPlanet(Planet planet, float degreeAngle, Double2 location, string text, Color color)
         {
             //float angle = degreeAngle * Mathf.Deg2Rad;
             double num = planet.data.basics.radius * 6;
