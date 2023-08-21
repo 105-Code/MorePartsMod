@@ -38,7 +38,7 @@ namespace MorePartsMod
             {
                 return;
             }
-
+            Debug.Log("Loading MoreParts Mod!");
             Mod = new MockMod(ModIdPatching, DisplayName, Author);
             Mod.ModFolder = FileLocations.BaseFolder.Extend("/../Saving").Extend(ModFolderName).CreateFolder();
 
@@ -53,6 +53,7 @@ namespace MorePartsMod
 
             Harmony harmony = new Harmony(ModIdPatching);
             harmony.PatchAll();
+            Debug.Log("Loaded!");
         }
 
         #region Listeners
