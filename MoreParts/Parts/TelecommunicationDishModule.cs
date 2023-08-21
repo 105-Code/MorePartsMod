@@ -31,12 +31,25 @@ namespace MorePartsMod.Parts
 
         public Part Part;
 
+        public bool _hasCapsule;
+
         public void Awake()
         {
-            this.Part.onPartUsed.AddListener(this.Toggle);
             this._notifyConnection = true;
             this._notifyDisconnection = true;
             this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == 3 ? 5 : 3;
+        }
+
+        private bool ContainCapsule()
+        {
+            foreach (Part part in Rocket.partHolder.GetArray())
+            {
+                if (part.name == "Capsule")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void OnDestroy()
@@ -50,11 +63,22 @@ namespace MorePartsMod.Parts
 
         private void Start()
         {
+
             if (GameManager.main == null)
             {
                 base.enabled = false;
                 return;
             }
+
+            _hasCapsule = ContainCapsule();
+
+            if (_hasCapsule)
+            {
+                base.enabled = false;
+                return;
+            }
+
+            this.Part.onPartUsed.AddListener(this.Toggle);
             this.FlowModule.onStateChange += this.CheckOutOfFuel;
             this.CheckOutOfFuel();
 
@@ -86,7 +110,7 @@ namespace MorePartsMod.Parts
 
         private void FixedUpdate()
         {
-            if (GameManager.main == null)
+            if (GameManager.main == null || _hasCapsule)
             {
                 base.enabled = false;
                 return;
@@ -152,7 +176,7 @@ namespace MorePartsMod.Parts
 
         public void _toggle()
         {
-            if (!this.Rocket.isPlayer)
+            if (!this.Rocket.isPlayer || _hasCapsule)
             {
                 return;
             }
