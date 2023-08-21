@@ -4,17 +4,18 @@ using SFS.Input;
 using SFS.UI;
 using SFS.UI.ModGUI;
 using UnityEngine;
-using UnityEngine.UI;
-using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.UI
 {
     class ColonyGUI : Screen_Base
     {
         public override bool PauseWhileOpen => false;
-        public ColonyComponent Colony {set{
+        public ColonyComponent Colony
+        {
+            set
+            {
                 this._colony = value;
-            } 
+            }
         }
 
         private Window _holder;
@@ -34,7 +35,7 @@ namespace MorePartsMod.UI
         public override void OnOpen()
         {
             this._name = this._colony.data.name;
-            this._holder = Builder.CreateWindow(this.transform,2, 500, 700,posY:350,titleText:"Colony Menu");
+            this._holder = Builder.CreateWindow(this.transform, 2, 500, 700, posY: 350, titleText: "Colony Menu");
             this._holder.EnableScrolling(Type.Vertical);
             this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
             this._holder.CreateLayoutGroup(Type.Vertical).DisableChildControl();
@@ -50,7 +51,8 @@ namespace MorePartsMod.UI
 
         public override void ProcessInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)){
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
                 ScreenManager.main.CloseCurrent();
             }
         }
@@ -63,15 +65,15 @@ namespace MorePartsMod.UI
         private void generateUI()
         {
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Information");
-            Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.data.name,this.onChangeColonyName);
-            foreach(string key in this._colony.data.resources.Keys)
+            Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.data.name, this.onChangeColonyName);
+            foreach (string key in this._colony.data.resources.Keys)
             {
-                Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, key + ": " +this._colony.data.resources[key]);
+                Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, key + ": " + this._colony.data.resources[key]);
             }
-            
+
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Buildings");
 
-            foreach (string buildingName in MorePartsModMain.Main.ColonyBuildingFactory.GetBuildingsName())
+            foreach (string buildingName in MorePartsPack.Main.ColonyBuildingFactory.GetBuildingsName())
             {
                 if (this._colony.data.isBuildingActive(buildingName))
                 {
@@ -100,7 +102,7 @@ namespace MorePartsMod.UI
                 MsgDrawer.main.Log("There are not material in the colony");
                 return;
             }
-            
+
             double materialQuantity = this._colony.data.getResource(MorePartsTypes.MATERIAL);
             if (materialQuantity - toGenerate < 0)
             {

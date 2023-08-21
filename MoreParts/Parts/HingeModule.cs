@@ -1,10 +1,8 @@
-﻿using MorePartsMod.Parts.Types;
+﻿
 using SFS.Parts;
 using SFS.Parts.Modules;
-using SFS.Translations;
 using SFS.Variables;
 using SFS.World;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,12 +11,12 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    class HingeModule : BaseModule, INJ_Rocket, I_PartMenu
+    public class HingeModule : MonoBehaviour, INJ_Rocket, I_PartMenu
     {
 
-        private VariableList<double>.Variable _max_opening;
-        private VariableList<double>.Variable _opening_velocity;
-        private VariableList<double>.Variable _opening;
+        public Float_Reference MaxOpening;
+        public Float_Reference OpeningVelocity;
+        public Float_Reference Opening;
         private OrientationModule _orientation;
         private HingeGroup _topGroup;
         private bool _isMoving;
@@ -26,19 +24,12 @@ namespace MorePartsMod.Parts
         private Transform _connector;
         private bool _validGroup;
         private const float radians = 0.01745f;
-        public float OpeningVelocity { set => this._opening_velocity.Value = value; get => (float)this._opening_velocity.Value; }
-        public float MaxOpening { set => this._max_opening.Value = value; get => (float)this._max_opening.Value; }
         public Rocket Rocket { set; get; }
+        public Part Part;
 
-   
-
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
             this._orientation = this.Part.orientation;
-            this._opening = this.getDoubleVariable("opening");
-            this._max_opening = this.getDoubleVariable("max_opening");
-            this._opening_velocity = this.getDoubleVariable("opening_velocity");
             this.Part.onPartUsed.AddListener(this.OnPartUsed);
             this._topGroup = new HingeGroup();
             this._isMoving = false;
@@ -56,11 +47,11 @@ namespace MorePartsMod.Parts
 
             this._topGroup.basePart = this.getTopParts().ToArray();
             this._validGroup = this.getTopPartGroup(this._topGroup.basePart);
-            
-            this._isClosing = this._opening.Value >= this._max_opening.Value;
+
+            this._isClosing = this.Opening.Value >= this.MaxOpening.Value;
             if (this._isClosing)
             {
-                this._connector.transform.localEulerAngles = new Vector3(0, 0, -90 + (float)this._opening.Value);
+                this._connector.transform.localEulerAngles = new Vector3(0, 0, -90 + this.Opening.Value);
             }
         }
 
@@ -75,7 +66,7 @@ namespace MorePartsMod.Parts
             if (this._isMoving)
             {
                 this.MoveParts();
-                
+
             }
 
         }
@@ -83,9 +74,9 @@ namespace MorePartsMod.Parts
         private Vector2 getPartRotationVector()
         {
             Orientation hingeOrientaion = this._orientation.orientation.Value;
-            float orientationX=hingeOrientaion.x, z=hingeOrientaion.z,x,y;
-            
-            z = z* radians;
+            float orientationX = hingeOrientaion.x, z = hingeOrientaion.z, x, y;
+
+            z = z * radians;
             x = Mathf.Cos(z);
             y = Mathf.Sin(z);
             Vector2 result = new Vector2(x, y);
@@ -93,7 +84,7 @@ namespace MorePartsMod.Parts
             if (orientationX < 0)
             {
                 return -result;
-            }  
+            }
             return result;
         }
 
@@ -106,45 +97,45 @@ namespace MorePartsMod.Parts
             Vector2 hingeRotation = this.getPartRotationVector();
             hingePosition.x += hingeRotation.x * 0.25f;
             hingePosition.y += hingeRotation.y * 0.25f;
-           
+
             if (this._isClosing)
             {
-                this._opening.Value -= this.OpeningVelocity;
-                rotation = Quaternion.AngleAxis(this.OpeningVelocity, new Vector3(0, 0, orientation.y * orientation.x * - 1) );
+                this.Opening.Value -= this.OpeningVelocity.Value;
+                rotation = Quaternion.AngleAxis((float)this.OpeningVelocity.Value, new Vector3(0, 0, orientation.y * orientation.x * -1));
             }
             else
             {
-                this._opening.Value += this.OpeningVelocity;
-                rotation = Quaternion.AngleAxis(this.OpeningVelocity, new Vector3(0, 0, orientation.y * orientation.x * 1));
+                this.Opening.Value += this.OpeningVelocity.Value;
+                rotation = Quaternion.AngleAxis((float)this.OpeningVelocity.Value, new Vector3(0, 0, orientation.y * orientation.x * 1));
             }
-            
+
 
             foreach (Part part in this._topGroup.getParts())
             {
                 partOrientation = part.orientation.orientation.Value;
                 if (this._isClosing)
                 {
-                    partOrientation.z -= orientation.y * orientation.x * this.OpeningVelocity;
+                    partOrientation.z -= orientation.y * orientation.x * this.OpeningVelocity.Value;
                 }
                 else
                 {
-                    partOrientation.z += orientation.y * orientation.x * this.OpeningVelocity;
+                    partOrientation.z += orientation.y * orientation.x * this.OpeningVelocity.Value;
                 }
 
-                part.transform.localEulerAngles = new Vector3(0,0, partOrientation.z);
+                part.transform.localEulerAngles = new Vector3(0, 0, partOrientation.z);
                 // movement
                 Vector3 hingeToPart = part.transform.localPosition - hingePosition;
-                part.transform.localPosition = (rotation* hingeToPart) + hingePosition;
+                part.transform.localPosition = (rotation * hingeToPart) + hingePosition;
             }
             // el -90 puede arreglarse si cambio la parte para que este en 0 grados de rotación
-            this._connector.localEulerAngles = new Vector3(0,0, -90+(float) this._opening.Value);
+            this._connector.localEulerAngles = new Vector3(0, 0, -90 + this.Opening.Value);
 
-            if(this._opening.Value >= this.MaxOpening || this._opening.Value <= 0)
+            if (this.Opening.Value >= this.MaxOpening.Value || this.Opening.Value <= 0)
             {
                 this._isClosing = !this._isClosing;
                 this._isMoving = false;
             }
-           
+
         }
 
         private List<Part> getTopParts()
@@ -174,7 +165,7 @@ namespace MorePartsMod.Parts
             }
             return result;
         }
- 
+
         private bool IsTopPart(Vector2 anchor, Vector2 rotation)
         {
             return Vector2.Dot(anchor, rotation) >= 0.03;
@@ -184,9 +175,9 @@ namespace MorePartsMod.Parts
         {
             bool thereIsLoop = false;
             bool isBaseGroup = false;
-            foreach(Part part in toSearch)
+            foreach (Part part in toSearch)
             {
-                if(this._topGroup.ExistInGroup(part))
+                if (this._topGroup.ExistInGroup(part))
                 {
                     // already exist in the group
 
@@ -234,37 +225,37 @@ namespace MorePartsMod.Parts
             return parts.ToArray();
         }
 
-		public void OnPartUsed(UsePartData data)
+        public void OnPartUsed(UsePartData data)
         {
             if (this._validGroup)
             {
                 this._isMoving = true;
             }
             data.successfullyUsedPart = true;
-		}
+        }
 
         public void Draw(StatsMenu drawer, PartDrawSettings settings)
         {
             if (settings.build)
             {
-                float GetMaxOpeningPercentage() => (float)(this.MaxOpening / 360);
-                float GetMaxVelocityPercentage() => (float)(this._opening_velocity.Value / 10);
-                drawer.DrawSlider(1, () => "Max Opening: "+  (int)this.MaxOpening, () => "", GetMaxOpeningPercentage, this.UpdateMaxOpeningValue, update => this._max_opening.onValueChange += update, update => this._max_opening.onValueChange -= update);
-                drawer.DrawSlider(2, () => "Opening Velocity: " + (int)this._opening_velocity.Value, () => "", GetMaxVelocityPercentage, this.UpdateOpeningVelocityValue, update => this._opening_velocity.onValueChange += update, update => this._opening_velocity.onValueChange -= update);
+                float GetMaxOpeningPercentage() => (this.MaxOpening.Value / 360);
+                float GetMaxVelocityPercentage() => (this.OpeningVelocity.Value / 10);
+                drawer.DrawSlider(1, () => "Max Opening: " + (int)this.MaxOpening.Value, () => "", GetMaxOpeningPercentage, this.UpdateMaxOpeningValue, update => this.MaxOpening.OnChange += update, update => this.MaxOpening.OnChange -= update);
+                drawer.DrawSlider(2, () => "Opening Velocity: " + (int)this.OpeningVelocity.Value, () => "", GetMaxVelocityPercentage, this.UpdateOpeningVelocityValue, update => this.OpeningVelocity.OnChange += update, update => this.OpeningVelocity.OnChange -= update);
             }
         }
 
         private void UpdateMaxOpeningValue(float newValue, bool value)
         {
-            this.MaxOpening = newValue * 360;
+            this.MaxOpening.Value = newValue * 360;
         }
 
         private void UpdateOpeningVelocityValue(float newValue, bool value)
         {
-            this._opening_velocity.Value = newValue * 10;
+            this.OpeningVelocity.Value = newValue * 10;
         }
 
-        private class HingeGroup
+        public class HingeGroup
         {
             public List<Part> parts;
             public Part[] basePart;
@@ -287,12 +278,13 @@ namespace MorePartsMod.Parts
 
             public void AddPartToGroup(Part part)
             {
-   
+
                 this.parts.Add(part);
             }
 
-            public IEnumerable<Part> getParts() {
-                List<Part> result = new List< Part>();
+            public IEnumerable<Part> getParts()
+            {
+                List<Part> result = new List<Part>();
                 Part[] parts = this.parts.ToArray();
                 for (int index = 0; index < parts.Length; index++)
                 {
@@ -302,7 +294,7 @@ namespace MorePartsMod.Parts
             }
 
         }
-  
+
 
     }
 }

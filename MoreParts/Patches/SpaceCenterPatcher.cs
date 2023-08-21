@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using MorePartsMod.Buildings;
 using SFS;
 using SFS.World;
 using SFS.WorldBase;
@@ -15,7 +14,8 @@ namespace MorePartsMod.Patches
         {
             SpaceCenterData spaceCenter = Base.planetLoader.spaceCenter;
 
-            GameObject gameObject = GameObject.Instantiate(MorePartsModMain.Main.Assets.LoadAsset<GameObject>("Telecommunication Antenna"));
+            
+            GameObject gameObject = GameObject.Instantiate(MorePartsPack.Main.AntennaPrefab);
             gameObject.transform.parent = __instance.transform;
             gameObject.SetActive(true);
 
@@ -27,7 +27,6 @@ namespace MorePartsMod.Patches
             building.building = buildingObject;
 
             __instance.buildings.meshRenderers.AddItem(worldLoader.holder.GetComponent<MeshRenderer>());
-            gameObject.AddComponent<AntennaComponent>();
         }
     }
 }

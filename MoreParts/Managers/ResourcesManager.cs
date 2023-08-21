@@ -1,18 +1,10 @@
 ﻿using System.Collections.Generic;
-using MorePartsMod.Buildings;
-using MorePartsMod.UI;
 using SFS;
-using SFS.Input;
-using SFS.IO;
-using SFS.Parsers.Json;
-using SFS.Parts.Modules;
 using SFS.UI;
-using SFS.UI.ModGUI;
 using UnityEngine;
 using SFS.World;
 using SFS.WorldBase;
 
-using static MorePartsMod.Buildings.ColonyComponent;
 using MorePartsMod.World;
 using static MorePartsMod.World.PlanetResourceData;
 using SFS.World.Maps;
@@ -75,12 +67,12 @@ namespace MorePartsMod.Managers
                 }
 
             }
-            return false; 
+            return false;
         }
 
         public void Update()
         {
-            if(GameManager.main == null || this.Player.Value == null)
+            if (GameManager.main == null || this.Player.Value == null)
             {
                 return;
             }
@@ -89,7 +81,7 @@ namespace MorePartsMod.Managers
             {
                 foreach (ReourceDeposit deposit in this.PlanetResourcesData[this.CurrentPlanet.codeName].ResourceDeposits)
                 {
-                    if(Vector2.Distance(deposit.Location, this.Player.Value.location.Value.position) > deposit.Size)
+                    if (Vector2.Distance(deposit.Location, this.Player.Value.location.Value.position) > deposit.Size)
                     {
                         continue;
                     }
@@ -121,7 +113,7 @@ namespace MorePartsMod.Managers
             }
 
             this.Player.Value.location.planet.OnChange += this.OnPlanetChange;
-           
+
         }
 
         public void OnPlanetChange()
@@ -167,7 +159,7 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-            Vector3 rocketPosition = rocket.location.Value.position/1000;
+            Vector3 rocketPosition = rocket.location.Value.position / 1000;
             Vector3[] points = new Vector3[] { Vector3.zero, rocketPosition };
             Map.solidLine.DrawLine(points, this.CurrentPlanet, Color.red, Color.red);
 
@@ -179,14 +171,14 @@ namespace MorePartsMod.Managers
 
         public void SavePlanetResourcesInfo()
         {
-            MorePartsModMain.SaveWorldPersistent("PlanetResources.json", this.PlanetResourcesData);
+            MorePartsPack.SaveWorldPersistent("PlanetResources.json", this.PlanetResourcesData);
         }
 
         public void LoadPlanetResourcesInfo()
         {
 
             Dictionary<string, PlanetResourceData> data;
-            MorePartsModMain.LoadWorldPersistent<Dictionary<string, PlanetResourceData>>("PlanetResources.json", out data);
+            MorePartsPack.LoadWorldPersistent<Dictionary<string, PlanetResourceData>>("PlanetResources.json", out data);
             if (data == null)
             {
                 this.GeneratePlanetResourcesInfo();

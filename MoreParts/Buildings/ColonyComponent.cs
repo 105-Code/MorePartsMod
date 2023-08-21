@@ -5,7 +5,6 @@ using SFS.UI;
 using SFS.Variables;
 using SFS.World;
 using SFS.WorldBase;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static MorePartsMod.ColonyBuildingFactory;
@@ -24,7 +23,7 @@ namespace MorePartsMod.Buildings
         private Bool_Local _playerInPlanet = new Bool_Local();
         private Bool_Local _playerNear = new Bool_Local();
         private bool _hasEnergy;
-        public Node Node{ private set; get; }
+        public Node Node { private set; get; }
 
         private void Awake()
         {
@@ -79,7 +78,7 @@ namespace MorePartsMod.Buildings
         private bool CheckAndReduceMaterials(float constructionMaterial, float electronicMaterial)
         {
             double constructionQuantity = this.data.getResource(MorePartsTypes.CONSTRUCTION_MATERIAL);
-            if(constructionQuantity - constructionMaterial < 0)
+            if (constructionQuantity - constructionMaterial < 0)
             {
                 return false;
             }
@@ -95,7 +94,7 @@ namespace MorePartsMod.Buildings
 
         public bool Build(string buildingName)
         {
-            BuildingData data = MorePartsModMain.Main.ColonyBuildingFactory.getColonyBuilding(buildingName);
+            BuildingData data = MorePartsPack.Main.ColonyBuildingFactory.getColonyBuilding(buildingName);
 
             if (!this.CheckAndReduceMaterials(data.constructionCost, data.electronicCost))
             {
@@ -103,7 +102,7 @@ namespace MorePartsMod.Buildings
                 return false;
             }
 
-            if(buildingName == MorePartsTypes.SOLAR_PANELS_BUILDING)
+            if (buildingName == MorePartsTypes.SOLAR_PANELS_BUILDING)
             {
                 this.checkSolarPanel(true);
             }
@@ -122,7 +121,7 @@ namespace MorePartsMod.Buildings
                 return;
             }
 
-            foreach (string buildingName in MorePartsModMain.Main.ColonyBuildingFactory.GetBuildingsName())
+            foreach (string buildingName in MorePartsPack.Main.ColonyBuildingFactory.GetBuildingsName())
             {
                 Transform buildingTransform = this.transform.Find(buildingName);
                 if (buildingTransform == null)
@@ -132,7 +131,7 @@ namespace MorePartsMod.Buildings
 
                 if (!this.data.isBuildingActive(buildingName))
                 {
-                    if(buildingName == "Solar Panels")
+                    if (buildingName == "Solar Panels")
                     {
                         this.checkSolarPanel(false);
                     }
@@ -299,7 +298,8 @@ namespace MorePartsMod.Buildings
                 this.hidden = false;
             }
 
-            public Planet getPlanet() { 
+            public Planet getPlanet()
+            {
                 Planet planet;
                 Base.planetLoader.planets.TryGetValue(this.address, out planet);
                 return planet;
@@ -316,7 +316,7 @@ namespace MorePartsMod.Buildings
                 Building building;
                 this.structures.TryGetValue(buildingName, out building);
 
-                if(building == null)
+                if (building == null)
                 {
                     return Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
                 }
@@ -331,7 +331,7 @@ namespace MorePartsMod.Buildings
                 Building building;
                 this.structures.TryGetValue(buildingName, out building);
 
-                if(building == null)
+                if (building == null)
                 {
                     return false;
                 }

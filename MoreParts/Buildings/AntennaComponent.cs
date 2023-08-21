@@ -1,14 +1,13 @@
 ﻿using SFS.World;
 using UnityEngine;
-using MorePartsMod.ARPA;
-using MorePartsMod.Parts;
 using System;
 using SFS.WorldBase;
 using SFS.World.Maps;
 using System.Collections.Generic;
 using SFS;
 using SFS.UI;
-using MorePartsMod.Managers;
+using MorePartsMod.ARPA;
+using MorePartsMod.Parts;
 
 namespace MorePartsMod.Buildings
 {
@@ -24,7 +23,6 @@ namespace MorePartsMod.Buildings
 		private bool _enableTelecomunicationLines;
 		private Color _lineColor;
 		public bool ShowTelecommunicationLines { set; private get; }
-
 
 
 		private void Awake()

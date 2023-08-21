@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 3207330539235223471}
   - component: {fileID: 4458619553451696607}
   - component: {fileID: 5292730459476133137}
-  - component: {fileID: 1685317478338688720}
+  - component: {fileID: 1847258449601274138}
   m_Layer: 8
   m_Name: Hinge
   m_TagString: Untagged
@@ -454,7 +454,7 @@ MonoBehaviour:
     saves: []
   stringVariables:
     saves: []
---- !u!114 &1685317478338688720
+--- !u!114 &1847258449601274138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -463,8 +463,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8063651465425758740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
+  m_Script: {fileID: 2070145805, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMorePartsVersion: 3.0.0
-  modules: 06000000
+  MaxOpening:
+    variableName: max_opening
+    referenceToVariables: {fileID: 5292730459476133137}
+    localValue: 0
+  OpeningVelocity:
+    variableName: opening_velocity
+    referenceToVariables: {fileID: 5292730459476133137}
+    localValue: 0
+  Opening:
+    variableName: opening
+    referenceToVariables: {fileID: 5292730459476133137}
+    localValue: 0
+  Part: {fileID: 3207330539235223471}

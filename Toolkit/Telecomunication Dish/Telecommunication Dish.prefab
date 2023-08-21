@@ -71,6 +71,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!114 &3671915245792897685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,8 +87,6 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 7144952993008515421}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!33 &5480289666225415123
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -153,6 +152,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0
@@ -257,6 +257,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0
@@ -418,6 +419,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!114 &3528641375768843983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,8 +435,6 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 6648074959311915069}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!33 &2981890738745540801
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 5662358357611772582}
   - component: {fileID: 4382373109341745631}
   - component: {fileID: 7985950641479228873}
-  - component: {fileID: 605210654529112584}
+  - component: {fileID: 7690441900687662995}
   m_Layer: 8
   m_Name: Telecommunication Dish
   m_TagString: Untagged
@@ -600,11 +600,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName:
-    plainText: 1
     TranslatableName: Telecommunication Dish
-  description:
     plainText: 1
+  description:
     TranslatableName: It's only a telecommunication dish
+    plainText: 1
   mass:
     variables: {fileID: 4382373109341745631}
     input: 0.2
@@ -720,7 +720,7 @@ MonoBehaviour:
     state:
       value: 0
     sources: []
---- !u!114 &605210654529112584
+--- !u!114 &7690441900687662995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -729,11 +729,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 4903166738067769997}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
+  m_Script: {fileID: 801091260, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMorePartsVersion: 2.2.0
-  modules: 02000000
+  FlowModule: {fileID: 7985950641479228873}
+  IsOn:
+    variableName: isOn
+    referenceToVariables: {fileID: 0}
+    localValue: 0
+  FlowRate:
+    variableName: flow_rate
+    referenceToVariables: {fileID: 0}
+    localValue: 0
+  TargetState:
+    variableName: target_state
+    referenceToVariables: {fileID: 0}
+    localValue: 0
+  Part: {fileID: 527995676948341972}
 --- !u!1 &6243192004553079864
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +817,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!114 &2574163901359762388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,8 +833,6 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 6773572119525427104}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!33 &5817945909796036164
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -887,6 +898,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0
@@ -1011,6 +1023,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!114 &13108117398823443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1026,8 +1039,6 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 2715675976788091397}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!33 &8220423908372006692
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1093,6 +1104,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0

@@ -50,6 +50,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0
@@ -88,6 +89,7 @@ MonoBehaviour:
   renderQueueOffset: 0
   polygonModule: {fileID: 7053976066543650231}
   UV_Mode: 0
+  grid: 0
   bounds:
   - {x: -0.4, y: -0.4}
   - {x: -0.4, y: 0.4}
@@ -197,6 +199,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0
@@ -235,6 +238,7 @@ MonoBehaviour:
   renderQueueOffset: 0
   polygonModule: {fileID: 7604467132136355526}
   UV_Mode: 0
+  grid: 0
   bounds:
   - {x: -0.4, y: -0.4}
   - {x: -0.4, y: 0.4}
@@ -430,6 +434,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 0
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: -2
@@ -490,6 +495,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!33 &7268119114000566001
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -553,9 +559,9 @@ GameObject:
   - component: {fileID: -1777736922084461513}
   - component: {fileID: 6202661881478926578}
   - component: {fileID: 2130059140044947486}
-  - component: {fileID: 6691085828881708113}
   - component: {fileID: 6949257965782735611}
   - component: {fileID: 2537801614488303520}
+  - component: {fileID: 6250425120403023448}
   m_Layer: 8
   m_Name: Continuous Track
   m_TagString: Untagged
@@ -595,12 +601,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName:
-    plainText: 1
     TranslatableName: Caterpillar
-  description:
     plainText: 1
+  description:
     TranslatableName: Continuous track is a system of vehicle propulsion. This part
       need electricity
+    plainText: 1
   mass:
     variables: {fileID: 6202661881478926578}
     input: 4
@@ -705,20 +711,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6691085828881708113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7133912042625520222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MinMorePartsVersion: 2.2.0
-  modules: 03000000
 --- !u!114 &6949257965782735611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,6 +752,38 @@ CapsuleCollider2D:
   m_Offset: {x: 0.00040715036, y: -0.5756632}
   m_Size: {x: 2.6820366, y: 0.7930863}
   m_Direction: 1
+--- !u!114 &6250425120403023448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133912042625520222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -700011600, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlowModule: {fileID: 6949257965782735611}
+  _on:
+    variableName: wheel_on
+    referenceToVariables: {fileID: 0}
+    localValue: 0
+  Traction:
+    variableName: traction
+    referenceToVariables: {fileID: 0}
+    localValue: 10
+  Power:
+    variableName: power
+    referenceToVariables: {fileID: 0}
+    localValue: 10
+  FlowRate:
+    variableName: flow_rate
+    referenceToVariables: {fileID: 0}
+    localValue: 0
+  Animator: {fileID: 2130059140044947486}
+  angularVelocity: 10
+  Part: {fileID: 55131685263053458}
 --- !u!1 &8318565617546471681
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,6 +834,7 @@ MonoBehaviour:
   attachmentSurfaces: 0
   dragSurfaces: 0
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 1
@@ -999,6 +1024,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!1001 &438080213981199214
 PrefabInstance:
   m_ObjectHideFlags: 0
