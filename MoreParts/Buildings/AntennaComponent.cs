@@ -12,17 +12,19 @@ using MorePartsMod.Parts;
 
 namespace MorePartsMod.Buildings
 {
-    class AntennaComponent : MonoBehaviour
+    public class AntennaComponent : MonoBehaviour
     {
         public static AntennaComponent main;
 
+        [Obsolete("Estoy debe estar en TelecomunicationDishModule.cs")]
+        private bool _hasTelecommunicationDish;
+        private bool _enableTelecomunicationLines;
         private ARPANET _network;
         private Node _routeOrigin;
         private WorldLocation _position;
-        private bool _hasTelecommunicationDish;
         private Planet _sunPlanet;
-        private bool _enableTelecomunicationLines;
         private Color _lineColor;
+
         public bool ShowTelecommunicationLines { set; private get; }
 
 

@@ -510,6 +510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8547316059319244993}
+  - component: {fileID: 5815100099551795057}
   m_Layer: 10
   m_Name: Solar Panels
   m_TagString: Untagged
@@ -534,6 +535,18 @@ Transform:
   m_Father: {fileID: 869890492796749751}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5815100099551795057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5518275011452144717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -238604517, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7143924448760645366
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +556,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8422925225994735361}
+  - component: {fileID: 5048644265201672873}
+  - component: {fileID: 1182994842309365068}
+  - component: {fileID: 8299027723774328179}
+  - component: {fileID: 2799493535744050641}
   m_Layer: 10
   m_Name: Colony
   m_TagString: Untagged
@@ -566,6 +583,70 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5048644265201672873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1250626392, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColonyHolder: {fileID: 869890492796749751}
+  Location: {fileID: 8299027723774328179}
+--- !u!114 &1182994842309365068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 793986be8ed5c18d49f00d43ae05d574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {fileID: 8299027723774328179}
+  holder: {fileID: 7296541649961607258}
+  loadDistance: 800
+--- !u!114 &8299027723774328179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5dc6c3d153ef1b1afe7bd035a042d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planet:
+    value: {fileID: 0}
+  position:
+    value:
+      x: 0
+      y: 0
+  velocity:
+    value:
+      x: 0
+      y: 0
+--- !u!114 &2799493535744050641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3955351e8b83adc5ab9eabb637fe8e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {fileID: 8299027723774328179}
 --- !u!1 &7296541649961607258
 GameObject:
   m_ObjectHideFlags: 0

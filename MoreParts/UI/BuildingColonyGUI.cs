@@ -1,7 +1,7 @@
-﻿using SFS.Input;
+﻿using MorePartsMod.Buildings;
+using SFS.Input;
 using SFS.UI.ModGUI;
 using UnityEngine;
-using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.UI
 {
@@ -54,4 +54,3 @@ namespace MorePartsMod.UI
         }
     }
 }
-//

@@ -119,23 +119,18 @@ namespace MorePartsMod.Managers
 
         private void LoadColonies()
         {
-            GameObject colonyPrefab = MorePartsPack.Main.ColonyPrefab;
-            // setup buildings
-            RefineryComponent.Setup(colonyPrefab);
-            SolarPanelComponent.Setup(colonyPrefab);
-            //VABComponent.Setup(colonyPrefab);
+            GameObject colonyPrefab = MorePartsPack.Main.ColonyPrefab.gameObject;
             bool flag = false;
             foreach (ColonyData colony in MorePartsPack.Main.ColoniesInfo)
             {
                 GameObject colonyGameObject = GameObject.Instantiate(colonyPrefab);
-                BuildingUtils.AddBuildingToWorld(colonyGameObject, "Holder", colony.getPlanet(), colony.position);
-                GameObject holder = colonyGameObject.transform.Find("Holder").gameObject;
-                holder.transform.eulerAngles = new Vector3(0, 0, colony.angle);
-                ColonyComponent component = holder.AddComponent<ColonyComponent>();
-                component.data = colony;
+                BuildingUtils.AddBuildingToWorld(colonyGameObject, colony.getPlanet(), colony.position);
+                ColonyComponent component = colonyGameObject.GetComponent<ColonyComponent>();
 
+                component.ColonyHolder.transform.eulerAngles = new Vector3(0, 0, colony.angle);
+                component.data = colony;
                 component.RestoreBuildings();
-                this.Colonies.Add(component);
+                Colonies.Add(component);
             }
 
             if (flag)
@@ -201,10 +196,10 @@ namespace MorePartsMod.Managers
 
         private void OnPlanetChange()
         {
-            /*if (this.player.Value.location.planet.Value.codeName == "Earth")
+            if (this.player.Value.location.planet.Value.codeName == "Earth")
             {
                 return;
-            }*/
+            }
             this.player.Value.location.velocity.OnChange += this.CheckPlayerVelocity;
         }
 
@@ -274,7 +269,7 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-            if (!CheckAndReduceMaterials(1, 1))
+            if (!CheckAndReduceMaterials(7, 7))
             {
                 MsgDrawer.main.Log("Insufficient materials");
                 return;
@@ -292,19 +287,18 @@ namespace MorePartsMod.Managers
         {
             this._newColony.name = "Name";
 
-            GameObject colony = GameObject.Instantiate(MorePartsPack.Main.ColonyPrefab);
+            GameObject colony = GameObject.Instantiate(MorePartsPack.Main.ColonyPrefab.gameObject);
 
-            BuildingUtils.AddBuildingToWorld(colony, "Holder", this._newColony.getPlanet(), this._newColony.position);
+            BuildingUtils.AddBuildingToWorld(colony, this._newColony.getPlanet(), this._newColony.position);
+            ColonyComponent component = colony.GetComponent<ColonyComponent>();
 
-            GameObject holder = colony.transform.Find("Holder").gameObject;
-            holder.transform.eulerAngles = new Vector3(0, 0, this._newColony.angle);
-
-            ColonyComponent component = holder.AddComponent<ColonyComponent>();
+            component.ColonyHolder.transform.eulerAngles = new Vector3(0, 0, this._newColony.angle);
             component.data = this._newColony;
             component.RestoreBuildings();
             this.Colonies.Add(component);
             this.SaveColonies();
         }
+
 
         private bool CheckColonyDistance(string address, Double2 colonyPosition)
         {

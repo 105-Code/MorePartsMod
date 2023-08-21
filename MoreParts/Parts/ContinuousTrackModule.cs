@@ -17,7 +17,7 @@ namespace MorePartsMod.Parts
 
         private Transform[] _idlers;
 
-        public float angularVelocity;
+        private float angularVelocity;
         private const float MAX_ANGULAR_VELOCITY = 550;
 
         public float TurnAxis { get; set; }

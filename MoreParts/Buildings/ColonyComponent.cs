@@ -4,9 +4,9 @@ using SFS;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
-using SFS.WorldBase;
 using System.Collections.Generic;
 using UnityEngine;
+using static MorePartsMod.Buildings.ColonyData;
 using static MorePartsMod.ColonyBuildingFactory;
 
 namespace MorePartsMod.Buildings
@@ -14,21 +14,18 @@ namespace MorePartsMod.Buildings
     public class ColonyComponent : MonoBehaviour
     {
 
-        private GameObject holder;
         public ColonyData data;
-        public bool dialogOpen;
-        public bool playerNear;
+        public Transform ColonyHolder;
 
-        private Dictionary<string, object> _modules = new Dictionary<string, object>();
-        private Bool_Local _playerInPlanet = new Bool_Local();
-        private Bool_Local _playerNear = new Bool_Local();
+        public WorldLocation Location;
+
+        private Bool_Local PlayerInPlanet = new Bool_Local();
+        private Bool_Local PlayerNear = new Bool_Local();
+
         private bool _hasEnergy;
-        public Node Node { private set; get; }
+        private Dictionary<string, object> _modules = new Dictionary<string, object>();
 
-        private void Awake()
-        {
-            this.holder = GameObject.Find("Main UI");
-        }
+        public Node Node { private set; get; }
 
         private void Start()
         {
@@ -36,8 +33,7 @@ namespace MorePartsMod.Buildings
             {
                 return;
             }
-            this.dialogOpen = false;
-            this.Node = AntennaComponent.main.AddNode(this.transform.parent.GetComponent<WorldLocation>(), true);
+            this.Node = AntennaComponent.main.AddNode(Location, true);
             ColonyManager.main.player.OnChange += this.OnChangePlayer;
         }
 
@@ -54,24 +50,24 @@ namespace MorePartsMod.Buildings
         {
             if (ColonyManager.main.player.Value.location.planet.Value.codeName != this.data.address)
             {
-                this._playerInPlanet.Value = false;
+                this.PlayerInPlanet.Value = false;
             }
-            this._playerInPlanet.Value = true;
+            this.PlayerInPlanet.Value = true;
         }
 
         private void FixedUpdate()
         {
-            if (GameManager.main == null || !this._playerInPlanet.Value || !ColonyManager.main.player.Value)
+            if (GameManager.main == null || !this.PlayerInPlanet.Value || !ColonyManager.main.player.Value)
             {
                 return;
             }
 
             if (Vector2.Distance(this.data.position, ColonyManager.main.player.Value.location.position.Value) > 100)
             {
-                this._playerNear.Value = false;
+                this.PlayerNear.Value = false;
                 return;
             }
-            this._playerNear.Value = true;
+            this.PlayerNear.Value = true;
 
         }
 
@@ -109,7 +105,7 @@ namespace MorePartsMod.Buildings
 
             this.data.structures.Add(buildingName, new Building(data.offset));
             ColonyManager.main.SaveColonies();
-            this.transform.Find(buildingName).gameObject.SetActive(true);
+            ColonyHolder.Find(buildingName).gameObject.SetActive(true);
             this.InjectData();
             return true;
         }
@@ -123,7 +119,7 @@ namespace MorePartsMod.Buildings
 
             foreach (string buildingName in MorePartsPack.Main.ColonyBuildingFactory.GetBuildingsName())
             {
-                Transform buildingTransform = this.transform.Find(buildingName);
+                Transform buildingTransform = ColonyHolder.Find(buildingName);
                 if (buildingTransform == null)
                 {
                     continue;
@@ -197,8 +193,8 @@ namespace MorePartsMod.Buildings
             this.InjectPlayerInPlanet();
             this.InjectPlayerNear();
 
-            this._playerInPlanet.OnChange += this.InjectPlayerInPlanet;
-            this._playerNear.OnChange += this.InjectPlayerNear;
+            this.PlayerInPlanet.OnChange += this.InjectPlayerInPlanet;
+            this.PlayerNear.OnChange += this.InjectPlayerNear;
             ColonyManager.main.player.OnChange += this.InjectRocket;
         }
         private void InjectHasEnergy()
@@ -215,7 +211,7 @@ namespace MorePartsMod.Buildings
             INJ_PlayerNear[] list = this.CollectModules<INJ_PlayerNear>();
             for (int i = 0; i < list.Length; i++)
             {
-                list[i].PlayerNear = this._playerNear;
+                list[i].PlayerNear = this.PlayerNear.Value;
             }
         }
 
@@ -225,7 +221,7 @@ namespace MorePartsMod.Buildings
             INJ_PlayerInPlanet[] list = this.CollectModules<INJ_PlayerInPlanet>();
             for (int i = 0; i < list.Length; i++)
             {
-                list[i].PlayerInPlanet = this._playerInPlanet;
+                list[i].PlayerInPlanet = this.PlayerInPlanet.Value;
             }
         }
 
@@ -256,197 +252,7 @@ namespace MorePartsMod.Buildings
             }
             return (T[])this._modules[name];
         }
-        #endregion
 
-        public class ColonyData
-        {
-            public float angle;
-            public Double2 position;
-            public string name;
-            public bool hidden;
-            public string address;
-
-            public Dictionary<string, Building> structures;
-
-            public Dictionary<string, double> resources;
-
-            public ColonyData()
-            {
-                this.structures = new Dictionary<string, Building>();
-                this.hidden = false;
-                this.resources = new Dictionary<string, double>();
-            }
-
-            public ColonyData(string name, float angle, WorldLocation worldLocation)
-            {
-                this.angle = angle;
-                this.name = name;
-                this.position = worldLocation.position.Value;
-                this.address = worldLocation.planet.Value.codeName;
-                this.structures = new Dictionary<string, Building>();
-                this.resources = new Dictionary<string, double>();
-                this.hidden = false;
-            }
-
-            public ColonyData(float angle, string planetName, Double2 position)
-            {
-                this.angle = angle;
-                this.position = position;
-                this.address = planetName;
-                this.structures = new Dictionary<string, Building>();
-                this.resources = new Dictionary<string, double>();
-                this.hidden = false;
-            }
-
-            public Planet getPlanet()
-            {
-                Planet planet;
-                Base.planetLoader.planets.TryGetValue(this.address, out planet);
-                return planet;
-            }
-
-            public void setWorldLocation(WorldLocation location)
-            {
-                this.position = location.position.Value;
-                this.address = location.planet.Value.codeName;
-            }
-
-            public Double2 getBuildingPosition(string buildingName, float height = 0)
-            {
-                Building building;
-                this.structures.TryGetValue(buildingName, out building);
-
-                if (building == null)
-                {
-                    return Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
-                }
-
-                Double2 colonyPos = Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
-                Vector2 buildingPos = Double2.CosSin((double)(0.017453292f * (this.angle))) * building.offset.x;
-                return colonyPos + buildingPos;
-            }
-
-            public bool isBuildingActive(string buildingName)
-            {
-                Building building;
-                this.structures.TryGetValue(buildingName, out building);
-
-                if (building == null)
-                {
-                    return false;
-                }
-                return true;
-            }
-
-            private bool isValidColonyResource(string resourceType)
-            {
-                if (MorePartsTypes.CONSTRUCTION_MATERIAL == resourceType)
-                {
-                    return true;
-                }
-
-                if (MorePartsTypes.ELECTRONIC_COMPONENT == resourceType)
-                {
-                    return true;
-                }
-
-                if (MorePartsTypes.MATERIAL == resourceType)
-                {
-                    return true;
-                }
-
-                if (MorePartsTypes.ROCKET_MATERIAL == resourceType)
-                {
-                    return true;
-                }
-                return false;
-            }
-
-            public bool addResource(string resourceType, double quantity)
-            {
-                if (!this.isValidColonyResource(resourceType))
-                {
-                    return false;
-                }
-
-                if (!this.resources.ContainsKey(resourceType))
-                {
-                    this.resources.Add(resourceType, quantity);
-                }
-                else
-                {
-                    this.resources[resourceType] += quantity;
-                }
-                return true;
-            }
-
-            public double takeResource(string resourceType, double quantity)
-            {
-                if (!this.isValidColonyResource(resourceType))
-                {
-                    return 0;
-                }
-
-                if (!this.resources.ContainsKey(resourceType))
-                {
-                    this.resources.Add(resourceType, 0);
-                    return 0;
-                }
-
-                if (this.resources[resourceType] - quantity < 0)
-                {
-                    double total = this.resources[resourceType];
-                    this.resources[resourceType] -= this.resources[resourceType];
-                    return total;
-                }
-
-                this.resources[resourceType] -= quantity;
-                return quantity;
-            }
-
-            public double getResource(string resourceType)
-            {
-                if (!this.isValidColonyResource(resourceType))
-                {
-                    return 0;
-                }
-
-                if (this.resources.ContainsKey(resourceType))
-                {
-                    return this.resources[resourceType];
-                }
-                this.resources.Add(resourceType, 0);
-                return 0;
-            }
-
-            public float LandmarkAngle { get => this.angle + 90; }
-
-            public override string ToString()
-            {
-                string result = "Colony " + this.name + "\n";
-                result += "address " + this.address + "\n";
-                result += "Resources\n";
-                foreach (string key in this.resources.Keys)
-                {
-                    result += key + ": " + this.resources[key] + "\n";
-                }
-                return result;
-            }
-        }
-
-        public class Building
-        {
-            public Double2 offset;
-
-            public Building(Double2 pos)
-            {
-                this.offset = pos;
-            }
-
-            public Building()
-            {
-            }
-        }
 
         public interface INJ_PlayerNear
         {
@@ -472,6 +278,6 @@ namespace MorePartsMod.Buildings
         {
             bool HasEnergy { set; }
         }
-
+        #endregion
     }
 }

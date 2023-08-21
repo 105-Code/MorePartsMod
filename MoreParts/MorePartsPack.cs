@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using ModLoader.Helpers;
 using MorePartsMod.Managers;
-using static MorePartsMod.Buildings.ColonyComponent;
+using MorePartsMod.Buildings;
 using MorePartsMod.Utils;
 
 namespace MorePartsMod
@@ -17,8 +17,8 @@ namespace MorePartsMod
         public const string ModFolderName = "MorePartsMod";
         public const string ModIdPatching = "morepartsmod.danielrojas.website";
 
-        public GameObject AntennaPrefab;
-        public GameObject ColonyPrefab;
+        public AntennaComponent AntennaPrefab;
+        public ColonyComponent ColonyPrefab;
         public MockMod Mod { get; private set; }
 
         private GameObject _manager;

@@ -13,14 +13,16 @@ namespace MorePartsMod.Buildings
         private bool _playerInPlanet;
         private ResourceModule _rocketTanks;
 
-        public bool PlayerNear { 
+        public bool PlayerNear
+        {
             set
             {
                 this._rocketTanks = null;
                 this._playerNear = value;
-            } 
+            }
         }
-        public bool PlayerInPlanet {
+        public bool PlayerInPlanet
+        {
             set
             {
                 this._rocketTanks = null;
@@ -33,12 +35,12 @@ namespace MorePartsMod.Buildings
 
         private void FixedUpdate()
         {
-            if(!this._playerNear || !this._playerInPlanet || !this.HasEnergy)
+            if (!this._playerNear || !this._playerInPlanet || !this.HasEnergy)
             {
                 return;
             }
 
-            if(this._rocketTanks == null)
+            if (this._rocketTanks == null)
             {
                 this._rocketTanks = this.GetRocketTanks();
                 return;
@@ -48,7 +50,7 @@ namespace MorePartsMod.Buildings
             {
                 return;
             }
- 
+
             this._rocketTanks.AddResource(0.005 * WorldTime.main.timewarpSpeed);
         }
 
@@ -58,17 +60,11 @@ namespace MorePartsMod.Buildings
             {
                 if (resource.resourceType.name == "Liquid_Fuel")
                 {
-                    return resource; 
+                    return resource;
                 }
             }
 
             return null;
-        }
-
-        public static void Setup(GameObject colonyPrefab)
-        {
-            GameObject building = colonyPrefab.transform.FindChild("Holder").gameObject.transform.FindChild("Refinery").gameObject;
-            building.AddComponent<RefineryComponent>();
         }
     }
 }

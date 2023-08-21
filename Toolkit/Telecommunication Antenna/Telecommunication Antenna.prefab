@@ -108,6 +108,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8422925225994735361}
   - component: {fileID: 5132139207488181095}
+  - component: {fileID: 7901179105965900176}
+  - component: {fileID: 3347331134978417678}
+  - component: {fileID: 3597918369126611854}
   m_Layer: 0
   m_Name: Telecommunication Antenna
   m_TagString: Untagged
@@ -143,3 +146,53 @@ MonoBehaviour:
   m_Script: {fileID: 2066482057, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7901179105965900176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5dc6c3d153ef1b1afe7bd035a042d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planet:
+    value: {fileID: 0}
+  position:
+    value:
+      x: 0
+      y: 0
+  velocity:
+    value:
+      x: 0
+      y: 0
+--- !u!114 &3347331134978417678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 793986be8ed5c18d49f00d43ae05d574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {fileID: 7901179105965900176}
+  holder: {fileID: 5466839700523168956}
+  loadDistance: 800
+--- !u!114 &3597918369126611854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7143924448760645366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3955351e8b83adc5ab9eabb637fe8e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {fileID: 7901179105965900176}
