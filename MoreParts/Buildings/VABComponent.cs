@@ -1,8 +1,5 @@
-﻿using SFS.Parts.Modules;
-using SFS.World;
-using System;
+﻿using System;
 using UnityEngine;
-using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Buildings
 {

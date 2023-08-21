@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5499134bc9bf4342a3880329018c3a62, type: 3}
+  m_Script: {fileID: 1964206125, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: MoreParts
   m_EditorClassIdentifier: 
   DisplayName: MoreParts Pack
@@ -18,3 +18,7 @@ MonoBehaviour:
   Author: dani0105
   ShowIcon: 1
   Icon: {fileID: 2800000, guid: edfb648b3bbac7044bdd2d0dd9362105, type: 3}
+  AntennaPrefab: {fileID: 7143924448760645366, guid: 78b653d999b8b894f905db5cbf7c7319,
+    type: 3}
+  ColonyPrefab: {fileID: 7143924448760645366, guid: e3582716bbda2c04ebb81181e736ec8d,
+    type: 3}

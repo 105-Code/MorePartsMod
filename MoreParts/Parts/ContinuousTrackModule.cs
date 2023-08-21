@@ -9,25 +9,20 @@ namespace MorePartsMod.Parts
 {
     class ContinuousTrackModule : ElectricalModule, Rocket.INJ_TurnAxisWheels, Rocket.INJ_Physics
     {
-        private VariableList<bool>.Variable _on;
-        private VariableList<double>.Variable _traction;
-        private VariableList<double>.Variable _power;
-        private VariableList<double>.Variable _flow_rate;
-        private Animator _animator;
+        public Bool_Reference _on;
+        public Float_Reference Traction;
+        public Float_Reference Power;
+        public Float_Reference FlowRate;
+        public Animator Animator;
 
         private Transform[] _idlers;
 
         public float angularVelocity;
-        private const float MAX_ANGULAR_VELOCITY = 550; 
+        private const float MAX_ANGULAR_VELOCITY = 550;
 
         public float TurnAxis { get; set; }
         public Rigidbody2D Rb2d { set; get; }
-
-        public override void Awake()
-        {
-            base.Awake();
-            this._animator = this.GetComponent<Animator>();
-        }
+        public Part Part;
 
         public void Start()
         {
@@ -37,10 +32,6 @@ namespace MorePartsMod.Parts
                 return;
             }
             this.Part.onPartUsed.AddListener(this.ToggleEnabled);
-            this._on = this.getBoolVariable("wheel_on");
-            this._traction = this.getDoubleVariable("traction");
-            this._flow_rate = this.getDoubleVariable("flow_rate");
-            this._power = this.getDoubleVariable("power");
             this.FlowModule.onStateChange += this.CheckOutOfFuel;
             this.GetIdlers();
             this.angularVelocity = 0;
@@ -50,7 +41,7 @@ namespace MorePartsMod.Parts
         public void ToggleEnabled(UsePartData data)
         {
             this._on.Value = !this._on.Value;
-            MsgDrawer.main.Log(this._on.Value? "On": "Off");
+            MsgDrawer.main.Log(this._on.Value ? "On" : "Off");
             data.successfullyUsedPart = true;
         }
 
@@ -65,23 +56,23 @@ namespace MorePartsMod.Parts
 
             if (direction != 0)
             {
-                this._flow_rate.Value = 0.1;
-                this._animator.SetInteger("velocity", 1);
-                this._animator.speed = 1;
-                this.angularVelocity = Mathf.Clamp(this.angularVelocity + direction * (float) this._power.Value * Time.deltaTime, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
+                this.FlowRate.Value = 0.1f;
+                this.Animator.SetInteger("velocity", 1);
+                this.Animator.speed = 1;
+                this.angularVelocity = Mathf.Clamp(this.angularVelocity + direction * (float)this.Power.Value * Time.deltaTime, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
                 this.UpdateIdlers(direction);
-                return; 
+                return;
             }
 
-            this._flow_rate.Value = 0;
+            this.FlowRate.Value = 0;
             this.angularVelocity = 0;
-            this._animator.SetInteger("velocity", 0);
-            this._animator.speed = 0;
+            this.Animator.SetInteger("velocity", 0);
+            this.Animator.speed = 0;
         }
 
         public void UpdateIdlers(float direction)
         {
-            foreach(Transform idler in this._idlers)
+            foreach (Transform idler in this._idlers)
             {
                 idler.eulerAngles = new Vector3(0f, 0f, idler.eulerAngles.z + 4 * direction);
             }
@@ -92,15 +83,15 @@ namespace MorePartsMod.Parts
             if (this._on.Value && !this.HasFuel(this.Logger))
             {
                 this._on.Value = false;
-                this._flow_rate.Value = 0f;
-                this._animator.SetInteger("velocity", 0);
+                this.FlowRate.Value = 0f;
+                this.Animator.SetInteger("velocity", 0);
             }
         }
 
         private void GetIdlers()
         {
             Transform idlers = this.transform.Find("Idlers");
-            if(idlers == null)
+            if (idlers == null)
             {
                 Debug.Log("Not Found Idlers");
                 return;
@@ -120,7 +111,7 @@ namespace MorePartsMod.Parts
             }
 
             float d = this.angularVelocity * 0.017453292f;
-            float traction = (float)this._traction.Value;
+            float traction = (float)this.Traction.Value;
             Vector2 a = Quaternion.Euler(0f, 0f, -90f) * collision.contacts[0].normal;
             Vector2 a2 = collision.contacts[0].relativeVelocity - a * d;
             float magnitude = a2.magnitude;
@@ -148,6 +139,6 @@ namespace MorePartsMod.Parts
             }
             this.angularVelocity += magnitude * traction * num;
         }
-    
+
     }
 }

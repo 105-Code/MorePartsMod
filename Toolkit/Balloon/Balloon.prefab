@@ -314,6 +314,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0.5
@@ -346,8 +347,6 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 1604463099085196262}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!114 &757262900087781483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +362,7 @@ MonoBehaviour:
   renderQueueOffset: 0
   polygonModule: {fileID: 1604463099085196262}
   UV_Mode: 0
+  grid: 0
   bounds:
   - {x: 0, y: 0}
   - {x: 0, y: 1.0000001}
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 609440245930085783}
   - component: {fileID: 1694083014706337627}
   - component: {fileID: 2616069240768654397}
-  - component: {fileID: 7795409871053759416}
+  - component: {fileID: -703216669080970630}
   m_Layer: 8
   m_Name: Balloon
   m_TagString: Untagged
@@ -474,11 +474,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName:
-    plainText: 1
     TranslatableName: Weather balloon
-  description:
     plainText: 1
+  description:
     TranslatableName: Is a balloon that carries things!
+    plainText: 1
   mass:
     variables: {fileID: 1694083014706337627}
     input: 0.4
@@ -584,7 +584,6 @@ MonoBehaviour:
     offset: 0
     transform: {fileID: 2721987831669186369}
     spriteRenderer: {fileID: 0}
-    image: {fileID: 0}
     X:
       serializedVersion: 2
       m_Curve:
@@ -663,11 +662,18 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     audioSource: {fileID: 0}
+    floatVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
+    boolVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
   - type: 7
     offset: 0
     transform: {fileID: 2721987831669186369}
     spriteRenderer: {fileID: 0}
-    image: {fileID: 0}
     X:
       serializedVersion: 2
       m_Curve:
@@ -728,11 +734,18 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     audioSource: {fileID: 0}
+    floatVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
+    boolVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
   - type: 8
     offset: 0
     transform: {fileID: 2727073730147996341}
     spriteRenderer: {fileID: 0}
-    image: {fileID: 0}
     X:
       serializedVersion: 2
       m_Curve:
@@ -793,11 +806,18 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     audioSource: {fileID: 0}
+    floatVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
+    boolVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
   - type: 7
     offset: 0
     transform: {fileID: 6835708563829658629}
     spriteRenderer: {fileID: 0}
-    image: {fileID: 0}
     X:
       serializedVersion: 2
       m_Curve:
@@ -858,7 +878,15 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     audioSource: {fileID: 0}
---- !u!114 &7795409871053759416
+    floatVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
+    boolVariable:
+      variableName: 
+      referenceToVariables: {fileID: 0}
+      localValue: 0
+--- !u!114 &-703216669080970630
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -867,11 +895,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2725624275097492947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
+  m_Script: {fileID: 1141747673, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinMorePartsVersion: 2.2.0
-  modules: 00000000
+  State:
+    variableName: state
+    referenceToVariables: {fileID: 1694083014706337627}
+    localValue: 0
+  TargetState:
+    variableName: state_target
+    referenceToVariables: {fileID: 1694083014706337627}
+    localValue: 0
+  Part: {fileID: 5229029237516332167}
 --- !u!1 &2844766885517252175
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +958,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0.5
@@ -957,8 +993,6 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 2897625227747122379}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!114 &1307152177150376727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,6 +1008,7 @@ MonoBehaviour:
   renderQueueOffset: 0
   polygonModule: {fileID: 2897625227747122379}
   UV_Mode: 1
+  grid: 0
   bounds:
   - {x: 0, y: 0}
   - {x: 0, y: 1.0000001}

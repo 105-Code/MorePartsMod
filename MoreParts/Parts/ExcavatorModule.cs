@@ -5,11 +5,6 @@ using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using static MorePartsMod.World.PlanetResourceData;
 using static SFS.World.Rocket;
@@ -18,25 +13,20 @@ namespace MorePartsMod.Parts
 {
     public class ExcavatorModule : ElectricalModule, INJ_Location, INJ_Rocket
     {
-        
-        private VariableList<double>.Variable _target_state;
-        private VariableList<double>.Variable _state;
-        private VariableList<double>.Variable _flow_rate;
+
+        public Float_Reference TargetState;
+        public Float_Reference State;
+        public Float_Reference FlowRate;
 
         public Location Location { set; get; }
         public Rocket Rocket { set; get; }
 
         private const double _extractionCount = 0.009f;
 
-        public ResourceModule _material_container;
+        private ResourceModule _material_container;
 
-        private Transform _excavator_object;
-
-        public override void Awake()
-        {
-            base.Awake();
-            
-        }
+        public Transform ExcavatorObject;
+        public Part Part;
 
         private void Start()
         {
@@ -46,19 +36,17 @@ namespace MorePartsMod.Parts
                 return;
             }
             this._material_container = this.GetMaterialContainer();
-            this._target_state = this.getDoubleVariable("target_state");
-            this._state = this.getDoubleVariable("state");
-            this._flow_rate = this.getDoubleVariable("flow_rate");
 
             this.Part.onPartUsed.AddListener(this.Toggle);
             this.FlowModule.onStateChange += this.CheckOutOfFuel;
             this.CheckOutOfFuel();
 
-            this._excavator_object= this.transform.Find("Stick").Find("Excavator");
+            this.ExcavatorObject = this.transform.Find("Stick").Find("Excavator");
         }
 
-        private ResourceModule GetMaterialContainer() {
-            if(this.Rocket == null || this.Rocket.resources == null)
+        private ResourceModule GetMaterialContainer()
+        {
+            if (this.Rocket == null || this.Rocket.resources == null)
             {
                 return null;
             }
@@ -76,18 +64,18 @@ namespace MorePartsMod.Parts
 
         private void Update()
         {
-            if (GameManager.main == null || this._state.Value == 0 || this.Location == null)
+            if (GameManager.main == null || this.State.Value == 0 || this.Location == null)
             {
                 return;
             }
 
-            if(this._material_container == null)
+            if (this._material_container == null)
             {
                 this._material_container = this.GetMaterialContainer();
-                if(this._material_container == null)
+                if (this._material_container == null)
                 {
                     MsgDrawer.main.Log("You need a Material Container");
-                    this._target_state.Value = 0;
+                    this.TargetState.Value = 0;
                     return;
                 }
             }
@@ -95,10 +83,10 @@ namespace MorePartsMod.Parts
 
             ReourceDeposit deposit = ResourcesManger.Main.CurrentDeposit;
 
-            if(deposit == null || !deposit.Active)
+            if (deposit == null || !deposit.Active)
             {
                 MsgDrawer.main.Log("There is not Resource Deposit");
-                this._target_state.Value = 0;
+                this.TargetState.Value = 0;
                 return;
             }
 
@@ -109,26 +97,26 @@ namespace MorePartsMod.Parts
             }
 
             this._material_container.AddResource(_extractionCount);
-            this._excavator_object.eulerAngles = new Vector3(0f, 0f, this._excavator_object.eulerAngles.z + 4);
+            this.ExcavatorObject.eulerAngles = new Vector3(0f, 0f, this.ExcavatorObject.eulerAngles.z + 4);
             if (this._material_container.resourcePercent.Value == 1f)
             {
                 MsgDrawer.main.Log("Container Full");
-                this._target_state.Value = 0;
+                this.TargetState.Value = 0;
             }
         }
 
         private void Toggle(UsePartData data)
         {
             //off
-            if(this._state.Value == 0f)
+            if (this.State.Value == 0f)
             {
-                this._flow_rate.Value = 0.1;
-                this._target_state.Value = 1;
+                this.FlowRate.Value = 0.1f;
+                this.TargetState.Value = 1;
             }
             else
             {
-                this._target_state.Value = 0;
-                this._flow_rate.Value = 0;
+                this.TargetState.Value = 0;
+                this.FlowRate.Value = 0;
             }
 
 
@@ -137,10 +125,10 @@ namespace MorePartsMod.Parts
 
         public override void CheckOutOfFuel()
         {
-            if (this._state.Value == 1 && !this.HasFuel(this.Logger))
+            if (this.State.Value == 1 && !this.HasFuel(this.Logger))
             {
-                this._target_state.Value = 0;
-                this._flow_rate.Value = 0;
+                this.TargetState.Value = 0;
+                this.FlowRate.Value = 0;
             }
         }
 

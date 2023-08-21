@@ -50,6 +50,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 1
   clickArea: 1
   baseDepth: 0
@@ -110,6 +111,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!33 &542472934042267732
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -210,6 +212,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 1
   clickArea: 1
   baseDepth: 0
@@ -270,6 +273,7 @@ MonoBehaviour:
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!33 &6753763389126300779
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -332,8 +336,8 @@ GameObject:
   - component: {fileID: 6905833303596325224}
   - component: {fileID: 8534953955310075809}
   - component: {fileID: 8810958568715790013}
-  - component: {fileID: 5838295248923956538}
   - component: {fileID: 7884719237946257531}
+  - component: {fileID: 2319602828671132281}
   m_Layer: 8
   m_Name: GeoEye
   m_TagString: Untagged
@@ -371,12 +375,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName:
-    plainText: 1
     TranslatableName: GeoEye
-  description:
     plainText: 1
+  description:
     TranslatableName: This part allows you to scan planet surfaces from space. This
       part needs electricity.
+    plainText: 1
   mass:
     variables: {fileID: 8534953955310075809}
     input: 1
@@ -455,20 +459,6 @@ MonoBehaviour:
       x: 1
       y: 1
       z: 0
---- !u!114 &5838295248923956538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8973754098628528441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 761233564, guid: fec85c6245069e342a01d5832930fda5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MinMorePartsVersion: 2.2.0
-  modules: 04000000
 --- !u!114 &7884719237946257531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,3 +484,25 @@ MonoBehaviour:
     state:
       value: 0
     sources: []
+--- !u!114 &2319602828671132281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8973754098628528441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -737965914, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlowModule: {fileID: 7884719237946257531}
+  Active:
+    variableName: active
+    referenceToVariables: {fileID: 8534953955310075809}
+    localValue: 0
+  FlowRate:
+    variableName: flow_rate
+    referenceToVariables: {fileID: 8534953955310075809}
+    localValue: 0
+  Part: {fileID: 6905833303596325224}

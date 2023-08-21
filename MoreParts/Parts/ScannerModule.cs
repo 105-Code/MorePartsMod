@@ -12,18 +12,17 @@ namespace MorePartsMod.Parts
     class ScannerModule : ElectricalModule, INJ_Rocket, INJ_Location
     {
 
-        private VariableList<bool>.Variable _active;
-        private VariableList<double>.Variable _flowRate;
+        public Bool_Reference Active;
+        public Float_Reference FlowRate;
 
         public Rocket Rocket { set; get; }
 
         public Location Location { set; get; }
+        public Part Part;
 
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
-            this._active = this.getBoolVariable("active");
-            this._flowRate = this.getDoubleVariable("flow_rate");
+
             this.Part.onPartUsed.AddListener(this.OnPartUsed);
         }
 
@@ -34,7 +33,7 @@ namespace MorePartsMod.Parts
 
         private void Update()
         {
-            if(GameManager.main == null || !this._active.Value || this.Location == null || this.Location.planet == null || this.Rocket.location == null)
+            if (GameManager.main == null || !this.Active.Value || this.Location == null || this.Location.planet == null || this.Rocket.location == null)
             {
                 return;
             }
@@ -47,7 +46,7 @@ namespace MorePartsMod.Parts
             double max_altitud = this.Location.planet.data.basics.timewarpHeight + 50000;
             if (this.Location.Height > max_altitud)
             {
-                this.Toggle("Max altitude " + max_altitud/1000+"km", false);
+                this.Toggle("Max altitude " + max_altitud / 1000 + "km", false);
                 return;
             }
 
@@ -60,34 +59,34 @@ namespace MorePartsMod.Parts
 
         public override void CheckOutOfFuel()
         {
-            if (this._active.Value && !this.HasFuel(this.Logger))
+            if (this.Active.Value && !this.HasFuel(this.Logger))
             {
-                this._active.Value = false;
-                this._flowRate.Value = 0;
+                this.Active.Value = false;
+                this.FlowRate.Value = 0;
             }
         }
 
         public bool IsActive()
         {
-            return this._active.Value;
+            return this.Active.Value;
         }
 
-        private void Toggle(string message,bool operation)
+        private void Toggle(string message, bool operation)
         {
             MsgDrawer.main.Log(message);
-            this._active.Value = operation;
+            this.Active.Value = operation;
 
             if (!operation)
             {
-                this._flowRate.Value = 0;
+                this.FlowRate.Value = 0;
                 return;
             }
-            this._flowRate.Value = 0.2;
+            this.FlowRate.Value = 0.2f;
         }
 
-		public void OnPartUsed(UsePartData data)
-		{
-            if (this._active.Value)
+        public void OnPartUsed(UsePartData data)
+        {
+            if (this.Active.Value)
             {
                 this.Toggle("GeoEye turn OFF", false);
             }
@@ -97,7 +96,7 @@ namespace MorePartsMod.Parts
             }
             this.CheckOutOfFuel();
             data.successfullyUsedPart = true;
-		}
+        }
 
     }
 }

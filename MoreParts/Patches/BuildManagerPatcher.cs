@@ -40,7 +40,7 @@ namespace MorePartsMod.Patches
         [HarmonyPrefix]
         public static bool Prefix(BuildManager __instance)
         {
-            if (MorePartsModMain.Main.spawnPoint == null)
+            if (MorePartsPack.Main.spawnPoint == null)
             {
                 return true;
             }
@@ -62,13 +62,13 @@ namespace MorePartsMod.Patches
 
             RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
 
-            if (RocketMass > MorePartsModMain.Main.spawnPoint.getResource(MorePartsTypes.ROCKET_MATERIAL))
+            if (RocketMass > MorePartsPack.Main.spawnPoint.getResource(MorePartsTypes.ROCKET_MATERIAL))
             {
-                ShowMenu("Insufficient rocket material on " + MorePartsModMain.Main.spawnPoint.name, "Ok");
+                ShowMenu("Insufficient rocket material on " + MorePartsPack.Main.spawnPoint.name, "Ok");
                 return false;
             }
 
-            MorePartsModMain.Main.spawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, RocketMass);
+            MorePartsPack.Main.spawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, RocketMass);
 
             return true;
         }
