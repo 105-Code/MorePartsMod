@@ -9,6 +9,7 @@ using MorePartsMod.World;
 using static MorePartsMod.World.PlanetResourceData;
 using SFS.World.Maps;
 using MorePartsMod.Parts;
+using MorePartsMod.Utils;
 
 namespace MorePartsMod.Managers
 {
@@ -57,7 +58,7 @@ namespace MorePartsMod.Managers
                     continue;
                 }
 
-                bool intersect = Utils.LineIntersectCircle(deposit.Size, deposit.Location, origin, target);
+                bool intersect = MathUtils.LineIntersectCircle(deposit.Size, deposit.Location, origin, target);
 
                 if (intersect)
                 {
@@ -143,7 +144,7 @@ namespace MorePartsMod.Managers
             {
                 if (deposit.Active && deposit.Discovered)
                 {
-                    Utils.DrawLandmarkInPlanet(this.CurrentPlanet, deposit.AngleDegree, deposit.Location, "Resource Deposit", Color.red);
+                    BuildingUtils.DrawLandmarkInPlanet(this.CurrentPlanet, deposit.AngleDegree, deposit.Location, "Resource Deposit", Color.red);
                 }
             }
 
@@ -171,14 +172,14 @@ namespace MorePartsMod.Managers
 
         public void SavePlanetResourcesInfo()
         {
-            MorePartsPack.SaveWorldPersistent("PlanetResources.json", this.PlanetResourcesData);
+            FileUtils.SaveWorldPersistent("PlanetResources.json", this.PlanetResourcesData);
         }
 
         public void LoadPlanetResourcesInfo()
         {
 
             Dictionary<string, PlanetResourceData> data;
-            MorePartsPack.LoadWorldPersistent<Dictionary<string, PlanetResourceData>>("PlanetResources.json", out data);
+            FileUtils.LoadWorldPersistent<Dictionary<string, PlanetResourceData>>("PlanetResources.json", out data);
             if (data == null)
             {
                 this.GeneratePlanetResourcesInfo();

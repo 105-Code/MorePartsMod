@@ -3,6 +3,7 @@ using SFS;
 using SFS.World;
 using SFS.WorldBase;
 using UnityEngine;
+using MorePartsMod.Utils;
 
 namespace MorePartsMod.Patches
 {
@@ -19,7 +20,7 @@ namespace MorePartsMod.Patches
             gameObject.transform.parent = __instance.transform;
             gameObject.SetActive(true);
 
-            Utils.AddBuildingToWorld(gameObject, "Model", spaceCenter.address.GetPlanet(), spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0));
+            BuildingUtils.AddBuildingToWorld(gameObject, "Model", spaceCenter.address.GetPlanet(), spaceCenter.LaunchPadLocation.position + new Double2(-150.0, -10.0));
 
             StaticWorldObject buildingObject = gameObject.GetComponent<StaticWorldObject>();
             WorldLoader worldLoader = gameObject.GetComponent<WorldLoader>();
