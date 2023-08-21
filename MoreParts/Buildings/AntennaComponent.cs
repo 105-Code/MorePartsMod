@@ -16,17 +16,16 @@ namespace MorePartsMod.Buildings
     {
         public static AntennaComponent main;
 
-        [Obsolete("Estoy debe estar en TelecomunicationDishModule.cs")]
+        public WorldLocation Location;
+        public Color LineColor;
+
         private bool _hasTelecommunicationDish;
         private bool _enableTelecomunicationLines;
         private ARPANET _network;
         private Node _routeOrigin;
-        private WorldLocation _position;
         private Planet _sunPlanet;
-        private Color _lineColor;
 
         public bool ShowTelecommunicationLines { set; private get; }
-
 
         private void Awake()
         {
@@ -35,13 +34,11 @@ namespace MorePartsMod.Buildings
                 return;
             }
             main = this;
-            this._position = this.GetComponent<WorldLocation>();
-            this._network = new ARPANET(this._position);
+            this._network = new ARPANET(this.Location);
             this._hasTelecommunicationDish = false;
             this.ShowTelecommunicationLines = false;
             this._enableTelecomunicationLines = KeySettings.Main.Show_Telecommunication_lines;
             this._sunPlanet = this.getPrimaryPlanet();
-            this._lineColor = new Color(0.25f, 0.74f, 0.3f, 0.4f);
         }
 
         private Planet getPrimaryPlanet()
@@ -153,7 +150,7 @@ namespace MorePartsMod.Buildings
 
         public void DrawInMap()
         {
-            BuildingUtils.DrawLandmarkInPlanet(this._position.planet.Value, (float)this._position.Value.position.AngleDegrees, this._position.Value.position, "Space Center", Color.white);
+            MapUtils.DrawLandmarkInPlanet(this.Location.planet.Value, (float)this.Location.Value.position.AngleDegrees, this.Location.Value.position, "Space Center", Color.white);
 
             if (this._enableTelecomunicationLines && this._hasTelecommunicationDish && this.ShowTelecommunicationLines)
             {
@@ -182,7 +179,7 @@ namespace MorePartsMod.Buildings
                 aux = aux.Next;
             }
 
-            Map.solidLine.DrawLine(points.ToArray(), this._sunPlanet, _lineColor, _lineColor);
+            Map.solidLine.DrawLine(points.ToArray(), this._sunPlanet, LineColor, LineColor);
 
         }
 

@@ -138,6 +138,8 @@
     <Compile Include="Utils\MathUtils.cs" />
     <Compile Include="Utils\MockMod.cs" />
     <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\MapUtils.cs" />
+    
     
     <Compile Include="World\PlanetResourceData.cs" />
     <Compile Include="World\PlanetResourceData.cs" />

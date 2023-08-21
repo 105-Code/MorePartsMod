@@ -29,10 +29,6 @@ namespace MorePartsMod.Parts
 
         public Rocket Rocket { set; get; }
 
-        public bool IsActive { get => this.IsOn.Value; }
-
-        public bool IsConnected { get => !this._notifyConnection; }
-
         public Part Part;
 
         public void Awake()

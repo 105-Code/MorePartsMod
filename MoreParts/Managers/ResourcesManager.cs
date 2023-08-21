@@ -144,7 +144,7 @@ namespace MorePartsMod.Managers
             {
                 if (deposit.Active && deposit.Discovered)
                 {
-                    BuildingUtils.DrawLandmarkInPlanet(this.CurrentPlanet, deposit.AngleDegree, deposit.Location, "Resource Deposit", Color.red);
+                    MapUtils.DrawLandmarkInPlanet(this.CurrentPlanet, deposit.AngleDegree, deposit.Location, "Resource Deposit", Color.red);
                 }
             }
 

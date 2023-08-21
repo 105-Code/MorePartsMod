@@ -322,7 +322,7 @@ namespace MorePartsMod.Managers
         {
             foreach (ColonyComponent colony in main.Colonies)
             {
-                BuildingUtils.DrawLandmarkInPlanet(colony.data.getPlanet(), colony.data.LandmarkAngle, colony.data.position, colony.data.name, Color.white);
+                MapUtils.DrawLandmarkInPlanet(colony.data.getPlanet(), colony.data.LandmarkAngle, colony.data.position, colony.data.name, Color.white);
             }
         }
 
