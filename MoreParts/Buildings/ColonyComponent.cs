@@ -48,7 +48,19 @@ namespace MorePartsMod.Buildings
 
         private void OnChangePlanet()
         {
-            if (ColonyManager.main.player.Value.location.planet.Value.codeName != this.data.address)
+            if (ColonyManager.main.player.Value == null)
+            {
+                return;
+            }
+
+            Player player = ColonyManager.main.player.Value;
+
+            if (player.location == null || player.location.planet.Value == null)
+            {
+                return;
+            }
+
+            if (player.location.planet.Value.codeName != this.data.address)
             {
                 this.PlayerInPlanet.Value = false;
             }
