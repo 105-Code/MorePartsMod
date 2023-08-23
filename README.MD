@@ -171,6 +171,5 @@ Also some new parts are added to the game. Some of them are listed below:
 
 ## **Installation**
 -  Drop `moreparts.pack` file into  `Spaceflight Simulator Game\Mods\Custom Assets\Parts` folder
-- Drop `MorePartsMod.zip` and unzip into `Spaceflight Simulator Game\Mods` folder
 - Install `Electricity Part Pack`.  click [here](https://github.com/DinitrogenTetroxide/sfs-electricity) to download
 
