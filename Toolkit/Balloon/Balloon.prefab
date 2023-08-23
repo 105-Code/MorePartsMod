@@ -907,6 +907,8 @@ MonoBehaviour:
     referenceToVariables: {fileID: 1694083014706337627}
     localValue: 0
   Part: {fileID: 5229029237516332167}
+  Orientation: {fileID: 609440245930085783}
+  DeployedBallon: {fileID: 2721987831669186369}
 --- !u!1 &2844766885517252175
 GameObject:
   m_ObjectHideFlags: 0
