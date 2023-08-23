@@ -1,5 +1,6 @@
 ﻿
 using SFS.Parts;
+using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
@@ -13,11 +14,13 @@ namespace MorePartsMod.Parts
     {
         public Double_Reference State;
         public Double_Reference TargetState;
+        public Part Part;
+        public OrientationModule Orientation;
+        public Transform DeployedBallon;
         public Location Location { get; set; }
         public Rigidbody2D Rb2d { get; set; }
-        public Part Part;
 
-        private Transform _balloon { get => this.transform; }
+
         private double _volumn = 1.33f * Math.PI * Math.Pow(300, 3);
         private bool _isOpen;
 
@@ -53,9 +56,9 @@ namespace MorePartsMod.Parts
             float aceleration = (float)Math.Sqrt(ascensionForce / 0.5f * this.Rb2d.mass);
 
             if (this.Location.VerticalVelocity < 30)
-                force = this._balloon.transform.TransformVector(Vector2.up * (aceleration - gravity));
+                force = DeployedBallon.transform.TransformVector(Vector2.up * (aceleration - gravity));
             else
-                force = this._balloon.transform.TransformVector(Vector2.up);
+                force = DeployedBallon.transform.TransformVector(Vector2.up);
 
             Vector2 relativePoint = this.Rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(base.transform, this.Rb2d, new Vector2(-0.5f, -0.047f)));
             this.Rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
@@ -68,8 +71,8 @@ namespace MorePartsMod.Parts
                 return;
             }
 
-            float newRotation = (this.Part.orientation.orientation.Value.z * -1 * this.Part.orientation.orientation.Value.x) - (this.Rb2d.transform.localEulerAngles.z * this.Part.orientation.orientation.Value.x);
-            this._balloon.localEulerAngles = new Vector3(1, 1, newRotation + Mathf.Sin(Time.time) * 3f * this._balloon.parent.lossyScale.x * this._balloon.parent.lossyScale.y);
+            float newRotation = (Orientation.orientation.Value.z * -1 * Orientation.orientation.Value.x) - (this.Rb2d.transform.localEulerAngles.z * Orientation.orientation.Value.x);
+            DeployedBallon.localEulerAngles = new Vector3(1, 1, newRotation + Mathf.Sin(Time.time) * 3f * DeployedBallon.parent.lossyScale.x * DeployedBallon.parent.lossyScale.y);
         }
 
         public void Deploy(UsePartData data)
