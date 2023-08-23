@@ -119,7 +119,7 @@ namespace MorePartsMod.Managers
 
         private void LoadColonies()
         {
-            GameObject colonyPrefab = MorePartsPack.Main.ColonyPrefab.gameObject;
+            GameObject colonyPrefab = MorePartsPack.Main.ColonyPrefab;
             bool flag = false;
             foreach (ColonyData colony in MorePartsPack.Main.ColoniesInfo)
             {
@@ -196,6 +196,15 @@ namespace MorePartsMod.Managers
 
         private void OnPlanetChange()
         {
+            if (this.player.Value == null)
+            {
+                return;
+            }
+
+            if(this.player.Value.location.planet.Value == null){
+                return;
+            }
+
             if (this.player.Value.location.planet.Value.codeName == "Earth")
             {
                 return;
@@ -287,7 +296,7 @@ namespace MorePartsMod.Managers
         {
             this._newColony.name = "Name";
 
-            GameObject colony = GameObject.Instantiate(MorePartsPack.Main.ColonyPrefab.gameObject);
+            GameObject colony = GameObject.Instantiate(MorePartsPack.Main.ColonyPrefab);
 
             BuildingUtils.AddBuildingToWorld(colony, this._newColony.getPlanet(), this._newColony.position);
             ColonyComponent component = colony.GetComponent<ColonyComponent>();

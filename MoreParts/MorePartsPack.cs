@@ -17,8 +17,8 @@ namespace MorePartsMod
         public const string ModFolderName = "MorePartsMod";
         public const string ModIdPatching = "morepartsmod.danielrojas.website";
 
-        public AntennaComponent AntennaPrefab;
-        public ColonyComponent ColonyPrefab;
+        public GameObject AntennaPrefab;
+        public GameObject ColonyPrefab;
         public MockMod Mod { get; private set; }
 
         private GameObject _manager;
