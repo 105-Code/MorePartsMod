@@ -15,7 +15,7 @@ namespace MorePartsMod.Patches
         {
             SpaceCenterData spaceCenter = Base.planetLoader.spaceCenter;
 
-            GameObject gameObject = GameObject.Instantiate(MorePartsPack.Main.AntennaPrefab.gameObject);
+            GameObject gameObject = GameObject.Instantiate(MorePartsPack.Main.AntennaPrefab);
             gameObject.transform.parent = __instance.transform;
             gameObject.SetActive(true);
 
