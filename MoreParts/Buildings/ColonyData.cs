@@ -1,31 +1,28 @@
-using MorePartsMod.ARPA;
-using MorePartsMod.Managers;
 using SFS;
-using SFS.UI;
-using SFS.Variables;
 using SFS.World;
 using SFS.WorldBase;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MorePartsMod.Buildings
 {
+    [Serializable]
     public class ColonyData
     {
         public float angle;
         public Double2 position;
         public string name;
-        public bool hidden;
         public string address;
+        public const float  SIZE = 200;
 
-        public Dictionary<string, Building> structures;
+        public Dictionary<string, Building> Buildings;
 
         public Dictionary<string, double> resources;
 
         public ColonyData()
         {
-            this.structures = new Dictionary<string, Building>();
-            this.hidden = false;
+            this.Buildings = new Dictionary<string, Building>();
             this.resources = new Dictionary<string, double>();
         }
 
@@ -35,9 +32,8 @@ namespace MorePartsMod.Buildings
             this.name = name;
             this.position = worldLocation.position.Value;
             this.address = worldLocation.planet.Value.codeName;
-            this.structures = new Dictionary<string, Building>();
+            this.Buildings = new Dictionary<string, Building>();
             this.resources = new Dictionary<string, double>();
-            this.hidden = false;
         }
 
         public ColonyData(float angle, string planetName, Double2 position)
@@ -45,43 +41,43 @@ namespace MorePartsMod.Buildings
             this.angle = angle;
             this.position = position;
             this.address = planetName;
-            this.structures = new Dictionary<string, Building>();
+            this.Buildings = new Dictionary<string, Building>();
             this.resources = new Dictionary<string, double>();
-            this.hidden = false;
         }
 
-        public Planet getPlanet()
+        public float LandmarkAngle { get => this.angle + 90; }
+
+        public Planet GetPlanet()
         {
             Planet planet;
             Base.planetLoader.planets.TryGetValue(this.address, out planet);
             return planet;
         }
 
-        public void setWorldLocation(WorldLocation location)
+        public Building GetBuilding(string buildingName)
         {
-            this.position = location.position.Value;
-            this.address = location.planet.Value.codeName;
-        }
-
-        public Double2 getBuildingPosition(string buildingName, float height = 0)
-        {
-            Building building;
-            this.structures.TryGetValue(buildingName, out building);
+            this.Buildings.TryGetValue(buildingName, out Building building);
 
             if (building == null)
             {
-                return Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
+                return null;
             }
-
-            Double2 colonyPos = Double2.CosSin((double)(0.017453292f * LandmarkAngle)) * (this.getPlanet().Radius + this.getPlanet().GetTerrainHeightAtAngle((double)(LandmarkAngle * 0.017453292f)) + height);
-            Vector2 buildingPos = Double2.CosSin((double)(0.017453292f * (this.angle))) * building.offset.x;
-            return colonyPos + buildingPos;
+            return building;
         }
 
-        public bool isBuildingActive(string buildingName)
+        public Building[] GetBuildings()
         {
-            Building building;
-            this.structures.TryGetValue(buildingName, out building);
+            List<Building> result = new List<Building>();
+            foreach (Building item in Buildings.Values)
+            {
+                result.Add(item);
+            }
+            return result.ToArray();
+        }
+
+        public bool IsBuildingActive(string buildingName)
+        {
+            this.Buildings.TryGetValue(buildingName, out Building building);
 
             if (building == null)
             {
@@ -90,7 +86,7 @@ namespace MorePartsMod.Buildings
             return true;
         }
 
-        private bool isValidColonyResource(string resourceType)
+        private bool IsValidColonyResource(string resourceType)
         {
             if (MorePartsTypes.CONSTRUCTION_MATERIAL == resourceType)
             {
@@ -114,9 +110,9 @@ namespace MorePartsMod.Buildings
             return false;
         }
 
-        public bool addResource(string resourceType, double quantity)
+        public bool AddResource(string resourceType, double quantity)
         {
-            if (!this.isValidColonyResource(resourceType))
+            if (!this.IsValidColonyResource(resourceType))
             {
                 return false;
             }
@@ -132,9 +128,9 @@ namespace MorePartsMod.Buildings
             return true;
         }
 
-        public double takeResource(string resourceType, double quantity)
+        public double TakeResource(string resourceType, double quantity)
         {
-            if (!this.isValidColonyResource(resourceType))
+            if (!this.IsValidColonyResource(resourceType))
             {
                 return 0;
             }
@@ -156,9 +152,9 @@ namespace MorePartsMod.Buildings
             return quantity;
         }
 
-        public double getResource(string resourceType)
+        public double GetResource(string resourceType)
         {
-            if (!this.isValidColonyResource(resourceType))
+            if (!this.IsValidColonyResource(resourceType))
             {
                 return 0;
             }
@@ -171,32 +167,5 @@ namespace MorePartsMod.Buildings
             return 0;
         }
 
-        public float LandmarkAngle { get => this.angle + 90; }
-
-        public override string ToString()
-        {
-            string result = "Colony " + this.name + "\n";
-            result += "address " + this.address + "\n";
-            result += "Resources\n";
-            foreach (string key in this.resources.Keys)
-            {
-                result += key + ": " + this.resources[key] + "\n";
-            }
-            return result;
-        }
-
-        public class Building
-        {
-            public Double2 offset;
-
-            public Building(Double2 pos)
-            {
-                this.offset = pos;
-            }
-
-            public Building()
-            {
-            }
-        }
     }
 }

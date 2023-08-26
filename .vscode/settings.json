@@ -55,6 +55,7 @@
         "Packages":true,
         "UserSettings":true,
         "Dependencies":true,
+        "UpdatePackCli":true,
         "**/bin":true,
         "**/obj":true,
         "CODE_OF_CONDUCT.md":true,

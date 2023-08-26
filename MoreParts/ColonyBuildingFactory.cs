@@ -1,27 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace MorePartsMod
 {
+    [Serializable]
     public class ColonyBuildingFactory
     {
-
-        private Dictionary<string, BuildingData> _buildings;
+        [SerializeField]
+        public GameObject ColonyBuilding;
+        [SerializeField]
+        public GameObject LaunchPadBuilding;
+        [SerializeField]
+        public GameObject VabBuilding;
+        [SerializeField]
+        public GameObject SolarPanelBuilding;
+        [SerializeField]
+        public GameObject RefineryBuilding;
+        private List<BuildingData> _buildings = new List<BuildingData>();
         private string[] _buildingNames;
 
-        public ColonyBuildingFactory()
+
+
+        public BuildingData GetBuilding(string name)
         {
-            this._buildings = new Dictionary<string, BuildingData>();
-            this._buildings.Add("Refinery", new BuildingData(12, 10));
-            this._buildings.Add("Solar Panels", new BuildingData(4, 13));
-            this._buildings.Add("VAB", new BuildingData(10, 4));
-            this._buildings.Add("Launch Pad", new BuildingData(20, 1, new Double2(100, 3)));
+            foreach (BuildingData item in GetBuildings())
+            {
+                if (item.Name == name)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
-        public BuildingData getColonyBuilding(string name)
+        public BuildingData[] GetBuildings()
         {
-            BuildingData result;
-            this._buildings.TryGetValue(name, out result);
-            return result;
+            // i need to change this to better solution
+            if (_buildings.Count == 0)
+            {
+                _buildings.Add(new BuildingData(20, 1, LaunchPadBuilding));
+                _buildings.Add(new BuildingData(10, 4, VabBuilding));
+                _buildings.Add(new BuildingData(4, 13, SolarPanelBuilding));
+                _buildings.Add(new BuildingData(12, 10, RefineryBuilding));
+            }
+            return _buildings.ToArray();
         }
 
         public string[] GetBuildingsName()
@@ -30,36 +53,29 @@ namespace MorePartsMod
             {
                 this._buildingNames = new string[this._buildings.Count];
                 short i = 0;
-                foreach (string building in this._buildings.Keys)
+                foreach (BuildingData building in GetBuildings())
                 {
-                    this._buildingNames[i] = building;
+                    this._buildingNames[i] = building.Name;
                     i += 1;
                 }
             }
             return this._buildingNames;
         }
 
+        [Serializable]
         public class BuildingData
         {
-            public float constructionCost;
-            public float electronicCost;
-            public Double2 offset;
+            public string Name { get => Prefab.name; }
+            public float ConstructionMaterialCost;
+            public float ElectronicMaterialCost;
+            public GameObject Prefab;
 
-            public BuildingData() { }
-
-            public BuildingData(float constructionCost, float electronicCost, Double2 pos)
+            public BuildingData(float constructionMaterialCost, float electronicMaterialCost, GameObject prefab)
             {
-                this.constructionCost = constructionCost;
-                this.electronicCost = electronicCost;
-                this.offset = pos;
+                ConstructionMaterialCost = constructionMaterialCost;
+                ElectronicMaterialCost = electronicMaterialCost;
+                Prefab = prefab;
             }
-
-            public BuildingData(float constructionCost, float electronicCost)
-            {
-                this.constructionCost = constructionCost;
-                this.electronicCost = electronicCost;
-            }
-
         }
 
     }

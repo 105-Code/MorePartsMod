@@ -87,7 +87,7 @@ namespace MorePartsMod.Patches
             {
                 return true;
             }
-            colonyPlanet = target.getPlanet();
+            colonyPlanet = target.GetPlanet();
             Location colonyLocation = new Location(colonyPlanet, target.position);
             WorldView.main.SetViewLocation(colonyLocation);
 
@@ -118,8 +118,9 @@ namespace MorePartsMod.Patches
                 }
             }
             blueprint.rotation = 0;
-
-            Double2 spawnPoint = target.getBuildingPosition("Launch Pad", (int)GetHeight(array3));
+            Building building = target.GetBuilding(MorePartsTypes.LAUNCH_PAD_BUILDING);
+            double manginitud = building.position.magnitude;
+            Double2 spawnPoint = building.position.normalized * (manginitud + 7);
             ClearLaunchPad(spawnPoint);
             Part_Utility.PositionParts(WorldView.ToLocalPosition(spawnPoint), new Vector2(0.5f, 0f), true, true, array3);
             List<JointGroup> groups;
@@ -128,7 +129,7 @@ namespace MorePartsMod.Patches
             Staging.CreateStages(blueprint.stages, array);
             Rocket rocket = array4.FirstOrDefault((Rocket a) => a.hasControl.Value);
             PlayerController.main.player.Value = ((rocket != null) ? rocket : ((array4.Length != 0) ? array4[0] : null));
-            MorePartsPack.Main.SpawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, BuildManagerLaunch.RocketMass);
+            MorePartsPack.Main.SpawnPoint.TakeResource(MorePartsTypes.ROCKET_MATERIAL, BuildManagerLaunch.RocketMass);
             MorePartsPack.Main.SpawnPoint = null;
             return false;
         }

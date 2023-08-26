@@ -62,13 +62,13 @@ namespace MorePartsMod.Patches
 
             RocketMass = __instance.buildMenus.statsDrawer.mass - resourcesWeight;
 
-            if (RocketMass > MorePartsPack.Main.SpawnPoint.getResource(MorePartsTypes.ROCKET_MATERIAL))
+            if (RocketMass > MorePartsPack.Main.SpawnPoint.GetResource(MorePartsTypes.ROCKET_MATERIAL))
             {
                 ShowMenu("Insufficient rocket material on " + MorePartsPack.Main.SpawnPoint.name, "Ok");
                 return false;
             }
 
-            MorePartsPack.Main.SpawnPoint.takeResource(MorePartsTypes.ROCKET_MATERIAL, RocketMass);
+            MorePartsPack.Main.SpawnPoint.TakeResource(MorePartsTypes.ROCKET_MATERIAL, RocketMass);
 
             return true;
         }

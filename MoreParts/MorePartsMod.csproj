@@ -113,6 +113,7 @@
     <Compile Include="Buildings\ColonyComponent.cs" />
     <Compile Include="Buildings\AntennaComponent.cs" />
     <Compile Include="Buildings\ColonyData.cs" />
+    <Compile Include="Buildings\Building.cs" />
 
     <Compile Include="Managers\ResourcesManager.cs" />
     <Compile Include="Managers\ColonyManager.cs" />
@@ -148,13 +149,15 @@
     <Compile Include="KeySettings.cs" />
     <Compile Include="MorePartsTypes.cs" />
     <Compile Include="ColonyBuildingFactory.cs" />
-       
 
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
   <!-- After build copy dll file into managed folder and start the game -->
-  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Copy SourceFiles="bin\Release\MorePartsMod.dll" DestinationFolder="$(ModsFolder)" ContinueOnError="true" />
-    <Exec Command="start steam://rungameid/1718870" />
+  <Target Name="PostBuildEvent">
+    <Message Text="Update pack file with new dll"/>
+    <Exec Command="/home/daniel/hdd/Documents/modding/MorePartsMod/UpdatePackCli/UpdatePack '$(ModPack)' '$(ModDll)'" />
+    <Copy SourceFiles="$(ModDll)" DestinationFolder="$(ToolkitPath)" ContinueOnError="true" />
+    <!-- <Exec Command="start steam://rungameid/1718870" />-->
   </Target>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using MorePartsMod.Buildings;
 using SFS.Input;
 using SFS.UI.ModGUI;
+using MorePartsMod;
 using UnityEngine;
 
 namespace MorePartsMod.UI
@@ -37,7 +38,7 @@ namespace MorePartsMod.UI
         {
             foreach (ColonyData colony in MorePartsPack.Main.ColoniesInfo)
             {
-                if (!colony.isBuildingActive("Launch Pad") || !colony.isBuildingActive("VAB"))
+                if (!colony.IsBuildingActive(MorePartsTypes.LAUNCH_PAD_BUILDING) || !colony.IsBuildingActive(MorePartsTypes.VAB_BUILDING))
                 {
                     continue;
                 }

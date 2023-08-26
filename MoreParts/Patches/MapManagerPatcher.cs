@@ -15,7 +15,7 @@ namespace MorePartsMod.Patches
         {
             try
             {
-                if (ColonyManager.main == null)
+                if (ColonyManager.Main == null)
                 {
                     return;
                 }
@@ -24,7 +24,7 @@ namespace MorePartsMod.Patches
                 AntennaComponent.main.DrawInMap();
 
                 // Draw colonies landmarks
-                ColonyManager.main.DrawInMap();
+                ColonyManager.Main.DrawInMap();
 
                 // Draw resources landmarks
                 ResourcesManger.Main.DrawInMap();

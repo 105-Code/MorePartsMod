@@ -143,7 +143,6 @@ namespace MorePartsMod.Parts
             List<Part> result = new List<Part>();
             if (this.Rocket == null)
             {
-                Debug.Log("Rocket null");
                 return result;
             }
             Vector2 rotationPos = this.getPartRotationVector();

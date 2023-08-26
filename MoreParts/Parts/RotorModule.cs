@@ -18,11 +18,11 @@ namespace MorePartsMod.Parts
         public Bool_Reference IsOn;
         public Float_Reference Throttle_current;
         public Float_Reference FlowRate;
+        public Float_Reference RPM;
 
         public Transform Base;
         public float Throttle { set => this.Throttle_current.Value = value; }
 
-        private const int RPM = 2800;
         private const float Radius = 0.6f;
         private float _area;
         private float _rotorVelocity;
@@ -63,7 +63,7 @@ namespace MorePartsMod.Parts
         private void RecalculateRotor_throttle()
         {
             Animator.speed = 100 * (float)this.Throttle_current.Value;
-            this._rotorVelocity = (float)(((RPM * this.Throttle_current.Value) / 60) * 2 * Math.PI);
+            this._rotorVelocity = (float)(((RPM.Value * this.Throttle_current.Value) / 60) * 2 * Math.PI);
             if (!this.IsOn.Value)
             {
                 this.Throttle_current.Value = 0f;
@@ -139,7 +139,7 @@ namespace MorePartsMod.Parts
             float density = (float)this.Location.planet.GetAtmosphericDensity(this.Location.Height);
             double thrust = 0.5 * density * this._area * ((exitVelocity * exitVelocity) - (this.Location.VerticalVelocity * this.Location.VerticalVelocity));
 
-            Vector2 force = Base.transform.TransformVector(Vector2.up * (float)(thrust / this.Rb2d.mass));
+            Vector2 force = Base.transform.TransformVector(Vector2.up * (float)(thrust / 1000));
             Vector2 relativePoint = this.Rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(this.transform, this.Rb2d, new Vector2(0, 0)));
             this.Rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
         }
