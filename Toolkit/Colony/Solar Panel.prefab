@@ -9,9 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6101037178326056045}
-  - component: {fileID: -7425951584384755980}
-  m_Layer: 10
-  m_Name: Refinery
+  - component: {fileID: 4634951674363791758}
+  - component: {fileID: 3695216397015504716}
+  - component: {fileID: 1493777783147649637}
+  - component: {fileID: 5048481417362928714}
+  m_Layer: 0
+  m_Name: Solar Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +36,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7425951584384755980
+--- !u!114 &4634951674363791758
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +45,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 1805576350462075415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 183506792, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d5dc6c3d153ef1b1afe7bd035a042d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planet:
+    value: {fileID: 0}
+  position:
+    value:
+      x: 0
+      y: 0
+  velocity:
+    value:
+      x: 0
+      y: 0
+--- !u!114 &3695216397015504716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805576350462075415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3955351e8b83adc5ab9eabb637fe8e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {fileID: 4634951674363791758}
+--- !u!114 &1493777783147649637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805576350462075415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 793986be8ed5c18d49f00d43ae05d574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  location: {fileID: 4634951674363791758}
+  holder: {fileID: 6574350561959992447}
+  loadDistance: 800
+--- !u!114 &5048481417362928714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805576350462075415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -238604517, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6574350561959992447
@@ -55,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 679729943504864845}
   - component: {fileID: 7894369380785916312}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +123,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6574350561959992447}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,13 +170,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2ebe6781e6d9db141ba45fe184de1690, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: e437f6babe618254fad260a5a3a10ea5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 15, y: 18}
+  m_Size: {x: 2, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1

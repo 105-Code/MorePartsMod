@@ -9,8 +9,8 @@ using MorePartsMod.Utils;
 
 namespace MorePartsMod
 {
-    [CreateAssetMenu(fileName = "MorePartsMod", menuName = "MoreParts Mod", order = 1)]
-    public class MorePartsPack : PackData
+    [CreateAssetMenu(fileName = "MorePartsData", menuName = "MoreParts Mod", order = 1)]
+    public class MorePartsPack: ScriptableObject
     {
         public static MorePartsPack Main;
 
@@ -18,13 +18,14 @@ namespace MorePartsMod
         public const string ModIdPatching = "morepartsmod.danielrojas.website";
 
         public GameObject AntennaPrefab;
-        public GameObject ColonyPrefab;
         public MockMod Mod { get; private set; }
 
         private GameObject _manager;
 
         public ColonyData SpawnPoint { get; set; }
-        public ColonyBuildingFactory ColonyBuildingFactory { private set; get; }
+
+        [SerializeReference]
+        public ColonyBuildingFactory ColonyBuildingFactory;
         public List<ColonyData> ColoniesInfo { set; get; }
 
         public MorePartsPack()
@@ -39,10 +40,8 @@ namespace MorePartsMod
                 return;
             }
             Debug.Log("Loading MoreParts Mod!");
-            Mod = new MockMod(ModIdPatching, DisplayName, Author);
+            Mod = new MockMod(ModIdPatching, "MoreParts Mod","dani0105");
             Mod.ModFolder = FileLocations.BaseFolder.Extend("/../Saving").Extend(ModFolderName).CreateFolder();
-
-            ColonyBuildingFactory = new ColonyBuildingFactory();
 
             KeySettings.Setup();
 

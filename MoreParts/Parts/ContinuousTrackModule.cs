@@ -93,7 +93,6 @@ namespace MorePartsMod.Parts
             Transform idlers = this.transform.Find("Idlers");
             if (idlers == null)
             {
-                Debug.Log("Not Found Idlers");
                 return;
             }
             this._idlers = new Transform[idlers.childCount];

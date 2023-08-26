@@ -6,37 +6,17 @@ using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Buildings
 {
-    class RefineryComponent : MonoBehaviour, INJ_PlayerNear, INJ_PlayerInPlanet, INJ_Rocket, INJ_HasEnergy
+    class RefineryComponent : MonoBehaviour, INJ_Rocket, INJ_HasEnergy
     {
 
-        private bool _playerNear;
-        private bool _playerInPlanet;
         private ResourceModule _rocketTanks;
-
-        public bool PlayerNear
-        {
-            set
-            {
-                this._rocketTanks = null;
-                this._playerNear = value;
-            }
-        }
-        public bool PlayerInPlanet
-        {
-            set
-            {
-                this._rocketTanks = null;
-                this._playerInPlanet = value;
-            }
-        }
 
         public Rocket Rocket { set; get; }
         public bool HasEnergy { set; get; }
 
         private void FixedUpdate()
         {
-            if (!this._playerNear || !this._playerInPlanet || !this.HasEnergy)
-            {
+            if(Rocket == null || !HasEnergy){
                 return;
             }
 

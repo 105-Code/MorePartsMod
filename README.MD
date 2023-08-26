@@ -169,7 +169,4 @@ Also some new parts are added to the game. Some of them are listed below:
 - `GeoEye`: This is the planetary scanner. With this part you can discover a new `Resource Deposit`. The `GeoEye` needs electricity to work, so you must install the `Electricity Part Pack`.  
 ![Imgur](https://i.imgur.com/eC3imYum.png)  
 
-## **Installation**
--  Drop `moreparts.pack` file into  `Spaceflight Simulator Game\Mods\Custom Assets\Parts` folder
-- Install `Electricity Part Pack`.  click [here](https://github.com/DinitrogenTetroxide/sfs-electricity) to download
 

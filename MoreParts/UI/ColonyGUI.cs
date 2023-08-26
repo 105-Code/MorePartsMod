@@ -25,16 +25,16 @@ namespace MorePartsMod.UI
         public override void OnClose()
         {
             GameObject.Destroy(this._holder.gameObject);
-            if (this._name != this._colony.data.name)
+            if (this._name != this._colony.Data.name)
             {
-                this._colony.data.name = this._name;
-                ColonyManager.main.SaveColonies();
+                this._colony.Data.name = this._name;
+                ColonyManager.Main.SaveColonies();
             }
         }
 
         public override void OnOpen()
         {
-            this._name = this._colony.data.name;
+            this._name = this._colony.Data.name;
             this._holder = Builder.CreateWindow(this.transform, 2, 500, 700, posY: 350, titleText: "Colony Menu");
             this._holder.EnableScrolling(Type.Vertical);
             this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
@@ -65,24 +65,30 @@ namespace MorePartsMod.UI
         private void generateUI()
         {
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Information");
-            Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.data.name, this.onChangeColonyName);
-            foreach (string key in this._colony.data.resources.Keys)
+            Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.Data.name, this.onChangeColonyName);
+            foreach (string key in this._colony.Data.resources.Keys)
             {
-                Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, key + ": " + this._colony.data.resources[key]);
+                Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, key + ": " + this._colony.Data.resources[key]);
             }
 
             Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Buildings");
 
             foreach (string buildingName in MorePartsPack.Main.ColonyBuildingFactory.GetBuildingsName())
             {
-                if (this._colony.data.isBuildingActive(buildingName))
+                /*
+                Cahange this to able build the same building x times
+                if (this._colony.Data.IsBuildingActive(buildingName) && buildingName != MorePartsTypes.SOLAR_PANEL_BUILDING)
+                {
+                    continue;
+                }*/
+                if (this._colony.Data.IsBuildingActive(buildingName))
                 {
                     continue;
                 }
                 Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this.OnClickButton(buildingName), "Build " + buildingName);
             }
 
-            if (this._colony.data.isBuildingActive(MorePartsTypes.REFINERY_BUILDING))
+            if (this._colony.Data.IsBuildingActive(MorePartsTypes.REFINERY_BUILDING))
             {
                 Builder.CreateLabel(this._holder.ChildrenHolder, 480, 45, 0, 0, "Refine materials");
                 Builder.CreateButton(this._holder.ChildrenHolder, 480, 40, 0, 0, () => this.generateResource(MorePartsTypes.CONSTRUCTION_MATERIAL), "+100 Construction material");
@@ -97,44 +103,49 @@ namespace MorePartsMod.UI
 
         private void generateResource(string resourcesType, int toGenerate = 100)
         {
-            if (!this._colony.data.resources.ContainsKey(MorePartsTypes.MATERIAL))
+            if (!this._colony.Data.resources.ContainsKey(MorePartsTypes.MATERIAL))
             {
                 MsgDrawer.main.Log("There are not material in the colony");
                 return;
             }
 
-            double materialQuantity = this._colony.data.getResource(MorePartsTypes.MATERIAL);
+            double materialQuantity = this._colony.Data.GetResource(MorePartsTypes.MATERIAL);
             if (materialQuantity - toGenerate < 0)
             {
-                this._colony.data.takeResource(MorePartsTypes.MATERIAL, materialQuantity);
-                this._colony.data.addResource(resourcesType, materialQuantity);
+                this._colony.Data.TakeResource(MorePartsTypes.MATERIAL, materialQuantity);
+                this._colony.Data.AddResource(resourcesType, materialQuantity);
                 this.Reload();
                 return;
             }
 
-            this._colony.data.takeResource(MorePartsTypes.MATERIAL, toGenerate);
-            this._colony.data.addResource(resourcesType, toGenerate);
+            this._colony.Data.TakeResource(MorePartsTypes.MATERIAL, toGenerate);
+            this._colony.Data.AddResource(resourcesType, toGenerate);
             this.Reload();
         }
 
         private void OnDelete()
         {
-            Debug.Log("Destroying colony!");
-            if (ColonyManager.main.DeleteColony(this._colony))
+            if (ColonyManager.Main.DeleteColony(this._colony))
             {
                 ScreenManager.main.CloseCurrent();
                 return;
             }
-            Debug.Log("Error distroying colony!");
         }
 
         private void OnClickButton(string buildingName)
         {
-            if (this._colony.Build(buildingName))
+            if (this._colony.CreateBuilding(buildingName))
             {
                 ScreenManager.main.CloseCurrent();
             }
         }
 
+        public static ColonyGUI Init()
+        {
+            GameObject holder = new GameObject("Colony Menu");
+            holder.transform.localScale = new Vector3(0.9f, 0.9f);
+            Builder.AttachToCanvas(holder, Builder.SceneToAttach.CurrentScene);
+            return holder.AddComponent<ColonyGUI>();
+        }
     }
 }

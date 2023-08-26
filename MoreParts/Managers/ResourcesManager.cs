@@ -35,7 +35,6 @@ namespace MorePartsMod.Managers
 
         private void Start()
         {
-            Debug.Log("Loading Planet Resources");
             this.LoadPlanetResourcesInfo();
             this.Player.OnChange += this.OnPlayerChange;
         }
@@ -133,12 +132,17 @@ namespace MorePartsMod.Managers
 
         public void DrawInMap()
         {
-            if (this.CurrentPlanet == null || GameManager.main == null)
+            if (this.CurrentPlanet == null || GameManager.main == null || PlanetResourcesData == null)
             {
                 return;
             }
 
             PlanetResourceData planetData = this.PlanetResourcesData[this.CurrentPlanet.codeName];
+
+            if (planetData == null)
+            {
+                return;
+            }
 
             foreach (ReourceDeposit deposit in planetData.ResourceDeposits)
             {
@@ -149,6 +153,9 @@ namespace MorePartsMod.Managers
             }
 
             Rocket rocket = (Rocket)this.Player.Value;
+            if(rocket == null){
+                return;
+            }
             ScannerModule[] modules = rocket.partHolder.GetModules<ScannerModule>();
             if (modules.Length <= 0)
             {

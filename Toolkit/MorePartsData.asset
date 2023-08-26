@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1964206125, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
+  m_Name: MorePartsData
+  m_EditorClassIdentifier: 
+  AntennaPrefab: {fileID: 7143924448760645366, guid: 78b653d999b8b894f905db5cbf7c7319,
+    type: 3}
+  ColonyBuildingFactory:
+    rid: 457223720160985089
+  references:
+    version: 2
+    RefIds:
+    - rid: 457223720160985089
+      type: {class: ColonyBuildingFactory, ns: MorePartsMod, asm: MorePartsMod}
+      data:
+        ColonyBuilding: {fileID: 6788196533881260909, guid: 9b6f9a526aae5244694d771b1f7b6ad6,
+          type: 3}
+        LaunchPadBuilding: {fileID: 7180454114975319001, guid: f798c93464d880bba9d70b756b3bc563,
+          type: 3}
+        VabBuilding: {fileID: 7180454114975319001, guid: 55e1a9bc7e93d9c42a8a5c3453a5e322,
+          type: 3}
+        SolarPanelBuilding: {fileID: 1805576350462075415, guid: f48fc18d65b4f594bbe470a6d0d540ab,
+          type: 3}
+        RefineryBuilding: {fileID: 1805576350462075415, guid: 023c343bbe5af84439c07748348c8612,
+          type: 3}

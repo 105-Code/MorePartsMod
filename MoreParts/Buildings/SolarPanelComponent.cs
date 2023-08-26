@@ -6,27 +6,39 @@ using static MorePartsMod.Buildings.ColonyComponent;
 
 namespace MorePartsMod.Buildings
 {
-    class SolarPanelComponent : MonoBehaviour, INJ_PlayerNear, INJ_Rocket
+    class SolarPanelComponent : MonoBehaviour, INJ_Rocket, OnInit, INJ_Colony, INJ_Building
     {
-
-        private bool _playerNear;
         private ResourceModule _rocketBateries;
-        private Rocket _rocket;
 
-        public bool PlayerNear
+        public Rocket Rocket { get; set; }
+        public ColonyComponent Colony { get; set; }
+        public Building Building { get; set; }
+
+        public void OnInit()
         {
-            set
+            foreach (Building item in Colony.Data.GetBuildings())
             {
-                this._rocketBateries = null;
-                this._playerNear = value;
+                if (item.GameObject == Building.GameObject)
+                {
+                    continue;
+                }
+
+                if (Vector2.Distance(Building.position, item.position) > 100)
+                {
+                    continue;
+                }
+
+                INJ_HasEnergy buildingNeedEnergy = item.GameObject.GetComponent<INJ_HasEnergy>();
+                if(buildingNeedEnergy == null){
+                    return;
+                }
+                buildingNeedEnergy.HasEnergy = true;
             }
         }
 
-        public Rocket Rocket { set => this._rocket = value; }
-
         private void FixedUpdate()
         {
-            if (!this._playerNear)
+            if (Rocket == null)
             {
                 return;
             }
@@ -47,7 +59,7 @@ namespace MorePartsMod.Buildings
 
         private ResourceModule GetRocketBateries()
         {
-            foreach (ResourceModule resource in this._rocket.resources.globalGroups)
+            foreach (ResourceModule resource in Rocket.resources.globalGroups)
             {
                 if (resource.resourceType.name == "Electricity_Resource")
                 {

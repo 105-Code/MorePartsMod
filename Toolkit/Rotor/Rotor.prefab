@@ -1221,6 +1221,9 @@ MonoBehaviour:
     - name: flow_rate
       save: 0
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
+    - name: rpm
+      save: 1
+      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c756500060000000000e0a5400b
   boolVariables:
     saves:
     - name: isOn
@@ -1319,6 +1322,10 @@ MonoBehaviour:
   FlowRate:
     variableName: flow_rate
     referenceToVariables: {fileID: 7062449513941958936}
+    localValue: 0
+  RPM:
+    variableName: rpm
+    referenceToVariables: {fileID: 0}
     localValue: 0
   Base: {fileID: 6179661616820790748}
   Part: {fileID: 2724586926703645955}
