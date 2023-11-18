@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MockPack
   m_EditorClassIdentifier: 
   DisplayName: MoreParts Pack
-  Version: v4.0.0
+  Version: v4.0.1
   Description: Add more parts!
   Author: dani0105
   ShowIcon: 1
