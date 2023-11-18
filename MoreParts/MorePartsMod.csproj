@@ -156,7 +156,7 @@
   <!-- After build copy dll file into managed folder and start the game -->
   <Target Name="PostBuildEvent">
     <Message Text="Update pack file with new dll"/>
-    <Exec Command="/home/daniel/hdd/Documents/modding/MorePartsMod/UpdatePackCli/UpdatePack '$(ModPack)' '$(ModDll)'" />
+    <Exec Command="$(CommandPath) '$(ModPack)' '$(ModDll)'" />
     <Copy SourceFiles="$(ModDll)" DestinationFolder="$(ToolkitPath)" ContinueOnError="true" />
     <!-- <Exec Command="start steam://rungameid/1718870" />-->
   </Target>

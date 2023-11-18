@@ -54,6 +54,11 @@ namespace MorePartsMod.Buildings
             return planet;
         }
 
+        public Location GetLocation()
+        {
+            return new Location(GetPlanet(), position);
+        }
+
         public Building GetBuilding(string buildingName)
         {
             this.Buildings.TryGetValue(buildingName, out Building building);
