@@ -57,7 +57,14 @@ namespace MorePartsMod.Managers
                     continue;
                 }
 
-                bool intersect = MathUtils.LineIntersectCircle(deposit.Size, deposit.Location, origin, target);
+                int size = deposit.Size;
+                if (Base.worldBase.settings.difficulty.difficulty == SFS.WorldBase.Difficulty.DifficultyType.Realistic)
+                {
+                    size = size * 5;
+                }
+
+
+                bool intersect = MathUtils.LineIntersectCircle(size, deposit.Location, origin, target);
 
                 if (intersect)
                 {
@@ -153,7 +160,8 @@ namespace MorePartsMod.Managers
             }
 
             Rocket rocket = (Rocket)this.Player.Value;
-            if(rocket == null){
+            if (rocket == null)
+            {
                 return;
             }
             ScannerModule[] modules = rocket.partHolder.GetModules<ScannerModule>();

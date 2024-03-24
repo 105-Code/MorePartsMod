@@ -1,5 +1,6 @@
 ﻿using MorePartsMod.Managers;
 using MorePartsMod.Parts.Types;
+using SFS;
 using SFS.Parts;
 using SFS.UI;
 using SFS.Variables;
@@ -44,9 +45,14 @@ namespace MorePartsMod.Parts
                 return;
             }
             double max_altitud = this.Location.planet.data.basics.timewarpHeight + 50000;
+            if (Base.worldBase.settings.difficulty.difficulty == SFS.WorldBase.Difficulty.DifficultyType.Realistic)
+            {
+                max_altitud += 100000;
+            }
+
             if (this.Location.Height > max_altitud)
             {
-                this.Toggle("Max altitude " + max_altitud / 1000 + "km", false);
+                this.Toggle("Max use altitude " + max_altitud / 1000 + "km", false);
                 return;
             }
 
