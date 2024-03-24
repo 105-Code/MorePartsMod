@@ -11,6 +11,7 @@ using SFS.WorldBase;
 
 using static MorePartsMod.Buildings.ColonyComponent;
 using MorePartsMod.Utils;
+using System;
 
 namespace MorePartsMod.Managers
 {
@@ -204,36 +205,42 @@ namespace MorePartsMod.Managers
 
         private void OnPlayerChange()
         {
-            this._createColonyButton.gameObject.SetActive(false);
-            if (Player.Value == null)
+            try
             {
-                return;
-            }
-            ResourceModule[] resources = (Player.Value as Rocket).partHolder.GetModules<ResourceModule>();
-            bool flag = false, flag2 = false;
-            foreach (ResourceModule resource in resources)
-            {
-                if (resource.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
+                this._createColonyButton.gameObject.SetActive(false);
+                if (Player.Value == null)
                 {
-                    flag = true;
-                    continue;
+                    return;
+                }
+                ResourceModule[] resources = (Player.Value as Rocket).partHolder.GetModules<ResourceModule>();
+                bool flag = false, flag2 = false;
+                foreach (ResourceModule resource in resources)
+                {
+                    if (resource.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
+                    {
+                        flag = true;
+                        continue;
+                    }
+
+                    if (resource.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
+                    {
+                        flag2 = true;
+                    }
                 }
 
-                if (resource.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
+                if (flag && flag2)
                 {
-                    flag2 = true;
+                    if (Player.Value.location != null && Player.Value.location.planet.Value != null)
+                    {
+                        Player.Value.location.planet.OnChange += OnPlanetChange;
+                    }
+
                 }
             }
-
-            if (flag && flag2)
+            catch (Exception e)
             {
-                if (Player.Value.location != null && Player.Value.location.planet.Value != null)
-                {
-                    Player.Value.location.planet.OnChange += OnPlanetChange;
-                }
-
+                Debug.LogError(e);
             }
-
         }
 
         private void OnPlanetChange()
@@ -257,7 +264,8 @@ namespace MorePartsMod.Managers
 
         private void CheckPlayerVelocity()
         {
-            if(Player.Value == null || Player.Value.location.Value == null){
+            if (Player.Value == null || Player.Value.location.Value == null)
+            {
                 return;
             }
 
