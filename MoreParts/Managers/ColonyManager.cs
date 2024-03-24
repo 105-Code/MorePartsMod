@@ -82,6 +82,7 @@ namespace MorePartsMod.Managers
                 {
                     if (resourceGroup.ResourceAmount < electronicRequired)
                     {
+                        MsgDrawer.main.Log("Insufficient Electronic Components");
                         return false;
                     }
                     electronic = resourceGroup;
@@ -91,6 +92,7 @@ namespace MorePartsMod.Managers
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
+                        MsgDrawer.main.Log("Insufficient Construction MAterial");
                         return false;
                     }
                     construction = resourceGroup;
@@ -298,7 +300,6 @@ namespace MorePartsMod.Managers
 
             if (!CheckAndReduceMaterials(7, 7))
             {
-                MsgDrawer.main.Log("Insufficient materials");
                 return;
             }
 
