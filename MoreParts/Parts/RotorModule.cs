@@ -127,7 +127,6 @@ namespace MorePartsMod.Parts
                 logger.Log(Loc.main.Engine_Module_State.InjectField(this.IsOn.Value.State_ToOnOff(), "state"));
             }
         }
-
         private void FixedUpdate()
         {
             if (this.Rb2d == null || !this.IsOn.Value || this.Location.planet == null)
@@ -136,10 +135,10 @@ namespace MorePartsMod.Parts
             }
             // check https://www.grc.nasa.gov/www/k-12/airplane/propth.html
             float exitVelocity = (float)((2 * this._rotorVelocity) - this.Location.VerticalVelocity);
-            float density = (float)this.Location.planet.GetAtmosphericDensity(this.Location.Height);
+			float density = (float)this.Location.planet.GetAtmosphericDensity(this.Location.Height);
             double thrust = 0.5 * density * this._area * ((exitVelocity * exitVelocity) - (this.Location.VerticalVelocity * this.Location.VerticalVelocity));
 
-            Vector2 force = Base.transform.TransformVector(Vector2.up * (float)(thrust / 1000));
+            Vector2 force = Base.transform.TransformVector(Vector2.up * (float)thrust);
             Vector2 relativePoint = this.Rb2d.GetRelativePoint(Transform_Utility.LocalToLocalPoint(this.transform, this.Rb2d, new Vector2(0, 0)));
             this.Rb2d.AddForceAtPosition(force, relativePoint, ForceMode2D.Force);
         }
