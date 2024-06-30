@@ -1145,7 +1145,8 @@ MonoBehaviour:
     TranslatableName: Rotor
     plainText: 1
   description:
-    TranslatableName: Rotor like Ingenuity
+    TranslatableName: An electric rotor that spins at high speeds and generates thrust
+      depending on atmospheric density.
     plainText: 1
   mass:
     variables: {fileID: 7062449513941958936}
@@ -1325,7 +1326,7 @@ MonoBehaviour:
     localValue: 0
   RPM:
     variableName: rpm
-    referenceToVariables: {fileID: 0}
+    referenceToVariables: {fileID: 7062449513941958936}
     localValue: 0
   Base: {fileID: 6179661616820790748}
   Part: {fileID: 2724586926703645955}

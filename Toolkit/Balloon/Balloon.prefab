@@ -477,7 +477,7 @@ MonoBehaviour:
     TranslatableName: Weather balloon
     plainText: 1
   description:
-    TranslatableName: Is a balloon that carries things!
+    TranslatableName: A deployable balloon that operates without any fuel or energy.
     plainText: 1
   mass:
     variables: {fileID: 1694083014706337627}
