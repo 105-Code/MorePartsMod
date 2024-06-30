@@ -5,7 +5,7 @@ _Add new parts and mechanics🚀_
 Moreparts adds new parts and mechanics to the game. Next, each improvement that this mod adds will be detailed as a tutorial.
 
 ### **Colonies👩‍🚀👨‍🚀**
-`Colonies` are new buildings made up of different buildings that add benefits to the player and that you can create on any planet in the solar system (except Earth). To build each building, you will need to deposit resources by pressing the `O` key near the colony to extract or deposit resources. Now each building is detailed below:
+`Colonies` are new buildings made up of different buildings that add benefits to the player and that you can create on any planet in the solar system (except Earth). To build each building, you will need to deposit resources by pressing the `J` key near the colony to deposit resources. Now each building is detailed below:
 
 - `Colony Base`: This building is the main base of the colonies and functions as an antenna for the ARPANET network.
   - Materials

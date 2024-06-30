@@ -45,7 +45,8 @@ namespace MorePartsMod.Managers
         {
             this.LoadColonies();
             KeySettings.AddOnKeyDown_World(KeySettings.Main.Open_Colony, this.OpenColony);
-            KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Colony_Flow, this.ToggleColonyFlow);
+            KeySettings.AddOnKeyDown_World(KeySettings.Main.Insert_Colony_Resources, this.InsertResources);
+            KeySettings.AddOnKeyDown_World(KeySettings.Main.Extract_Colony_Resources, this.ExtractResources);
             Player.OnChange += this.OnPlayerChange;
         }
 
@@ -151,9 +152,9 @@ namespace MorePartsMod.Managers
             return null;
         }
 
-        private void ToggleColonyFlow()
+        private void ExtractResources()
         {
-            MsgDrawer.main.Log(this._extractFlow ? "Refilling rocket resources" : "Extracting rocket resources");
+            MsgDrawer.main.Log("Extracting resource from the colony to the rocket");
 
             ColonyComponent colony = GetNearestColony();
 
@@ -167,20 +168,36 @@ namespace MorePartsMod.Managers
             foreach (ResourceModule resource in rocket.resources.globalGroups)
             {
                 typeName = resource.resourceType.name;
-                if (this._extractFlow)
-                {
-                    double addToRocket = colony.Data.TakeResource(typeName, resource.TotalResourceCapacity);
-                    resource.AddResource(addToRocket);
-                    continue;
-                }
+                double addToRocket = colony.Data.TakeResource(typeName, resource.TotalResourceCapacity);
+                resource.AddResource(addToRocket);
+            }
+            this.SaveColonies();
+
+            this._extractFlow = !this._extractFlow;
+        }
+
+        private void InsertResources()
+        {
+            MsgDrawer.main.Log("Inserting resource from the rocket to the colony");
+
+            ColonyComponent colony = GetNearestColony();
+
+            if (colony == null)
+            {
+                return;
+            }
+
+            Rocket rocket = (Rocket)Player;
+            string typeName;
+            foreach (ResourceModule resource in rocket.resources.globalGroups)
+            {
+                typeName = resource.resourceType.name;
                 if (colony.Data.AddResource(typeName, resource.ResourceAmount))
                 {
                     resource.TakeResource(resource.ResourceAmount);
                 }
             }
             this.SaveColonies();
-
-            this._extractFlow = !this._extractFlow;
         }
 
         private void LoadColonies()
