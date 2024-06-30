@@ -89,14 +89,14 @@ namespace MorePartsMod.Parts
                 this.TargetState.Value = 0;
                 return;
             }
-
-            bool thereAreMore = deposit.takeRsources(_extractionCount);
+            double countToExtract = _extractionCount * WorldTime.main.timewarpSpeed;
+            bool thereAreMore = deposit.takeRsources(countToExtract);
             if (!thereAreMore)
             {
                 MsgDrawer.main.Log("Resource Deposit Exhausted!");
             }
 
-            this._material_container.AddResource(_extractionCount);
+            this._material_container.AddResource(countToExtract);
             this.ExcavatorObject.eulerAngles = new Vector3(0f, 0f, this.ExcavatorObject.eulerAngles.z + 4);
             if (this._material_container.resourcePercent.Value == 1f)
             {
