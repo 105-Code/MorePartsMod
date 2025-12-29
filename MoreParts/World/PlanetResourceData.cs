@@ -10,12 +10,12 @@ namespace MorePartsMod.World
         [NonSerialized]
         private Planet _planet;
 
-        public List<ReourceDeposit> ResourceDeposits;
+        public List<ResourceDeposit> ResourceDeposits;
 
         public PlanetResourceData(Planet planet)
         {
             this._planet = planet;
-            this.ResourceDeposits = new List<ReourceDeposit>();
+            this.ResourceDeposits = new List<ResourceDeposit>();
         }
 
         public PlanetResourceData() { }
@@ -32,7 +32,7 @@ namespace MorePartsMod.World
             // create x deposits
             for (short index = 0; index < 9; index++)
             {
-                int amount = rnd.Next(0,4000);
+                int amount = rnd.Next(1000,3000);
                 float radians = currentAngle * Mathf.Deg2Rad;
                 double magnitude = this._planet.GetTerrainHeightAtAngle(radians);
                 float x = Mathf.Cos(radians);
