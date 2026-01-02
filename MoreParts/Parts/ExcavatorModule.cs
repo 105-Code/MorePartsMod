@@ -90,7 +90,7 @@ namespace MorePartsMod.Parts
                 return;
             }
             double countToExtract = _extractionCount * WorldTime.main.timewarpSpeed;
-            bool thereAreMore = deposit.takeRsources(countToExtract);
+            bool thereAreMore = deposit.takeResources(countToExtract);
             if (!thereAreMore)
             {
                 MsgDrawer.main.Log("Resource deposit exhausted");

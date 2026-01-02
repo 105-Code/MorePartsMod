@@ -2,7 +2,9 @@
 using SFS.Input;
 using SFS.UI.ModGUI;
 using MorePartsMod;
+using MorePartsMod.UI;
 using UnityEngine;
+using SFS.UI;
 using SFS.Builds;
 
 

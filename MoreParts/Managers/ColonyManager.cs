@@ -297,23 +297,21 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-
             ColonyComponent nearest = GetNearestColony();
             if (nearest != null)
             {
                 // Change button to VIEW MODE
-                _createColonyButton.SetText("View Colony Information");
-                _createColonyButton.OnClick = OpenColony; // Same as U key-binding
+                _createColonyButton.Text = "View Colony Information";
+                _createColonyButton.OnClick = OpenColony;
             }
             else
             {
                 // Change button to CREATE MODE
-                _createColonyButton.SetText("Create Colony");
+                _createColonyButton.Text = "Create Colony";
                 _createColonyButton.OnClick = CreateColony;
             }
 
             _createColonyButton.gameObject.SetActive(true);
-
         }
 
         private void CreateColony()

@@ -26,7 +26,7 @@ namespace MorePartsMod.World
         }
 
         public void Initialize()
-        {
+        {W
             System.Random rnd = new System.Random();
             int currentAngle = rnd.Next(4,8); // More appropriate range
             // create x deposits

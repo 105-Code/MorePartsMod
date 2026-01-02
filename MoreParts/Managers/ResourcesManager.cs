@@ -22,7 +22,7 @@ namespace MorePartsMod.Managers
 
         public Planet CurrentPlanet { set; get; }
 
-        public ResourceDeposit CurrentDeposit { private set; get; }
+        public ReourceDeposit CurrentDeposit { private set; get; }
 
 
         private void Awake()
