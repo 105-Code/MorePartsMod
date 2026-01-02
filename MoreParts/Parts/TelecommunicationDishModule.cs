@@ -155,7 +155,7 @@ namespace MorePartsMod.Parts
             if (this._notifyDisconnection)
             {
                 AntennaComponent.main.ShowTelecommunicationLines = false;
-                MsgDrawer.main.Log("No Connection");
+                MsgDrawer.main.Log("No connection to Space Centre");
                 this._notifyDisconnection = false;
                 this._notifyConnection = true;
                 this._time = _ping;
@@ -184,7 +184,7 @@ namespace MorePartsMod.Parts
             if (this.IsOn.Value)
             {
                 AntennaComponent.main.RemoveNode(this);
-                MsgDrawer.main.Log("Telecommunication Dish Off");
+                MsgDrawer.main.Log("Telecommunication dish off");
                 this.Node = null;
                 this._notifyDisconnection = true;
                 this.DoDisconnection();
@@ -195,7 +195,7 @@ namespace MorePartsMod.Parts
             else
             {
                 this.Node = AntennaComponent.main.AddNode(this);
-                MsgDrawer.main.Log("Telecommunication Dish On");
+                MsgDrawer.main.Log("Telecommunication dish on");
                 this._notifyDisconnection = true;
                 this._notifyConnection = true;
                 this.FlowRate.Value = 0.1f;

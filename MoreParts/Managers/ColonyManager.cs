@@ -17,13 +17,10 @@ namespace MorePartsMod.Managers
 {
     class ColonyManager : MonoBehaviour
     {
-        // public
         public static ColonyManager Main;
         public Player_Local Player;
-
         public List<ColonyComponent> Colonies { get; private set; }
 
-        //private
         private SFS.UI.ModGUI.Button _createColonyButton;
         private ColonyGUI _ui;
         private bool _extractFlow;
@@ -83,7 +80,7 @@ namespace MorePartsMod.Managers
                 {
                     if (resourceGroup.ResourceAmount < electronicRequired)
                     {
-                        MsgDrawer.main.Log("Insufficient Electronic Components");
+                        MsgDrawer.main.Log("Insufficient electronic components");
                         return false;
                     }
                     electronic = resourceGroup;
@@ -93,7 +90,7 @@ namespace MorePartsMod.Managers
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
-                        MsgDrawer.main.Log("Insufficient Construction MAterial");
+                        MsgDrawer.main.Log("Insufficient construction material");
                         return false;
                     }
                     construction = resourceGroup;
@@ -154,7 +151,7 @@ namespace MorePartsMod.Managers
 
         private void ExtractResources()
         {
-            MsgDrawer.main.Log("Extracting resource from the colony to the rocket");
+            MsgDrawer.main.Log("Extracting resources");
 
             ColonyComponent colony = GetNearestColony();
 
@@ -178,7 +175,7 @@ namespace MorePartsMod.Managers
 
         private void InsertResources()
         {
-            MsgDrawer.main.Log("Inserting resource from the rocket to the colony");
+            MsgDrawer.main.Log("Storing resources in colony's refinery");
 
             ColonyComponent colony = GetNearestColony();
 
@@ -300,8 +297,21 @@ namespace MorePartsMod.Managers
                 return;
             }
 
+            ColonyComponent nearest = GetNearestColony();
+            if (nearest != null)
+            {
+                // Change button to VIEW MODE
+                _createColonyButton.Text = "View Colony Information";
+                _createColonyButton.OnClick = OpenColony;
+            }
+            else
+            {
+                // Change button to CREATE MODE
+                _createColonyButton.Text = "Create Colony";
+                _createColonyButton.OnClick = CreateColony;
+            }
 
-            this._createColonyButton.gameObject.SetActive(true);
+            _createColonyButton.gameObject.SetActive(true);
         }
 
         private void CreateColony()
@@ -311,7 +321,7 @@ namespace MorePartsMod.Managers
 
             if (!this.CheckColonyDistance(planet.codeName, playerLocation.position.Value))
             {
-                MsgDrawer.main.Log("Too close to another colony");
+                MsgDrawer.main.Log("Already inside another colony");
                 return;
             }
 

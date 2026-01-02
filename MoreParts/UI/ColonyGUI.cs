@@ -64,7 +64,6 @@ namespace MorePartsMod.UI
 
         private void generateUI()
         {
-            Builder.CreateLabel(this._holder.ChildrenHolder, 480, 35, 0, 0, "Information");
             Builder.CreateTextInput(this._holder.ChildrenHolder, 480, 50, 0, 0, this._colony.Data.name, this.onChangeColonyName);
             foreach (string key in this._colony.Data.resources.Keys)
             {
@@ -105,7 +104,7 @@ namespace MorePartsMod.UI
         {
             if (!this._colony.Data.resources.ContainsKey(MorePartsTypes.MATERIAL))
             {
-                MsgDrawer.main.Log("There are not material in the colony");
+                MsgDrawer.main.Log("There are no materials in this colony");
                 return;
             }
 

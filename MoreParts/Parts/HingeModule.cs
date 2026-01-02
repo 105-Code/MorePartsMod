@@ -178,26 +178,23 @@ namespace MorePartsMod.Parts
             {
                 if (this._topGroup.ExistInGroup(part))
                 {
-                    // already exist in the group
-
-                    continue;
+                    continue; // Already exists in the group
                 }
 
                 List<PartJoint> nextJoints = this.Rocket.jointsGroup.GetConnectedJoints(part);
                 if (!this._topGroup.ExistInBaseGroup(part))
                 {
-                    // it's not part of the base part
                     if (nextJoints.Any(item => item.GetOtherPart(part) == this.Part))
                     {
                         // it's connected to hinge part
-                        return false; // there is a loop
+                        return false;
                     }
                 }
                 else
                 {
                     isBaseGroup = true;
                 }
-                // add in the group to prevent loops
+                // Add to group to prevent loop
                 this._topGroup.AddPartToGroup(part);
                 thereIsLoop = this.getTopPartGroup(this.getPartFromPartJoint(nextJoints, part, isBaseGroup));
                 if (!thereIsLoop)

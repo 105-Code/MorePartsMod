@@ -1,5 +1,4 @@
-﻿
-using SFS.Parts;
+﻿using SFS.Parts;
 using SFS.Parts.Modules;
 using SFS.UI;
 using SFS.Variables;
@@ -83,7 +82,7 @@ namespace MorePartsMod.Parts
             {
                 if (!this.Location.planet.HasAtmospherePhysics || this.Location.Height > this.Location.planet.AtmosphereHeightPhysics * 0.9)
                 {
-                    MsgDrawer.main.Log("Not atmosphere");
+                    MsgDrawer.main.Log("Cannot deploy in a vaccum");
                     flag = false;
                 }
                 else
@@ -97,7 +96,7 @@ namespace MorePartsMod.Parts
             }
             else if (this.TargetState.Value == 1f && this.State.Value == 1f)
             {
-                MsgDrawer.main.Log("Cut");
+                MsgDrawer.main.Log("Balloon cut");
                 this.TargetState.Value = 2f;
                 this.State.Value = 2f;
                 flag = true;

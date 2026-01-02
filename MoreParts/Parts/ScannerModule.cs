@@ -34,31 +34,35 @@ namespace MorePartsMod.Parts
 
         private void Update()
         {
-            if (GameManager.main == null || !this.Active.Value || this.Location == null || this.Location.planet == null || this.Rocket.location == null)
+            if (GameManager.main == null || 
+                !this.Active.Value || 
+                this.Location == null || 
+                this.Location.planet == null || 
+                this.Rocket.location == null)
             {
                 return;
             }
 
             if (this.Location.planet.IsInsideAtmosphere(this.Location.position))
             {
-                this.Toggle("You can't use in the atmosphere", false);
+                this.Toggle("GeoEye cannot be used while in the atmosphere", false);
                 return;
             }
-            double max_altitud = this.Location.planet.data.basics.timewarpHeight + 50000;
+            double max_altitude = this.Location.planet.data.basics.timewarpHeight + 50000;
             if (Base.worldBase.settings.difficulty.difficulty == SFS.WorldBase.Difficulty.DifficultyType.Realistic)
             {
-                max_altitud += 100000;
+                max_altitude += 100000;
             }
 
-            if (this.Location.Height > max_altitud)
+            if (this.Location.Height > max_altitude)
             {
-                this.Toggle("Max use altitude " + max_altitud / 1000 + "km", false);
+                this.Toggle("Max use altitude " + max_altitude / 1000 + "km", false);
                 return;
             }
 
             if (ResourcesManger.Main.AnalyzePlanet(this.Rocket.location))
             {
-                MsgDrawer.main.Log("Found Resource Deposit");
+                MsgDrawer.main.Log("Found a resource deposit");
             }
 
         }
@@ -94,11 +98,11 @@ namespace MorePartsMod.Parts
         {
             if (this.Active.Value)
             {
-                this.Toggle("GeoEye turn OFF", false);
+                this.Toggle("GeoEye turned off", false);
             }
             else
             {
-                this.Toggle("GeoEye turn ON", true);
+                this.Toggle("GeoEye turned off", true);
             }
             this.CheckOutOfFuel();
             data.successfullyUsedPart = true;

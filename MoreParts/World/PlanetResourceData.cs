@@ -10,12 +10,12 @@ namespace MorePartsMod.World
         [NonSerialized]
         private Planet _planet;
 
-        public List<ReourceDeposit> ResourceDeposits;
+        public List<ResourceDeposit> ResourceDeposits;
 
         public PlanetResourceData(Planet planet)
         {
             this._planet = planet;
-            this.ResourceDeposits = new List<ReourceDeposit>();
+            this.ResourceDeposits = new List<ResourceDeposit>();
         }
 
         public PlanetResourceData() { }
@@ -26,9 +26,9 @@ namespace MorePartsMod.World
         }
 
         public void Initialize()
-        {
+        {W
             System.Random rnd = new System.Random();
-            int currentAngle = rnd.Next(0,10);
+            int currentAngle = rnd.Next(4,8); // More appropriate range
             // create x deposits
             for (short index = 0; index < 9; index++)
             {
@@ -48,6 +48,7 @@ namespace MorePartsMod.World
 
         public class ReourceDeposit
         {
+
             public double Amount;
             public bool Active;
             public Double2 Location;
@@ -67,11 +68,23 @@ namespace MorePartsMod.World
 
             public ReourceDeposit() {}
 
+            public string GetDepositSizeName()
+            {
+                if (Size < 1500)
+                    return "Small Resource Deposit";
+
+                if (Size < 2500)
+                    return "Medium Resource Deposit";
+
+                return "Large Resource Deposit";
+            }
+
+
             /**
              * reduce resources in this deposit
              * <returns> True if there are more resources</returns>
              */
-            public bool takeRsources(double quantity)
+            public bool takeResources(double quantity)
             {
                 this.Amount -= quantity;
                 if(this.Amount < 0)

@@ -74,7 +74,7 @@ namespace MorePartsMod.Parts
                 this._material_container = this.GetMaterialContainer();
                 if (this._material_container == null)
                 {
-                    MsgDrawer.main.Log("You need a Material Container");
+                    MsgDrawer.main.Log("Material container needed for storage");
                     this.TargetState.Value = 0;
                     return;
                 }
@@ -85,22 +85,22 @@ namespace MorePartsMod.Parts
 
             if (deposit == null || !deposit.Active)
             {
-                MsgDrawer.main.Log("There is not Resource Deposit");
+                MsgDrawer.main.Log("Resource deposit not found");
                 this.TargetState.Value = 0;
                 return;
             }
             double countToExtract = _extractionCount * WorldTime.main.timewarpSpeed;
-            bool thereAreMore = deposit.takeRsources(countToExtract);
+            bool thereAreMore = deposit.takeResources(countToExtract);
             if (!thereAreMore)
             {
-                MsgDrawer.main.Log("Resource Deposit Exhausted!");
+                MsgDrawer.main.Log("Resource deposit exhausted");
             }
 
             this._material_container.AddResource(countToExtract);
             this.ExcavatorObject.eulerAngles = new Vector3(0f, 0f, this.ExcavatorObject.eulerAngles.z + 4);
             if (this._material_container.resourcePercent.Value == 1f)
             {
-                MsgDrawer.main.Log("Container Full");
+                MsgDrawer.main.Log("Material container full");
                 this.TargetState.Value = 0;
             }
         }

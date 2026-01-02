@@ -2,7 +2,11 @@
 using SFS.Input;
 using SFS.UI.ModGUI;
 using MorePartsMod;
+using MorePartsMod.UI;
 using UnityEngine;
+using SFS.UI;
+using SFS.Builds;
+
 
 namespace MorePartsMod.UI
 {
@@ -19,7 +23,7 @@ namespace MorePartsMod.UI
 
         public override void OnOpen()
         {
-            this._holder = Builder.CreateWindow(this.transform, 2, 500, 700, 0, 350, titleText: "Colonies");
+            this._holder = Builder.CreateWindow(this.transform, 2, 500, 700, 0, 500, titleText: "Launch From Colony");
             this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
             this._holder.CreateLayoutGroup(Type.Vertical).DisableChildControl();
             this._holder.CreateLayoutGroup(Type.Vertical).childAlignment = TextAnchor.UpperCenter;
@@ -36,16 +40,33 @@ namespace MorePartsMod.UI
 
         private void generateUI()
         {
+            Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 50, 0, () => this.TryLaunchFromColony(null), "[Default] Space Center");
+
             foreach (ColonyData colony in MorePartsPack.Main.ColoniesInfo)
             {
-                if (!colony.IsBuildingActive(MorePartsTypes.LAUNCH_PAD_BUILDING) || !colony.IsBuildingActive(MorePartsTypes.VAB_BUILDING))
-                {
-                    continue;
-                }
-                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this.SetSpawnPoint(colony), colony.name);
+                Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 0, 0, () => this.TryLaunchFromColony(colony), colony.name);
+            }
+        }
+        private void TryLaunchFromColony(ColonyData colony)
+        {
+            if (colony == null ||
+               (colony.IsBuildingActive(MorePartsTypes.LAUNCH_PAD_BUILDING) && colony.IsBuildingActive(MorePartsTypes.VAB_BUILDING)))
+            {
+                SetSpawnPoint(colony);
             }
 
-            Builder.CreateButton(this._holder.ChildrenHolder, 480, 60, 40, 0, () => this.SetSpawnPoint(null), "Space Center");
+            else
+            {
+                ShowMenu(colony + "Does not contain a VAB or launchpad", "Ok");
+            }
+        }
+        private static void ShowMenu(string text, string option)
+        {
+            SizeSyncerBuilder.Carrier sizeSync;
+            ButtonBuilder[] array = new ButtonBuilder[1];
+            new SizeSyncerBuilder(out sizeSync).HorizontalMode(SizeMode.MaxChildSize);
+            array[0] = ButtonBuilder.CreateButton(sizeSync, () => option, null, CloseMode.Stack);
+            MenuGenerator.ShowChoices(() => text, array);
         }
 
         private void SetSpawnPoint(ColonyData spawnPoint)
