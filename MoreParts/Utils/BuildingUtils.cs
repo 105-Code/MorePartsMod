@@ -28,7 +28,7 @@ namespace MorePartsMod.Utils
 
         public static Double2 GetPositionOnPlanetSurface(float angleRad, Planet planet)
         {
-            return Double2.CosSin(angleRad) * (planet.Radius + planet.GetTerrainHeightAtAngle(angleRad));
+            return Double2.CosSin(angleRad) * (planet.Radius + planet.GetTerrainHeightAtAngle(angleRad, false));
         }
 
         public static float FindAngleForXDistance(Double2 form,float distance)

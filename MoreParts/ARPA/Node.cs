@@ -11,7 +11,7 @@ namespace MorePartsMod.ARPA
         public bool Mark { set; get; }
         public int Id { get; private set; }
         public bool IsOrigin { get; private set; }
-        public WorldLocation WorlLocation { get; private set; } 
+        public WorldLocation WorldLocation { get; private set; } 
 
 
         public Node(int id, WorldLocation worldLocation, bool isOrigin =false)
@@ -19,14 +19,14 @@ namespace MorePartsMod.ARPA
             this.Id = id;
             this.Mark = false;
             this.Next = null;
-            this.WorlLocation = worldLocation;
+            this.WorldLocation = worldLocation;
             this.IsOrigin = isOrigin;
         }
 
         public bool IsAvailableTo(Node target)
         {
-            Planet planet1 = this.WorlLocation.planet.Value;
-            Planet planet2 = target.WorlLocation.planet.Value;
+            Planet planet1 = this.WorldLocation.planet.Value;
+            Planet planet2 = target.WorldLocation.planet.Value;
             if (this.HitPlanet(planet1.Radius, planet1.GetSolarSystemPosition(), this.GetAbsolutePosition(), target.GetAbsolutePosition()))
             {
                 return false;
@@ -65,10 +65,10 @@ namespace MorePartsMod.ARPA
                 return false;
             }
 
-            Vector2 origintPlanetDirection = (origin.ToVector2 - planetCenter.ToVector2).normalized;
-            Vector2 origintTargetDirection = (origin.ToVector2 - target.ToVector2).normalized;
+            Vector2 originPlanetDirection = (origin.ToVector2 - planetCenter.ToVector2).normalized;
+            Vector2 originTargetDirection = (origin.ToVector2 - target.ToVector2).normalized;
             
-            if(Vector2.Dot(origintPlanetDirection, origintTargetDirection) < 0)
+            if(Vector2.Dot(originPlanetDirection, originTargetDirection) < 0)
             {
                 return false;
             }
@@ -78,7 +78,7 @@ namespace MorePartsMod.ARPA
 
         public Double2 GetAbsolutePosition()
         {       
-            return this.WorlLocation.planet.Value.GetSolarSystemPosition() + this.WorlLocation.Value.position;
+            return this.WorldLocation.planet.Value.GetSolarSystemPosition() + this.WorldLocation.Value.position;
         }
 
     }

@@ -41,7 +41,9 @@ namespace MorePartsMod
             }
             Debug.Log("Loading MoreParts Mod!");
             Mod = new MockMod(ModIdPatching, "MoreParts Mod","dani0105");
-            Mod.ModFolder = FileLocations.BaseFolder.Extend("/../Saving").Extend(ModFolderName).CreateFolder();
+
+            IFolder savingsFolder = FileLocations.GetBaseFolder().GetFolder("/../Saving");
+            Mod.ModFolder = FileLocations.GetBaseFolder().GetFolder("/../Saving").GetFolder(ModFolderName).Create().Path;
 
             KeySettings.Setup();
 

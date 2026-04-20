@@ -73,8 +73,8 @@ namespace MorePartsMod.Parts
 
         private Vector2 getPartRotationVector()
         {
-            Orientation hingeOrientaion = this._orientation.orientation.Value;
-            float orientationX = hingeOrientaion.x, z = hingeOrientaion.z, x, y;
+            Orientation hingeOrientation = this._orientation.orientation.Value;
+            float orientationX = hingeOrientation.x, z = hingeOrientation.z, x, y;
 
             z = z * radians;
             x = Mathf.Cos(z);

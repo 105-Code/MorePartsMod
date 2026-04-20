@@ -21,7 +21,7 @@ namespace MorePartsMod.Buildings
         public WorldLocation Position;
         private bool _hasTelecommunicationDish;
         private Planet _sunPlanet;
-        private bool _enableTelecomunicationLines;
+        private bool _enableTelecommunicationLines;
 		private Color _lineColor;
         public bool ShowTelecommunicationLines { set; private get; }
 
@@ -35,7 +35,7 @@ namespace MorePartsMod.Buildings
 			this._network = new ARPANET(this.Position);
             this._hasTelecommunicationDish = false;
             this.ShowTelecommunicationLines = false;
-            this._enableTelecomunicationLines = KeySettings.Main.Show_Telecommunication_lines;
+            this._enableTelecommunicationLines = KeySettings.Main.Show_Telecommunication_lines;
             this._sunPlanet = this.getPrimaryPlanet();
 			this._lineColor = new Color(0.25f, 0.74f, 0.3f, 0.4f);
         }
@@ -68,8 +68,8 @@ namespace MorePartsMod.Buildings
         private void ToggleTelecommunicationlines()
         {
             KeySettings.Main.ToggleShowTelecommunicationLines();
-            this._enableTelecomunicationLines = KeySettings.Main.Show_Telecommunication_lines;
-            if (this._enableTelecomunicationLines)
+            this._enableTelecommunicationLines = KeySettings.Main.Show_Telecommunication_lines;
+            if (this._enableTelecommunicationLines)
             {
                 MsgDrawer.main.Log("Draw Lines On");
                 return;
@@ -129,7 +129,7 @@ namespace MorePartsMod.Buildings
             }
             catch (Exception error)
             {
-                Debug.Log("Errror in isConnected");
+                Debug.Log("Error in isConnected");
                 Debug.LogError(error);
                 return false;
             }
@@ -151,7 +151,7 @@ namespace MorePartsMod.Buildings
         {
             MapUtils.DrawLandmarkInPlanet(this.Position.planet.Value, (float)this.Position.Value.position.AngleDegrees, this.Position.Value.position, "Space Center", Color.white);
 
-            if (this._enableTelecomunicationLines && this._hasTelecommunicationDish && this.ShowTelecommunicationLines)
+            if (this._enableTelecommunicationLines && this._hasTelecommunicationDish && this.ShowTelecommunicationLines)
             {
                 this.DrawTelecommunicationLines();
             }

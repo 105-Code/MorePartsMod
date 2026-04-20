@@ -52,7 +52,7 @@ namespace MorePartsMod.Buildings
                 return;
             }
 
-            MsgDrawer.main.Log("Welcome To " + Data.name);
+            MsgDrawer.main.Log("Welcome to " + Data.name);
             Rocket.Value = player;
         }
 

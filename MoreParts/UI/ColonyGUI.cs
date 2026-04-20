@@ -76,7 +76,7 @@ namespace MorePartsMod.UI
             foreach (string buildingName in MorePartsPack.Main.ColonyBuildingFactory.GetBuildingsName())
             {
                 /*
-                Cahange this to able build the same building x times
+                Change this to enable building the same building x times
                 if (this._colony.Data.IsBuildingActive(buildingName) && buildingName != MorePartsTypes.SOLAR_PANEL_BUILDING)
                 {
                     continue;
@@ -105,7 +105,7 @@ namespace MorePartsMod.UI
         {
             if (!this._colony.Data.resources.ContainsKey(MorePartsTypes.MATERIAL))
             {
-                MsgDrawer.main.Log("There are not material in the colony");
+                MsgDrawer.main.Log("There are no materials in the colony");
                 return;
             }
 

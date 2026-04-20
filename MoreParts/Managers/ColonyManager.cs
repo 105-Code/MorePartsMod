@@ -93,7 +93,7 @@ namespace MorePartsMod.Managers
                 {
                     if (resourceGroup.ResourceAmount < constructionRequired)
                     {
-                        MsgDrawer.main.Log("Insufficient Construction MAterial");
+                        MsgDrawer.main.Log("Insufficient Construction Material");
                         return false;
                     }
                     construction = resourceGroup;
@@ -288,7 +288,7 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-            if (Player.Value.location.Value.TerrainHeight > 50)
+            if (Player.Value.location.Value.Height > 50)
             {
                 this._createColonyButton.gameObject.SetActive(false);
                 return;

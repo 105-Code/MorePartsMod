@@ -35,10 +35,10 @@ namespace MorePartsMod.Utils
                 return false;
             }
 
-            Vector2 origintPlanetDirection = (pointA.ToVector2 - circleCenter.ToVector2).normalized;
-            Vector2 origintTargetDirection = (pointA.ToVector2 - pointB.ToVector2).normalized;
+            Vector2 originPlanetDirection = (pointA.ToVector2 - circleCenter.ToVector2).normalized;
+            Vector2 originTargetDirection = (pointA.ToVector2 - pointB.ToVector2).normalized;
             //detect if the collision is behind pointA
-            if (Vector2.Dot(origintPlanetDirection, origintTargetDirection) < 0)
+            if (Vector2.Dot(originPlanetDirection, originTargetDirection) < 0)
             {
                 return false;
             }

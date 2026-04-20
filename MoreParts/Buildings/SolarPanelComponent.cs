@@ -8,7 +8,7 @@ namespace MorePartsMod.Buildings
 {
     class SolarPanelComponent : MonoBehaviour, INJ_Rocket, OnInit, INJ_Colony, INJ_Building
     {
-        private ResourceModule _rocketBateries;
+        private ResourceModule _rocketBatteries;
 
         public Rocket Rocket { get; set; }
         public ColonyComponent Colony { get; set; }
@@ -43,21 +43,21 @@ namespace MorePartsMod.Buildings
                 return;
             }
 
-            if (this._rocketBateries == null)
+            if (this._rocketBatteries == null)
             {
-                this._rocketBateries = this.GetRocketBateries();
+                this._rocketBatteries = this.GetRocketBatteries();
                 return;
             }
 
-            if (this._rocketBateries.resourcePercent.Value == 1.0)
+            if (this._rocketBatteries.resourcePercent.Value == 1.0)
             {
                 return;
             }
 
-            this._rocketBateries.AddResource(0.005 * WorldTime.main.timewarpSpeed);
+            this._rocketBatteries.AddResource(0.005 * WorldTime.main.timewarpSpeed);
         }
 
-        private ResourceModule GetRocketBateries()
+        private ResourceModule GetRocketBatteries()
         {
             foreach (ResourceModule resource in Rocket.resources.globalGroups)
             {

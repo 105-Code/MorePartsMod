@@ -22,7 +22,7 @@ namespace MorePartsMod.Managers
 
         public Planet CurrentPlanet { set; get; }
 
-        public ReourceDeposit CurrentDeposit { private set; get; }
+        public ResourceDeposit CurrentDeposit { private set; get; }
 
 
         private void Awake()
@@ -50,7 +50,7 @@ namespace MorePartsMod.Managers
             Double2 origin = location.Value.position;
 
             PlanetResourceData planetData = this.PlanetResourcesData[this.CurrentPlanet.codeName];
-            foreach (ReourceDeposit deposit in planetData.ResourceDeposits)
+            foreach (ResourceDeposit deposit in planetData.ResourceDeposits)
             {
                 if (deposit.Active && deposit.Discovered)
                 {
@@ -86,14 +86,14 @@ namespace MorePartsMod.Managers
 
             if (this.CurrentDeposit == null)
             {
-                foreach (ReourceDeposit deposit in this.PlanetResourcesData[this.CurrentPlanet.codeName].ResourceDeposits)
+                foreach (ResourceDeposit deposit in this.PlanetResourcesData[this.CurrentPlanet.codeName].ResourceDeposits)
                 {
                     if (Vector2.Distance(deposit.Location, this.Player.Value.location.Value.position) > deposit.Size)
                     {
                         continue;
                     }
 
-                    MsgDrawer.main.Log("Entred resource deposit");
+                    MsgDrawer.main.Log("Entered resource deposit");
                     this.CurrentDeposit = deposit;
                     break;
                 }
@@ -151,7 +151,7 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-            foreach (ReourceDeposit deposit in planetData.ResourceDeposits)
+            foreach (ResourceDeposit deposit in planetData.ResourceDeposits)
             {
                 if (deposit.Active && deposit.Discovered)
                 {

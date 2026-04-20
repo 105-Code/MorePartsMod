@@ -10,12 +10,12 @@ namespace MorePartsMod.World
         [NonSerialized]
         private Planet _planet;
 
-        public List<ReourceDeposit> ResourceDeposits;
+        public List<ResourceDeposit> ResourceDeposits;
 
         public PlanetResourceData(Planet planet)
         {
             this._planet = planet;
-            this.ResourceDeposits = new List<ReourceDeposit>();
+            this.ResourceDeposits = new List<ResourceDeposit>();
         }
 
         public PlanetResourceData() { }
@@ -34,19 +34,19 @@ namespace MorePartsMod.World
             {
                 int amount = rnd.Next(1000,3000);
                 float radians = currentAngle * Mathf.Deg2Rad;
-                double magnitude = this._planet.GetTerrainHeightAtAngle(radians);
+                double magnitude = this._planet.GetTerrainHeightAtAngle(radians, false);
                 float x = Mathf.Cos(radians);
                 float y = Mathf.Sin(radians);
                 Double2 position = new Double2(x, y)*(magnitude+this._planet.Radius);
 
-                ReourceDeposit data = new ReourceDeposit(amount, position, (int) (amount * 0.2), currentAngle);
+                ResourceDeposit data = new ResourceDeposit(amount, position, (int) (amount * 0.2), currentAngle);
                 ResourceDeposits.Add(data);
                 currentAngle += rnd.Next(20, 36);
             }
 
         }
 
-        public class ReourceDeposit
+        public class ResourceDeposit
         {
             public double Amount;
             public bool Active;
@@ -55,7 +55,7 @@ namespace MorePartsMod.World
             public int Size;
             public float AngleDegree;
 
-            public ReourceDeposit(float amount, Double2 location, int size, float angleDegree)
+            public ResourceDeposit(float amount, Double2 location, int size, float angleDegree)
             {
                 this.Amount = amount;
                 this.Active = true;
@@ -65,13 +65,13 @@ namespace MorePartsMod.World
                 this.AngleDegree = angleDegree;
             }
 
-            public ReourceDeposit() {}
+            public ResourceDeposit() {}
 
             /**
              * reduce resources in this deposit
              * <returns> True if there are more resources</returns>
              */
-            public bool takeRsources(double quantity)
+            public bool takeResources(double quantity)
             {
                 this.Amount -= quantity;
                 if(this.Amount < 0)

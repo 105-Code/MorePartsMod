@@ -9,15 +9,15 @@ namespace MorePartsMod.Utils
     {
         public static void SaveWorldPersistent(string filename, object data)
         {
-            FilePath file = Base.worldBase.paths.worldPersistentPath.ExtendToFile(filename);
+            IFile file =Base.worldBase.paths.worldPersistentPath.GetFile(filename);
             JsonWrapper.SaveAsJson(file, data, true);
         }
 
         public static bool LoadWorldPersistent<T>(string filename, out T result)
         {
             result = default;
-            FilePath file = Base.worldBase.paths.worldPersistentPath.ExtendToFile(filename);
-            if (!file.FileExists())
+            IFile file =Base.worldBase.paths.worldPersistentPath.GetFile(filename);
+            if (!file.Exists())
             {
                 return false;
             }
