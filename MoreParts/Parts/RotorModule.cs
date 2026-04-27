@@ -1,23 +1,34 @@
-﻿using MorePartsMod.Parts.Types;
-using SFS;
+﻿using SFS;
 using SFS.Parts;
 using SFS.Translations;
 using SFS.Variables;
 using SFS.World;
 using System;
 using UnityEngine;
+using SFS.Parts.Modules;
+using SFS.UI;
 using static SFS.World.Rocket;
 
 
 namespace MorePartsMod.Parts
 {
-    public class RotorModule : ElectricalModule, INJ_Location, INJ_Throttle, INJ_Physics
+    public class RotorModule : MonoBehaviour, INJ_IsPlayer, INJ_Location, INJ_Throttle, INJ_Physics
     {
 
+        public I_MsgLogger Logger
+        {
+            get
+            {
+                if (!this.IsPlayer)
+                {
+                    return new MsgNone();
+                }
+                return MsgDrawer.main;
+            }
+        }
         public Animator Animator;
         public Bool_Reference IsOn;
         public Float_Reference Throttle_current;
-        public Float_Reference FlowRate;
         public Float_Reference RPM;
 
         public Transform Base;
@@ -31,7 +42,7 @@ namespace MorePartsMod.Parts
         public Rigidbody2D Rb2d { set; get; }
 
         public Location Location { set; get; }
-        
+        public bool IsPlayer { set; get; }
 
         public void Awake()
         {
@@ -47,17 +58,9 @@ namespace MorePartsMod.Parts
                 return;
             }
 
-            this.CheckOutOfFuel();
-            this.FlowModule.onStateChange += this.CheckOutOfFuel;
             this.IsOn.OnChange += this.RecalculateRotor_throttle;
             this.Throttle_current.OnChange += this.RecalculateRotor_throttle;
-            this.Throttle_current.OnChange += this.RecalculateMassFlow;
             Part.onPartUsed.AddListener(this.Toggle);
-        }
-
-        private void RecalculateMassFlow()
-        {
-            this.FlowRate.Value = 0.1f * this.Throttle_current.Value;
         }
 
         private void RecalculateRotor_throttle()
@@ -67,7 +70,6 @@ namespace MorePartsMod.Parts
             if (!this.IsOn.Value)
             {
                 this.Throttle_current.Value = 0f;
-                this.FlowRate.Value = 0f;
                 Animator.SetBool("isOn", false);
                 return;
             }
@@ -79,17 +81,6 @@ namespace MorePartsMod.Parts
             }
 
             Animator.SetBool("isOn", false);
-            this.FlowRate.Value = 0f;
-        }
-
-        public override void CheckOutOfFuel()
-        {
-            if (this.IsOn.Value && !this.HasFuel(this.Logger))
-            {
-                this.IsOn.Value = false;
-                this.FlowRate.Value = 0f;
-                Animator.SetBool("isOn", false);
-            }
         }
 
         private void Toggle(UsePartData data)
@@ -106,10 +97,6 @@ namespace MorePartsMod.Parts
 
         private void EnableRotor(I_MsgLogger logger)
         {
-            if (!this.HasFuel(logger))
-            {
-                return;
-            }
             this.IsOn.Value = true;
 
             if (this.Throttle_current.Value == 0f)
@@ -135,7 +122,7 @@ namespace MorePartsMod.Parts
             }
             // check https://www.grc.nasa.gov/www/k-12/airplane/propth.html
             float exitVelocity = (float)((2 * this._rotorVelocity) - this.Location.VerticalVelocity);
-			float density = (float)this.Location.planet.GetAtmosphericDensity(this.Location.Height);
+            float density = (float)this.Location.planet.GetAtmosphericDensity(this.Location.GetTerrainHeight(true));
             double thrust = 0.5 * density * this._area * ((exitVelocity * exitVelocity) - (this.Location.VerticalVelocity * this.Location.VerticalVelocity));
 
             Vector2 force = Base.transform.TransformVector(Vector2.up * (float)thrust);

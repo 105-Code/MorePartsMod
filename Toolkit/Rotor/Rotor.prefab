@@ -213,6 +213,8 @@ MonoBehaviour:
   impactTolerance: 2
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 4860564162741728806}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!23 &5427996016037674530
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -794,6 +796,8 @@ MonoBehaviour:
   impactTolerance: 2
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 7796466651791625393}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!23 &5095842140785680758
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1097,7 +1101,6 @@ GameObject:
   - component: {fileID: 2724586926703645955}
   - component: {fileID: 3640672869213940167}
   - component: {fileID: 7062449513941958936}
-  - component: {fileID: 5700136436372710172}
   - component: {fileID: 7281608166575621481}
   - component: {fileID: 4068594087124507037}
   - component: {fileID: 9058196893176777551}
@@ -1144,6 +1147,9 @@ MonoBehaviour:
   displayName:
     TranslatableName: Rotor
     plainText: 1
+  pickCategoryName:
+    TranslatableName: None
+    plainText: 0
   description:
     TranslatableName: An electric rotor that spins at high speeds and generates thrust
       depending on atmospheric density.
@@ -1159,6 +1165,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 7062449513941958936}
       input: 0.6
+  density: 0.5
   orientation: {fileID: 3640672869213940167}
   variablesModule: {fileID: 7062449513941958936}
   variants:
@@ -1219,9 +1226,6 @@ MonoBehaviour:
     - name: throttle
       save: 0
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
-    - name: flow_rate
-      save: 0
-      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
     - name: rpm
       save: 1
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c756500060000000000e0a5400b
@@ -1232,31 +1236,6 @@ MonoBehaviour:
       data: 0001000000ffffffff010000000000000004010000000e53797374656d2e426f6f6c65616e01000000076d5f76616c75650001000b
   stringVariables:
     saves: []
---- !u!114 &5700136436372710172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3860136810057135241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80098a90a69dcd45a1b26ae1e010609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sources:
-  - resourceType: {fileID: 11400000, guid: 04b436aa485ffa14cab70bc05a1ef5bf, type: 2}
-    flowPercent: 1
-    sourceSearchMode: 0
-    surface: {fileID: 0}
-    flowType: 0
-    flowRate:
-      variableName: flow_rate
-      referenceToVariables: {fileID: 7062449513941958936}
-      localValue: 0
-    state:
-      value: 0
-    sources: []
 --- !u!95 &7281608166575621481
 Animator:
   serializedVersion: 4
@@ -1310,7 +1289,6 @@ MonoBehaviour:
   m_Script: {fileID: 459748774, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlowModule: {fileID: 5700136436372710172}
   Animator: {fileID: 7281608166575621481}
   IsOn:
     variableName: isOn
@@ -1318,10 +1296,6 @@ MonoBehaviour:
     localValue: 0
   Throttle_current:
     variableName: throttle
-    referenceToVariables: {fileID: 7062449513941958936}
-    localValue: 0
-  FlowRate:
-    variableName: flow_rate
     referenceToVariables: {fileID: 7062449513941958936}
     localValue: 0
   RPM:
@@ -2008,6 +1982,8 @@ MonoBehaviour:
   impactTolerance: 2
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 5440033990182850667}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!23 &2036624522785269368
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -50,7 +50,7 @@ namespace MorePartsMod.Parts
 
             Vector2 force;
 
-            float airDensity = (float)this.Location.planet.GetAtmosphericDensity(this.Location.Height);
+            float airDensity = (float)this.Location.planet.GetAtmosphericDensity(this.Location.GetTerrainHeight(true));
             float gravity = (float)this.Location.planet.GetGravity(this.Location.position).y * -1;
             float ascensionForce = ((airDensity * gravity * (float)this._volume) - this.Rb2d.mass * gravity * 1000) / 1000;
             float acceleration = (float)Math.Sqrt(ascensionForce / 0.5f * this.Rb2d.mass);
@@ -81,7 +81,7 @@ namespace MorePartsMod.Parts
 
             if (this.TargetState.Value == 0f && this.State.Value == 0f)
             {
-                if (!this.Location.planet.HasAtmospherePhysics || this.Location.Height > this.Location.planet.AtmosphereHeightPhysics * 0.9)
+                if (!this.Location.planet.HasAtmospherePhysics || this.Location.GetTerrainHeight(true) > this.Location.planet.AtmosphereHeightPhysics * 0.9)
                 {
                     MsgDrawer.main.Log("Not atmosphere");
                     flag = false;

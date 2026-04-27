@@ -1,35 +1,30 @@
 ﻿using MorePartsMod.Managers;
-using MorePartsMod.Parts.Types;
 using SFS;
 using SFS.Parts;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
+using UnityEngine;
 using static SFS.World.Rocket;
 
 
 namespace MorePartsMod.Parts
 {
-    class ScannerModule : ElectricalModule, INJ_Rocket, INJ_Location
+    class ScannerModule : MonoBehaviour, INJ_IsPlayer, INJ_Rocket, INJ_Location
     {
 
         public Bool_Reference Active;
-        public Float_Reference FlowRate;
 
         public Rocket Rocket { set; get; }
 
         public Location Location { set; get; }
+        public bool IsPlayer { set; get; }
+
         public Part Part;
 
         public void Awake()
         {
-
             this.Part.onPartUsed.AddListener(this.OnPartUsed);
-        }
-
-        private void Start()
-        {
-            this.FlowModule.onStateChange += this.CheckOutOfFuel;
         }
 
         private void Update()
@@ -50,7 +45,7 @@ namespace MorePartsMod.Parts
                 max_altitud += 100000;
             }
 
-            if (this.Location.Height > max_altitud)
+            if (this.Location.GetTerrainHeight(false) > max_altitud)
             {
                 this.Toggle("Max use altitude " + max_altitud / 1000 + "km", false);
                 return;
@@ -61,15 +56,6 @@ namespace MorePartsMod.Parts
                 MsgDrawer.main.Log("Found Resource Deposit");
             }
 
-        }
-
-        public override void CheckOutOfFuel()
-        {
-            if (this.Active.Value && !this.HasFuel(this.Logger))
-            {
-                this.Active.Value = false;
-                this.FlowRate.Value = 0;
-            }
         }
 
         public bool IsActive()
@@ -84,10 +70,8 @@ namespace MorePartsMod.Parts
 
             if (!operation)
             {
-                this.FlowRate.Value = 0;
                 return;
             }
-            this.FlowRate.Value = 0.2f;
         }
 
         public void OnPartUsed(UsePartData data)
@@ -100,7 +84,6 @@ namespace MorePartsMod.Parts
             {
                 this.Toggle("GeoEye turn ON", true);
             }
-            this.CheckOutOfFuel();
             data.successfullyUsedPart = true;
         }
 

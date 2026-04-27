@@ -288,7 +288,7 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-            if (Player.Value.location.Value.Height > 50)
+            if (Player.Value.location.Value.GetTerrainHeight(true) > 50)
             {
                 this._createColonyButton.gameObject.SetActive(false);
                 return;
@@ -299,7 +299,6 @@ namespace MorePartsMod.Managers
                 this._createColonyButton.gameObject.SetActive(false);
                 return;
             }
-
 
             this._createColonyButton.gameObject.SetActive(true);
         }

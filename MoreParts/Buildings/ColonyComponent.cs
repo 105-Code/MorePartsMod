@@ -23,6 +23,8 @@ namespace MorePartsMod.Buildings
 
         private Player_Local Rocket = new Player_Local();
 
+        public
+
         void Start()
         {
             if (GameManager.main == null)
@@ -39,7 +41,7 @@ namespace MorePartsMod.Buildings
                 return;
             }
 
-            Player player = ColonyManager.Main.Player.Value;
+            Player player = PlayerController.main.player;
 
             if (!IsPlayerNear(player))
             {
@@ -70,7 +72,7 @@ namespace MorePartsMod.Buildings
 
 
             // is near to the colony
-            float distance = Vector2.Distance(Data.position, player.location.position.Value);
+            float distance = Vector2.Distance(Data.position, player.location.Value.position);
             if (distance > ColonyData.SIZE)
             {
                 return false;

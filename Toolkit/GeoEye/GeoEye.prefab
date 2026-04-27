@@ -336,7 +336,6 @@ GameObject:
   - component: {fileID: 6905833303596325224}
   - component: {fileID: 8534953955310075809}
   - component: {fileID: 8810958568715790013}
-  - component: {fileID: 7884719237946257531}
   - component: {fileID: 2319602828671132281}
   m_Layer: 8
   m_Name: GeoEye
@@ -377,6 +376,9 @@ MonoBehaviour:
   displayName:
     TranslatableName: GeoEye
     plainText: 1
+  pickCategoryName:
+    TranslatableName: 
+    plainText: 0
   description:
     TranslatableName: This part allows you to scan planet surfaces from space. This
       part needs electricity.
@@ -392,6 +394,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 8534953955310075809}
       input: -1
+  density: 0.5
   orientation: {fileID: 8810958568715790013}
   variablesModule: {fileID: 8534953955310075809}
   variants:
@@ -431,10 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doubleVariables:
-    saves:
-    - name: flow_rate
-      save: 0
-      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
+    saves: []
   boolVariables:
     saves:
     - name: active
@@ -459,31 +459,6 @@ MonoBehaviour:
       x: 1
       y: 1
       z: 0
---- !u!114 &7884719237946257531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8973754098628528441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80098a90a69dcd45a1b26ae1e010609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sources:
-  - resourceType: {fileID: 11400000, guid: 04b436aa485ffa14cab70bc05a1ef5bf, type: 2}
-    flowPercent: 1
-    sourceSearchMode: 0
-    surface: {fileID: 0}
-    flowType: 0
-    flowRate:
-      variableName: flow_rate
-      referenceToVariables: {fileID: 8534953955310075809}
-      localValue: 0
-    state:
-      value: 0
-    sources: []
 --- !u!114 &2319602828671132281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,13 +471,8 @@ MonoBehaviour:
   m_Script: {fileID: -737965914, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlowModule: {fileID: 7884719237946257531}
   Active:
     variableName: active
-    referenceToVariables: {fileID: 8534953955310075809}
-    localValue: 0
-  FlowRate:
-    variableName: flow_rate
     referenceToVariables: {fileID: 8534953955310075809}
     localValue: 0
   Part: {fileID: 6905833303596325224}

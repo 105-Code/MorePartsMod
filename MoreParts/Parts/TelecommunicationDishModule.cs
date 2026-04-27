@@ -1,6 +1,5 @@
 ﻿using MorePartsMod.ARPA;
 using MorePartsMod.Buildings;
-using MorePartsMod.Parts.Types;
 using SFS;
 using SFS.Parts;
 using SFS.UI;
@@ -12,11 +11,10 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    public class TelecommunicationDishModule : ElectricalModule, INJ_Rocket
+    public class TelecommunicationDishModule : MonoBehaviour, INJ_IsPlayer, INJ_Rocket
     {
 
         public Bool_Reference IsOn;
-        public Float_Reference FlowRate;
         public Float_Reference TargetState;
 
         private bool _notifyDisconnection;
@@ -28,6 +26,7 @@ namespace MorePartsMod.Parts
         public Node Node { private set; get; }
 
         public Rocket Rocket { set; get; }
+        public bool IsPlayer { set; get; }
 
         public Part Part;
 
@@ -79,20 +78,17 @@ namespace MorePartsMod.Parts
             }
 
             this.Part.onPartUsed.AddListener(this.Toggle);
-            this.FlowModule.onStateChange += this.CheckOutOfFuel;
-            this.CheckOutOfFuel();
+ 
 
             if (this.Rocket.isPlayer)
             {
                 if (this.IsOn.Value)
                 {
-                    this.FlowRate.Value = 0.1f;
                     this.TargetState.Value = 1;
                     this.Node = AntennaComponent.main.AddNode(this);
                 }
                 else
                 {
-                    this.FlowRate.Value = 0;
                     this.TargetState.Value = 0;
                     this.Rocket.hasControl.Value = false;
                 }
@@ -100,7 +96,6 @@ namespace MorePartsMod.Parts
             else
             {
                 this.IsOn.Value = true;
-                this.FlowRate.Value = 0.1f;
                 this.TargetState.Value = 1;
                 this.Rocket.hasControl.Value = true;
                 this.Node = AntennaComponent.main.AddNode(this);
@@ -162,17 +157,6 @@ namespace MorePartsMod.Parts
             }
         }
 
-        public override void CheckOutOfFuel()
-        {
-            if (this.IsOn.Value && !this.HasFuel(this.Logger))
-            {
-                this.IsOn.Value = false;
-                this.TargetState.Value = 0;
-                this.FlowRate.Value = 0;
-                this.Rocket.hasControl.Value = false;
-            }
-        }
-
 
         public void _toggle()
         {
@@ -188,7 +172,6 @@ namespace MorePartsMod.Parts
                 this.Node = null;
                 this._notifyDisconnection = true;
                 this.DoDisconnection();
-                this.FlowRate.Value = 0;
                 this.TargetState.Value = 0;
 
             }
@@ -198,11 +181,9 @@ namespace MorePartsMod.Parts
                 MsgDrawer.main.Log("Telecommunication Dish On");
                 this._notifyDisconnection = true;
                 this._notifyConnection = true;
-                this.FlowRate.Value = 0.1f;
                 this.TargetState.Value = 1;
             }
             this.IsOn.Value = !this.IsOn.Value;
-            this.CheckOutOfFuel();
         }
 
         public void Toggle(UsePartData data)

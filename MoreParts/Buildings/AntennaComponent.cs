@@ -129,7 +129,6 @@ namespace MorePartsMod.Buildings
             }
             catch (Exception error)
             {
-                Debug.Log("Error in isConnected");
                 Debug.LogError(error);
                 return false;
             }

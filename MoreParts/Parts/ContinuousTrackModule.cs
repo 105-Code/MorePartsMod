@@ -1,18 +1,17 @@
-﻿using MorePartsMod.Parts.Types;
-using SFS.Parts;
+﻿using SFS.Parts;
 using SFS.UI;
 using SFS.Variables;
 using SFS.World;
 using UnityEngine;
+using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    class ContinuousTrackModule : ElectricalModule, Rocket.INJ_TurnAxisWheels, Rocket.INJ_Physics
+    class ContinuousTrackModule : MonoBehaviour, INJ_IsPlayer, Rocket.INJ_TurnAxisWheels, Rocket.INJ_Physics
     {
         public Bool_Reference _on;
         public Float_Reference Traction;
         public Float_Reference Power;
-        public Float_Reference FlowRate;
         public Animator Animator;
 
         private Transform[] _idlers;
@@ -22,6 +21,8 @@ namespace MorePartsMod.Parts
 
         public float TurnAxis { get; set; }
         public Rigidbody2D Rb2d { set; get; }
+        public bool IsPlayer { set; get; }
+
         public Part Part;
 
         public void Start()
@@ -32,10 +33,8 @@ namespace MorePartsMod.Parts
                 return;
             }
             this.Part.onPartUsed.AddListener(this.ToggleEnabled);
-            this.FlowModule.onStateChange += this.CheckOutOfFuel;
             this.GetIdlers();
             this.angularVelocity = 0;
-            this.CheckOutOfFuel();
         }
 
         public void ToggleEnabled(UsePartData data)
@@ -56,7 +55,6 @@ namespace MorePartsMod.Parts
 
             if (direction != 0)
             {
-                this.FlowRate.Value = 0.1f;
                 this.Animator.SetInteger("velocity", 1);
                 this.Animator.speed = 1;
                 this.angularVelocity = Mathf.Clamp(this.angularVelocity + direction * (float)this.Power.Value * Time.deltaTime, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
@@ -64,7 +62,6 @@ namespace MorePartsMod.Parts
                 return;
             }
 
-            this.FlowRate.Value = 0;
             this.angularVelocity = 0;
             this.Animator.SetInteger("velocity", 0);
             this.Animator.speed = 0;
@@ -75,16 +72,6 @@ namespace MorePartsMod.Parts
             foreach (Transform idler in this._idlers)
             {
                 idler.eulerAngles = new Vector3(0f, 0f, idler.eulerAngles.z + 4 * direction);
-            }
-        }
-
-        public override void CheckOutOfFuel()
-        {
-            if (this._on.Value && !this.HasFuel(this.Logger))
-            {
-                this._on.Value = false;
-                this.FlowRate.Value = 0f;
-                this.Animator.SetInteger("velocity", 0);
             }
         }
 

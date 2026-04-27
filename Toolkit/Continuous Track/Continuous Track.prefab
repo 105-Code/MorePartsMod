@@ -559,7 +559,6 @@ GameObject:
   - component: {fileID: -1777736922084461513}
   - component: {fileID: 6202661881478926578}
   - component: {fileID: 2130059140044947486}
-  - component: {fileID: 6949257965782735611}
   - component: {fileID: 2537801614488303520}
   - component: {fileID: 6250425120403023448}
   m_Layer: 8
@@ -603,6 +602,9 @@ MonoBehaviour:
   displayName:
     TranslatableName: Caterpillar
     plainText: 1
+  pickCategoryName:
+    TranslatableName: 
+    plainText: 0
   description:
     TranslatableName: Continuous track is a system of vehicle propulsion. This part
       need electricity
@@ -618,6 +620,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 6202661881478926578}
       input: -0.5
+  density: 0.5
   orientation: {fileID: -1777736922084461513}
   variablesModule: {fileID: 6202661881478926578}
   variants:
@@ -681,9 +684,6 @@ MonoBehaviour:
     - name: power
       save: 1
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c75650006000000000094c1400b
-    - name: flow_rate
-      save: 0
-      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
   boolVariables:
     saves:
     - name: wheel_on
@@ -711,31 +711,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6949257965782735611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7133912042625520222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80098a90a69dcd45a1b26ae1e010609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sources:
-  - resourceType: {fileID: 11400000, guid: 04b436aa485ffa14cab70bc05a1ef5bf, type: 2}
-    flowPercent: 1
-    sourceSearchMode: 0
-    surface: {fileID: 0}
-    flowType: 0
-    flowRate:
-      variableName: flow_rate
-      referenceToVariables: {fileID: 6202661881478926578}
-      localValue: 0
-    state:
-      value: 0
-    sources: []
 --- !u!70 &2537801614488303520
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -764,7 +739,6 @@ MonoBehaviour:
   m_Script: {fileID: -700011600, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlowModule: {fileID: 6949257965782735611}
   _on:
     variableName: wheel_on
     referenceToVariables: {fileID: 6202661881478926578}
@@ -777,12 +751,7 @@ MonoBehaviour:
     variableName: power
     referenceToVariables: {fileID: 6202661881478926578}
     localValue: 10
-  FlowRate:
-    variableName: flow_rate
-    referenceToVariables: {fileID: 6202661881478926578}
-    localValue: 0
   Animator: {fileID: 2130059140044947486}
-  angularVelocity: 550
   Part: {fileID: 55131685263053458}
 --- !u!1 &8318565617546471681
 GameObject:

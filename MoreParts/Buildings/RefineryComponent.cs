@@ -16,10 +16,16 @@ namespace MorePartsMod.Buildings
 
         private void FixedUpdate()
         {
-            if(Rocket == null || !HasEnergy){
+            if (!HasEnergy)
+            {
+
                 return;
             }
-
+            if (Rocket == null)
+            {
+                
+                return;
+            }
             if (this._rocketTanks == null)
             {
                 this._rocketTanks = this.GetRocketTanks();
@@ -30,7 +36,6 @@ namespace MorePartsMod.Buildings
             {
                 return;
             }
-
             this._rocketTanks.AddResource(0.005 * WorldTime.main.timewarpSpeed);
         }
 

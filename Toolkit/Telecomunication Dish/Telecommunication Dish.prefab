@@ -87,6 +87,8 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 7144952993008515421}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!33 &5480289666225415123
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -435,6 +437,8 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 6648074959311915069}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!33 &2981890738745540801
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -558,7 +562,6 @@ GameObject:
   - component: {fileID: 527995676948341972}
   - component: {fileID: 5662358357611772582}
   - component: {fileID: 4382373109341745631}
-  - component: {fileID: 7985950641479228873}
   - component: {fileID: 7690441900687662995}
   m_Layer: 8
   m_Name: Telecommunication Dish
@@ -602,6 +605,9 @@ MonoBehaviour:
   displayName:
     TranslatableName: Telecommunication Dish
     plainText: 1
+  pickCategoryName:
+    TranslatableName: 
+    plainText: 0
   description:
     TranslatableName: It's only a telecommunication dish
     plainText: 1
@@ -616,6 +622,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 4382373109341745631}
       input: -0.05 * 2
+  density: 0.5
   orientation: {fileID: 5662358357611772582}
   variablesModule: {fileID: 4382373109341745631}
   variants:
@@ -685,9 +692,6 @@ MonoBehaviour:
     - name: height
       save: 1
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c75650006000000000000f03f0b
-    - name: flow_rate
-      save: 0
-      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
   boolVariables:
     saves:
     - name: isOn
@@ -695,31 +699,6 @@ MonoBehaviour:
       data: 0001000000ffffffff010000000000000004010000000e53797374656d2e426f6f6c65616e01000000076d5f76616c75650001000b
   stringVariables:
     saves: []
---- !u!114 &7985950641479228873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4903166738067769997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80098a90a69dcd45a1b26ae1e010609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sources:
-  - resourceType: {fileID: 11400000, guid: 04b436aa485ffa14cab70bc05a1ef5bf, type: 2}
-    flowPercent: 1
-    sourceSearchMode: 0
-    surface: {fileID: 0}
-    flowType: 0
-    flowRate:
-      variableName: flow_rate
-      referenceToVariables: {fileID: 4382373109341745631}
-      localValue: 0
-    state:
-      value: 0
-    sources: []
 --- !u!114 &7690441900687662995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,20 +711,16 @@ MonoBehaviour:
   m_Script: {fileID: 801091260, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlowModule: {fileID: 7985950641479228873}
   IsOn:
     variableName: isOn
-    referenceToVariables: {fileID: 0}
-    localValue: 0
-  FlowRate:
-    variableName: flow_rate
-    referenceToVariables: {fileID: 0}
+    referenceToVariables: {fileID: 4382373109341745631}
     localValue: 0
   TargetState:
     variableName: target_state
-    referenceToVariables: {fileID: 0}
+    referenceToVariables: {fileID: 4382373109341745631}
     localValue: 0
   Part: {fileID: 527995676948341972}
+  _hasCapsule: 0
 --- !u!1 &6243192004553079864
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,6 +808,8 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 6773572119525427104}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!33 &5817945909796036164
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1039,6 +1016,8 @@ MonoBehaviour:
   impactTolerance: 1
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 2715675976788091397}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!33 &8220423908372006692
 MeshFilter:
   m_ObjectHideFlags: 0

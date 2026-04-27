@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8408630642162459057}
   - component: {fileID: -5492550926258613974}
   - component: {fileID: 8136121842024751165}
-  - component: {fileID: 4406401617829578520}
   - component: {fileID: 6901217081493396675}
   m_Layer: 8
   m_Name: Excavator
@@ -54,6 +53,9 @@ MonoBehaviour:
   displayName:
     TranslatableName: Excavator
     plainText: 1
+  pickCategoryName:
+    TranslatableName: 
+    plainText: 0
   description:
     TranslatableName: This part allows you to collect resources from the surface
       of the planet. Need electricity
@@ -69,6 +71,7 @@ MonoBehaviour:
     y:
       variables: {fileID: -5492550926258613974}
       input: 0.5
+  density: 0.5
   orientation: {fileID: 8408630642162459057}
   variablesModule: {fileID: -5492550926258613974}
   variants:
@@ -132,9 +135,6 @@ MonoBehaviour:
     - name: target_state
       save: 1
       data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
-    - name: flow_rate
-      save: 0
-      data: 0001000000ffffffff010000000000000004010000000d53797374656d2e446f75626c6501000000076d5f76616c7565000600000000000000000b
   boolVariables:
     saves: []
   stringVariables:
@@ -166,6 +166,7 @@ MonoBehaviour:
     offset: 0
     transform: {fileID: 8623135702529149283}
     spriteRenderer: {fileID: 0}
+    image: {fileID: 0}
     X:
       serializedVersion: 2
       m_Curve:
@@ -234,31 +235,6 @@ MonoBehaviour:
       variableName: 
       referenceToVariables: {fileID: 0}
       localValue: 0
---- !u!114 &4406401617829578520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1939994187327655711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80098a90a69dcd45a1b26ae1e010609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sources:
-  - resourceType: {fileID: 11400000, guid: 04b436aa485ffa14cab70bc05a1ef5bf, type: 2}
-    flowPercent: 1
-    sourceSearchMode: 0
-    surface: {fileID: 0}
-    flowType: 0
-    flowRate:
-      variableName: flow_rate
-      referenceToVariables: {fileID: -5492550926258613974}
-      localValue: 0
-    state:
-      value: 0
-    sources: []
 --- !u!114 &6901217081493396675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +247,6 @@ MonoBehaviour:
   m_Script: {fileID: 1763283637, guid: 6376c66b46ce3ac2da19f48ed4f7c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlowModule: {fileID: 4406401617829578520}
   TargetState:
     variableName: target_state
     referenceToVariables: {fileID: -5492550926258613974}
@@ -280,11 +255,6 @@ MonoBehaviour:
     variableName: state
     referenceToVariables: {fileID: -5492550926258613974}
     localValue: 0
-  FlowRate:
-    variableName: flow_rate
-    referenceToVariables: {fileID: -5492550926258613974}
-    localValue: 0
-  _material_container: {fileID: 0}
   ExcavatorObject: {fileID: 755012339598828933}
   Part: {fileID: 8552810935144560958}
 --- !u!1 &2191683308404003888
@@ -400,6 +370,8 @@ MonoBehaviour:
   impactTolerance: 2
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 6499995732646355852}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!23 &8526610382877778900
 MeshRenderer:
   m_ObjectHideFlags: 0

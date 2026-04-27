@@ -1,5 +1,4 @@
 ﻿using MorePartsMod.Managers;
-using MorePartsMod.Parts.Types;
 using SFS.Parts;
 using SFS.Parts.Modules;
 using SFS.UI;
@@ -11,15 +10,15 @@ using static SFS.World.Rocket;
 
 namespace MorePartsMod.Parts
 {
-    public class ExcavatorModule : ElectricalModule, INJ_Location, INJ_Rocket
+    public class ExcavatorModule : MonoBehaviour, INJ_IsPlayer, INJ_Location, INJ_Rocket
     {
 
         public Float_Reference TargetState;
         public Float_Reference State;
-        public Float_Reference FlowRate;
 
         public Location Location { set; get; }
         public Rocket Rocket { set; get; }
+        public bool IsPlayer { set; get; }
 
         private const double _extractionCount = 0.009f;
 
@@ -38,8 +37,6 @@ namespace MorePartsMod.Parts
             this._material_container = this.GetMaterialContainer();
 
             this.Part.onPartUsed.AddListener(this.Toggle);
-            this.FlowModule.onStateChange += this.CheckOutOfFuel;
-            this.CheckOutOfFuel();
 
             this.ExcavatorObject = this.transform.Find("Stick").Find("Excavator");
         }
@@ -110,28 +107,15 @@ namespace MorePartsMod.Parts
             //off
             if (this.State.Value == 0f)
             {
-                this.FlowRate.Value = 0.1f;
                 this.TargetState.Value = 1;
             }
             else
             {
                 this.TargetState.Value = 0;
-                this.FlowRate.Value = 0;
             }
 
 
             data.successfullyUsedPart = true;
         }
-
-        public override void CheckOutOfFuel()
-        {
-            if (this.State.Value == 1 && !this.HasFuel(this.Logger))
-            {
-                this.TargetState.Value = 0;
-                this.FlowRate.Value = 0;
-            }
-        }
-
-
     }
 }
