@@ -226,4 +226,7 @@ Also some new parts are added to the game. Some of them are listed below:
 - `GeoEye`: This is the planetary scanner. With this part you can discover a new `Resource Deposit`.  
 ![Imgur](https://i.imgur.com/eC3imYum.png)  
 
+- `GeoEye`: Allows you to move parts attached to this part
+![Imgur](https://imgur.com/5VtgzEa.png)  
+
 

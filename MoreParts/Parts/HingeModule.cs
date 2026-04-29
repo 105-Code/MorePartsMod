@@ -1,235 +1,170 @@
-﻿
+
 using SFS.Parts;
 using SFS.Parts.Modules;
 using SFS.Variables;
 using SFS.World;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static SFS.World.Rocket;
-
 
 namespace MorePartsMod.Parts
 {
     public class HingeModule : MonoBehaviour, INJ_Rocket, I_PartMenu
     {
-
         public Float_Reference MaxOpening;
         public Float_Reference OpeningVelocity;
         public Float_Reference Opening;
+
         private OrientationModule _orientation;
-        private HingeGroup _topGroup;
+        private HashSet<Part> _topGroup;
         private bool _isMoving;
         private bool _isClosing;
         private Transform _connector;
-        private bool _validGroup;
-        private const float radians = 0.01745f;
+
+        private const float DegToRad = 0.01745329f;
+
         public Rocket Rocket { set; get; }
         public Part Part;
 
         public void Awake()
         {
-            this._orientation = this.Part.orientation;
-            this.Part.onPartUsed.AddListener(this.OnPartUsed);
-            this._topGroup = new HingeGroup();
-            this._isMoving = false;
-            this._isClosing = false;
-            this._connector = this.transform.Find("Connector");
+            _orientation = Part.orientation;
+            Part.onPartUsed.AddListener(OnPartUsed);
+            _connector = transform.Find("Connector");
         }
 
         private void Start()
         {
             if (GameManager.main == null)
             {
-                base.enabled = false;
+                enabled = false;
                 return;
             }
 
-            this._topGroup.basePart = this.getTopParts().ToArray();
-            this._validGroup = this.getTopPartGroup(this._topGroup.basePart);
+            _topGroup = CollectTopParts();
+            _isClosing = Opening.Value >= MaxOpening.Value;
+            _connector.localEulerAngles = new Vector3(0, 0, -90 + Opening.Value);
 
-            this._isClosing = this.Opening.Value >= this.MaxOpening.Value;
-            if (this._isClosing)
-            {
-                this._connector.transform.localEulerAngles = new Vector3(0, 0, -90 + this.Opening.Value);
-            }
+            if (Opening.Value > 0 && _topGroup.Count > 0)
+                ApplyOpeningAngle(Opening.Value);
         }
 
         private void Update()
         {
             if (GameManager.main == null)
             {
-                base.enabled = false;
+                enabled = false;
                 return;
             }
 
-            if (this._isMoving)
-            {
-                this.MoveParts();
-
-            }
-
+            if (_isMoving)
+                MoveParts();
         }
 
-        private Vector2 getPartRotationVector()
+        // Returns the unit vector pointing toward the hinge's "top" side in partHolder local space.
+        // For a part at z=0 this is (1,0); the x-flip negates it so mirrored hinges open symmetrically.
+        private Vector2 GetHingeUpDirection()
         {
-            Orientation hingeOrientation = this._orientation.orientation.Value;
-            float orientationX = hingeOrientation.x, z = hingeOrientation.z, x, y;
+            Orientation o = _orientation.orientation.Value;
+            float rad = o.z * DegToRad;
+            Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+            return o.x < 0 ? -dir : dir;
+        }
 
-            z = z * radians;
-            x = Mathf.Cos(z);
-            y = Mathf.Sin(z);
-            Vector2 result = new Vector2(x, y);
+        // The pivot is the Connector child's origin — placed by the designer at the exact joint center.
+        // We convert its world position to partHolder local space so it matches part.transform.localPosition.
+        private Vector3 GetPivotLocalPosition()
+        {
+            return Part.transform.parent.InverseTransformPoint(_connector.position);
+        }
 
-            if (orientationX < 0)
+        // BFS starting from the hinge's immediate "top" neighbors, collecting every transitively
+        // connected part that should rotate with the hinge.
+        private HashSet<Part> CollectTopParts()
+        {
+            var result = new HashSet<Part>();
+            if (Rocket == null) return result;
+
+            Vector2 up = GetHingeUpDirection();
+            var pending = new List<Part>();
+
+            // Seed: direct neighbors whose anchor points in the opening direction.
+            foreach (PartJoint joint in Rocket.jointsGroup.GetConnectedJoints(Part))
             {
-                return -result;
+                Vector2 anchor = joint.GetRelativeAnchor(Part);
+                if (Vector2.Dot(anchor.normalized, up) > 0.5f)
+                {
+                    Part neighbor = joint.GetOtherPart(Part);
+                    if (result.Add(neighbor))
+                        pending.Add(neighbor);
+                }
             }
+
+            // Expand to all parts reachable from the seed without crossing back through the hinge.
+            while (pending.Count > 0)
+            {
+                Part current = pending[pending.Count - 1];
+                pending.RemoveAt(pending.Count - 1);
+                foreach (PartJoint joint in Rocket.jointsGroup.GetConnectedJoints(current))
+                {
+                    Part neighbor = joint.GetOtherPart(current);
+                    if (neighbor == Part) continue;
+                    if (result.Add(neighbor))
+                        pending.Add(neighbor);
+                }
+            }
+
             return result;
+        }
+
+        // Applies a total rotation of angleDegrees around the pivot to all top parts.
+        // Used on Start to restore a saved non-zero opening angle.
+        private void ApplyOpeningAngle(float angleDegrees)
+        {
+            Orientation o = _orientation.orientation.Value;
+            Quaternion rotation = Quaternion.AngleAxis(angleDegrees * o.x * o.y, Vector3.forward);
+            Vector3 pivot = GetPivotLocalPosition();
+
+            foreach (Part part in _topGroup)
+            {
+                part.transform.localPosition = pivot + rotation * (part.transform.localPosition - pivot);
+                part.transform.localRotation = rotation * part.transform.localRotation;
+            }
         }
 
         private void MoveParts()
         {
-            Orientation partOrientation;
-            Quaternion rotation;
-            Vector3 hingePosition = this.Part.transform.localPosition;
-            Orientation orientation = this._orientation.orientation.Value;
-            Vector2 hingeRotation = this.getPartRotationVector();
-            hingePosition.x += hingeRotation.x * 0.25f;
-            hingePosition.y += hingeRotation.y * 0.25f;
+            float delta = _isClosing ? -OpeningVelocity.Value : OpeningVelocity.Value;
+            Orientation o = _orientation.orientation.Value;
+            float angleDelta = delta * o.x * o.y;
 
-            if (this._isClosing)
+            Quaternion rotation = Quaternion.AngleAxis(angleDelta, Vector3.forward);
+            Vector3 pivot = GetPivotLocalPosition();
+
+            foreach (Part part in _topGroup)
             {
-                this.Opening.Value -= this.OpeningVelocity.Value;
-                rotation = Quaternion.AngleAxis((float)this.OpeningVelocity.Value, new Vector3(0, 0, orientation.y * orientation.x * -1));
-            }
-            else
-            {
-                this.Opening.Value += this.OpeningVelocity.Value;
-                rotation = Quaternion.AngleAxis((float)this.OpeningVelocity.Value, new Vector3(0, 0, orientation.y * orientation.x * 1));
+                part.transform.localPosition = pivot + rotation * (part.transform.localPosition - pivot);
+                part.transform.localRotation = rotation * part.transform.localRotation;
             }
 
+            Opening.Value += delta;
+            _connector.localEulerAngles = new Vector3(0, 0, -90 + Opening.Value);
 
-            foreach (Part part in this._topGroup.getParts())
+            if (Opening.Value >= MaxOpening.Value || Opening.Value <= 0)
             {
-                partOrientation = part.orientation.orientation.Value;
-                if (this._isClosing)
-                {
-                    partOrientation.z -= orientation.y * orientation.x * this.OpeningVelocity.Value;
-                }
-                else
-                {
-                    partOrientation.z += orientation.y * orientation.x * this.OpeningVelocity.Value;
-                }
-
-                part.transform.localEulerAngles = new Vector3(0, 0, partOrientation.z);
-                // movement
-                Vector3 hingeToPart = part.transform.localPosition - hingePosition;
-                part.transform.localPosition = (rotation * hingeToPart) + hingePosition;
+                _isClosing = !_isClosing;
+                _isMoving = false;
             }
-            // el -90 puede arreglarse si cambio la parte para que este en 0 grados de rotación
-            this._connector.localEulerAngles = new Vector3(0, 0, -90 + this.Opening.Value);
-
-            if (this.Opening.Value >= this.MaxOpening.Value || this.Opening.Value <= 0)
-            {
-                this._isClosing = !this._isClosing;
-                this._isMoving = false;
-            }
-
-        }
-
-        private List<Part> getTopParts()
-        {
-            List<Part> result = new List<Part>();
-            if (this.Rocket == null)
-            {
-                return result;
-            }
-            Vector2 rotationPos = this.getPartRotationVector();
-            foreach (PartJoint partJoint in this.Rocket.jointsGroup.GetConnectedJoints(this.Part))
-            {
-                if (partJoint.a == this.Part)
-                {
-                    if (this.IsTopPart(partJoint.anchor, rotationPos))
-                    {
-                        result.Add(partJoint.GetOtherPart(this.Part));
-                    }
-                    continue;
-                }
-
-                if (this.IsTopPart(partJoint.anchor * -1, rotationPos))
-                {
-                    result.Add(partJoint.GetOtherPart(this.Part));
-                }
-            }
-            return result;
-        }
-
-        private bool IsTopPart(Vector2 anchor, Vector2 rotation)
-        {
-            return Vector2.Dot(anchor, rotation) >= 0.03;
-        }
-
-        private bool getTopPartGroup(Part[] toSearch)
-        {
-            bool thereIsLoop = false;
-            bool isBaseGroup = false;
-            foreach (Part part in toSearch)
-            {
-                if (this._topGroup.ExistInGroup(part))
-                {
-                    // already exist in the group
-
-                    continue;
-                }
-
-                List<PartJoint> nextJoints = this.Rocket.jointsGroup.GetConnectedJoints(part);
-                if (!this._topGroup.ExistInBaseGroup(part))
-                {
-                    // it's not part of the base part
-                    if (nextJoints.Any(item => item.GetOtherPart(part) == this.Part))
-                    {
-                        // it's connected to hinge part
-                        return false; // there is a loop
-                    }
-                }
-                else
-                {
-                    isBaseGroup = true;
-                }
-                // add in the group to prevent loops
-                this._topGroup.AddPartToGroup(part);
-                thereIsLoop = this.getTopPartGroup(this.getPartFromPartJoint(nextJoints, part, isBaseGroup));
-                if (!thereIsLoop)
-                {
-                    return thereIsLoop;
-                }
-            }
-            return true;
-        }
-
-        private Part[] getPartFromPartJoint(List<PartJoint> nextJoints, Part part, bool isBaseGroup)
-        {
-            List<Part> parts = new List<Part>();
-            Part otherPart;
-            foreach (PartJoint joint in nextJoints)
-            {
-                otherPart = joint.GetOtherPart(part);
-                if (isBaseGroup && otherPart == this.Part)
-                {
-                    continue;
-                }
-                parts.Add(otherPart);
-            }
-            return parts.ToArray();
         }
 
         public void OnPartUsed(UsePartData data)
         {
-            if (this._validGroup)
-            {
-                this._isMoving = true;
-            }
+            if (!_isMoving)
+                _topGroup = CollectTopParts();
+
+            if (_topGroup.Count > 0)
+                _isMoving = true;
+
             data.successfullyUsedPart = true;
         }
 
@@ -237,63 +172,14 @@ namespace MorePartsMod.Parts
         {
             if (settings.build)
             {
-                float GetMaxOpeningPercentage() => (this.MaxOpening.Value / 360);
-                float GetMaxVelocityPercentage() => (this.OpeningVelocity.Value / 10);
-                drawer.DrawSlider(1, () => "Max Opening: " + (int)this.MaxOpening.Value, () => "", GetMaxOpeningPercentage, this.UpdateMaxOpeningValue, update => this.MaxOpening.OnChange += update, update => this.MaxOpening.OnChange -= update);
-                drawer.DrawSlider(2, () => "Opening Velocity: " + (int)this.OpeningVelocity.Value, () => "", GetMaxVelocityPercentage, this.UpdateOpeningVelocityValue, update => this.OpeningVelocity.OnChange += update, update => this.OpeningVelocity.OnChange -= update);
+                float GetMaxOpeningPercentage() => MaxOpening.Value / 360;
+                float GetMaxVelocityPercentage() => OpeningVelocity.Value / 10;
+                drawer.DrawSlider(1, () => "Max Opening: " + (int)MaxOpening.Value, () => "", GetMaxOpeningPercentage, UpdateMaxOpeningValue, update => MaxOpening.OnChange += update, update => MaxOpening.OnChange -= update);
+                drawer.DrawSlider(2, () => "Opening Velocity: " + (int)OpeningVelocity.Value, () => "", GetMaxVelocityPercentage, UpdateOpeningVelocityValue, update => OpeningVelocity.OnChange += update, update => OpeningVelocity.OnChange -= update);
             }
         }
 
-        private void UpdateMaxOpeningValue(float newValue, bool value)
-        {
-            this.MaxOpening.Value = newValue * 360;
-        }
-
-        private void UpdateOpeningVelocityValue(float newValue, bool value)
-        {
-            this.OpeningVelocity.Value = newValue * 10;
-        }
-
-        public class HingeGroup
-        {
-            public List<Part> parts;
-            public Part[] basePart;
-
-            public HingeGroup()
-            {
-                this.parts = new List<Part>();
-                this.basePart = new Part[] { };
-            }
-
-            public bool ExistInGroup(Part part)
-            {
-                return this.parts.Any(item => item == part);
-            }
-
-            public bool ExistInBaseGroup(Part part)
-            {
-                return this.basePart.Any(item => item == part);
-            }
-
-            public void AddPartToGroup(Part part)
-            {
-
-                this.parts.Add(part);
-            }
-
-            public IEnumerable<Part> getParts()
-            {
-                List<Part> result = new List<Part>();
-                Part[] parts = this.parts.ToArray();
-                for (int index = 0; index < parts.Length; index++)
-                {
-                    result.Add(this.parts[index]);
-                }
-                return result;
-            }
-
-        }
-
-
+        private void UpdateMaxOpeningValue(float newValue, bool _) => MaxOpening.Value = newValue * 360;
+        private void UpdateOpeningVelocityValue(float newValue, bool _) => OpeningVelocity.Value = newValue * 10;
     }
 }
