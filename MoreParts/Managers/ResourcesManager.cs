@@ -13,9 +13,9 @@ using MorePartsMod.Utils;
 
 namespace MorePartsMod.Managers
 {
-    class ResourcesManger : MonoBehaviour
+    class ResourcesManager : MonoBehaviour
     {
-        public static ResourcesManger Main;
+        public static ResourcesManager Main;
         public Dictionary<string, PlanetResourceData> PlanetResourcesData { private set; get; }
 
         public Player_Local Player { set; get; }

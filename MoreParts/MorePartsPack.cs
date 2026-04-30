@@ -67,7 +67,7 @@ namespace MorePartsMod
         {
             this._manager = GameObject.Instantiate(new GameObject("MorepartsManagers"));
             this._manager.AddComponent<ColonyManager>();
-            this._manager.AddComponent<ResourcesManger>();
+            this._manager.AddComponent<ResourcesManager>();
         }
 
         private void UnloadWorld()

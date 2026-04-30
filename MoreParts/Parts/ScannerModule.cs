@@ -51,7 +51,7 @@ namespace MorePartsMod.Parts
                 return;
             }
 
-            if (ResourcesManger.Main.AnalyzePlanet(this.Rocket.location))
+            if (ResourcesManager.Main.AnalyzePlanet(this.Rocket.location))
             {
                 MsgDrawer.main.Log("Found Resource Deposit");
             }
@@ -78,11 +78,11 @@ namespace MorePartsMod.Parts
         {
             if (this.Active.Value)
             {
-                this.Toggle("GeoEye turn OFF", false);
+                this.Toggle("GeoEye turned OFF", false);
             }
             else
             {
-                this.Toggle("GeoEye turn ON", true);
+                this.Toggle("GeoEye turned ON", true);
             }
             data.successfullyUsedPart = true;
         }

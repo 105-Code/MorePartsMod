@@ -78,11 +78,11 @@ namespace MorePartsMod.Parts
             }
 
 
-            ResourceDeposit deposit = ResourcesManger.Main.CurrentDeposit;
+            ResourceDeposit deposit = ResourcesManager.Main.CurrentDeposit;
 
             if (deposit == null || !deposit.Active)
             {
-                MsgDrawer.main.Log("There is not Resource Deposit");
+                MsgDrawer.main.Log("There is no Resource Deposit");
                 this.TargetState.Value = 0;
                 return;
             }

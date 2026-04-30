@@ -27,7 +27,7 @@ namespace MorePartsMod.Patches
                 ColonyManager.Main.DrawInMap();
 
                 // Draw resources landmarks
-                ResourcesManger.Main.DrawInMap();
+                ResourcesManager.Main.DrawInMap();
 
             }
             catch (Exception e)

@@ -154,7 +154,7 @@ namespace MorePartsMod.Managers
 
         private void ExtractResources()
         {
-            MsgDrawer.main.Log("Extracting resource from the colony to the rocket");
+            MsgDrawer.main.Log("Extracting resources from the colony to the rocket");
 
             ColonyComponent colony = GetNearestColony();
 
@@ -178,7 +178,7 @@ namespace MorePartsMod.Managers
 
         private void InsertResources()
         {
-            MsgDrawer.main.Log("Inserting resource from the rocket to the colony");
+            MsgDrawer.main.Log("Inserting resources from the rocket to the colony");
 
             ColonyComponent colony = GetNearestColony();
 

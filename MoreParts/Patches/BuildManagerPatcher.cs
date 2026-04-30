@@ -48,7 +48,7 @@ namespace MorePartsMod.Patches
             ResourceModule[] resources = __instance.buildGrid.activeGrid.partsHolder.GetModules<ResourceModule>();
             foreach (ResourceModule resource in resources)
             {
-                if (IsSpeacialResource(resource.resourceType.name))
+                if (IsSpecialResource(resource.resourceType.name))
                 {
                     resource.resourcePercent.Value = 0;
                 }
@@ -81,7 +81,7 @@ namespace MorePartsMod.Patches
             MenuGenerator.ShowChoices(() => text, array);
         }
 
-        private static bool IsSpeacialResource(string resourceName)
+        private static bool IsSpecialResource(string resourceName)
         {
             if (resourceName == MorePartsTypes.ROCKET_MATERIAL)
             {

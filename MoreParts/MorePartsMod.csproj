@@ -127,7 +127,7 @@
     <Compile Include="Parts\RotorModule.cs" />
     <Compile Include="Parts\HingeModule.cs" />
     <Compile Include="Parts\ScannerModule.cs" />
-    <Compile Include="Parts\BallonModule.cs" />
+    <Compile Include="Parts\BalloonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
 
     <Compile Include="Patches\RocketManagerPatcher.cs" />
