@@ -231,35 +231,28 @@ namespace MorePartsMod.Managers
                 {
                     return;
                 }
-                ResourceModule[] resources = (Player.Value as Rocket).partHolder.GetModules<ResourceModule>();
-                bool flag = false, flag2 = false;
-                foreach (ResourceModule resource in resources)
+
+                if (Player.Value.location != null && Player.Value.location.planet.Value != null)
                 {
-                    if (resource.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT)
-                    {
-                        flag = true;
-                        continue;
-                    }
-
-                    if (resource.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL)
-                    {
-                        flag2 = true;
-                    }
-                }
-
-                if (flag && flag2)
-                {
-                    if (Player.Value.location != null && Player.Value.location.planet.Value != null)
-                    {
-                        Player.Value.location.planet.OnChange += OnPlanetChange;
-                    }
-
+                    Player.Value.location.planet.OnChange += OnPlanetChange;
                 }
             }
             catch (Exception e)
             {
                 Debug.LogError(e);
             }
+        }
+
+        private bool HasRequiredMaterials()
+        {
+            ResourceModule[] resources = (Player.Value as Rocket).partHolder.GetModules<ResourceModule>();
+            bool hasElectronic = false, hasConstruction = false;
+            foreach (ResourceModule resource in resources)
+            {
+                if (resource.resourceType.name == MorePartsTypes.ELECTRONIC_COMPONENT) hasElectronic = true;
+                if (resource.resourceType.name == MorePartsTypes.CONSTRUCTION_MATERIAL) hasConstruction = true;
+            }
+            return hasElectronic && hasConstruction;
         }
 
         private void OnPlanetChange()
@@ -300,7 +293,29 @@ namespace MorePartsMod.Managers
                 return;
             }
 
-            this._createColonyButton.gameObject.SetActive(true);
+            ColonyComponent nearestColony = GetNearestColony();
+            if (nearestColony != null)
+            {
+                this._createColonyButton.Text = "Open Colony";
+                this._createColonyButton.gameObject.SetActive(true);
+            }
+            else if (HasRequiredMaterials())
+            {
+                this._createColonyButton.Text = "Create Colony";
+                this._createColonyButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                this._createColonyButton.gameObject.SetActive(false);
+            }
+        }
+
+        private void OnActionButton()
+        {
+            if (GetNearestColony() != null)
+                OpenColony();
+            else
+                CreateColony();
         }
 
         private void CreateColony()
@@ -349,7 +364,7 @@ namespace MorePartsMod.Managers
         private void InitGUI()
         {
             GameObject mainUI = GameObject.Find("Main UI");
-            this._createColonyButton = Builder.CreateButton(mainUI.transform, 212, 55, 0, 600, this.CreateColony, "Create Colony");
+            this._createColonyButton = Builder.CreateButton(mainUI.transform, 212, 55, 0, 600, this.OnActionButton, "Create Colony");
             this._createColonyButton.gameObject.SetActive(false);
             // colony menu GUI
             this._ui = ColonyGUI.Init();
