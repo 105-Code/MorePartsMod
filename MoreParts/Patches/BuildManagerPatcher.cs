@@ -28,6 +28,9 @@ namespace MorePartsMod.Patches
             SFS.UI.ModGUI.Button button = Builder.CreateButton(ui.transform, 120, 40, -90,-95, () => ScreenManager.main.OpenScreen(() => _ui), "Colonies");
             button.rectTransform.anchorMin = Vector2.one;
             button.rectTransform.anchorMax = Vector2.one;
+            RectTransform textRect = button.gameObject.transform.Find("Text").GetComponent<RectTransform>();
+            textRect.offsetMin = new Vector2(15, textRect.offsetMin.y);
+            textRect.offsetMax = new Vector2(-15, textRect.offsetMax.y);
         }
 
     }

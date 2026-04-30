@@ -19,7 +19,7 @@ namespace MorePartsMod.UI
 
         public override void OnOpen()
         {
-            this._holder = Builder.CreateWindow(this.transform, 2, 500, 700, 0, 350, titleText: "Colonies");
+            this._holder = Builder.CreateWindow(this.transform, 2, 500, 700, 0, 500, titleText: "Launch From Colony");
             this._holder.CreateLayoutGroup(Type.Vertical).spacing = 20f;
             this._holder.CreateLayoutGroup(Type.Vertical).DisableChildControl();
             this._holder.CreateLayoutGroup(Type.Vertical).childAlignment = TextAnchor.UpperCenter;
