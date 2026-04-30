@@ -123,6 +123,7 @@
     <Compile Include="Managers\ColonyManager.cs" />
 
     <Compile Include="Parts\ContinuousTrackModule.cs" />
+    <Compile Include="Parts\AutoLanderModule.cs" />
     <Compile Include="Parts\ExcavatorModule.cs" />
     <Compile Include="Parts\RotorModule.cs" />
     <Compile Include="Parts\HingeModule.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
 
     <Compile Include="Patches\RocketManagerPatcher.cs" />
+    <Compile Include="Patches\WorldLoaderPatcher.cs" />
     <Compile Include="Patches\MapManagerPatcher.cs" />
     <Compile Include="Patches\BuildManagerPatcher.cs" />
     <Compile Include="Patches\SpaceCenterPatcher.cs" />
