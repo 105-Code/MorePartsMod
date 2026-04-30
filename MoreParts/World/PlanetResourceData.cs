@@ -28,18 +28,18 @@ namespace MorePartsMod.World
         public void Initialize()
         {
             System.Random rnd = new System.Random();
-            int currentAngle = rnd.Next(0,10);
+            int currentAngle = rnd.Next(0, 10);
             // create x deposits
             for (short index = 0; index < 9; index++)
             {
-                int amount = rnd.Next(1000,3000);
+                int amount = rnd.Next(1000, 3000);
                 float radians = currentAngle * Mathf.Deg2Rad;
                 double magnitude = this._planet.GetTerrainHeightAtAngle(radians, false);
                 float x = Mathf.Cos(radians);
                 float y = Mathf.Sin(radians);
-                Double2 position = new Double2(x, y)*(magnitude+this._planet.Radius);
+                Double2 position = new Double2(x, y) * (magnitude + this._planet.Radius);
 
-                ResourceDeposit data = new ResourceDeposit(amount, position, (int) (amount * 0.2), currentAngle);
+                ResourceDeposit data = new ResourceDeposit(amount, position, (int)(amount * 0.2), currentAngle);
                 ResourceDeposits.Add(data);
                 currentAngle += rnd.Next(20, 36);
             }
@@ -65,7 +65,18 @@ namespace MorePartsMod.World
                 this.AngleDegree = angleDegree;
             }
 
-            public ResourceDeposit() {}
+            public ResourceDeposit() { }
+
+            public string GetDepositSizeName()
+            {
+                if (Size < 1500)
+                    return "Small Resource Deposit";
+
+                if (Size < 2500)
+                    return "Medium Resource Deposit";
+
+                return "Large Resource Deposit";
+            }
 
             /**
              * reduce resources in this deposit
@@ -74,7 +85,7 @@ namespace MorePartsMod.World
             public bool takeResources(double quantity)
             {
                 this.Amount -= quantity;
-                if(this.Amount < 0)
+                if (this.Amount < 0)
                 {
                     this.Active = false;
                     return false;
