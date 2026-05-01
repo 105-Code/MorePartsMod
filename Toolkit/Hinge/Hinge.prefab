@@ -112,6 +112,8 @@ MonoBehaviour:
   impactTolerance: 2
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 747620634315712580}
+  collider_Polygon: {fileID: 0}
+  collider_Box: {fileID: 0}
 --- !u!23 &8326729125354400912
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -365,6 +367,9 @@ MonoBehaviour:
   displayName:
     TranslatableName: Hinge
     plainText: 1
+  pickCategoryName:
+    TranslatableName: None
+    plainText: 0
   description:
     TranslatableName: It's a hinge
     plainText: 1
@@ -379,6 +384,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 5292730459476133137}
       input: 0.25
+  density: 0.5
   orientation: {fileID: 4458619553451696607}
   variablesModule: {fileID: 5292730459476133137}
   variants:

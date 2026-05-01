@@ -50,6 +50,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 1
   clickArea: 1
   baseDepth: 0
@@ -93,7 +94,7 @@ MonoBehaviour:
     textureMode: 0
     texture:
       colorTexture: {fileID: 11400000, guid: bddedb66bc725c848a44df7a2a2fff80, type: 2}
-      shapeTexture: {fileID: 11400000, guid: e5aea19716ab5c04fa999f55bdf8e14b, type: 2}
+      shapeTexture: {fileID: 11400000, guid: 2118990ca997fdef9bfd3a9075f082ae, type: 2}
     textures: []
     widthMode: 0
     width:
@@ -103,13 +104,14 @@ MonoBehaviour:
     mode: 0
     color:
       type: 0
-      colorBasic: {r: 1, g: 0.46951362, b: 0.3066038, a: 1}
+      colorBasic: {r: 0.4528302, g: 0.3929055, b: 0.19010323, a: 1}
       colorModule: {fileID: 0}
     colors: []
   leftCover: 0
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!33 &5861664273305910726
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -210,12 +212,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName:
-    plainText: 1
     TranslatableName: Material Cargo
-  description:
     plainText: 1
+  pickCategoryName:
+    TranslatableName: 
+    plainText: 0
+  description:
     TranslatableName: Allow transport of material. this part is needed to extract
       resources from the surface
+    plainText: 1
   mass:
     variables: {fileID: 1241142249781538879}
     input: mass
@@ -227,6 +232,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 1241142249781538879}
       input: 0.5
+  density: 0.5
   orientation: {fileID: 3398730484399694523}
   variablesModule: {fileID: 1241142249781538879}
   variants:
@@ -327,6 +333,7 @@ MonoBehaviour:
     variableName: mass
     referenceToVariables: {fileID: 1241142249781538879}
     localValue: 0
+  setDensity: 1
   parent: {fileID: 0}
   children: []
   flowModules: []

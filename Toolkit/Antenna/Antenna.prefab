@@ -893,7 +893,7 @@ MonoBehaviour:
     TranslatableName: Antenna
     plainText: 1
   pickCategoryName:
-    TranslatableName: 
+    TranslatableName: None
     plainText: 0
   description:
     TranslatableName: It's other telecommunication antenna

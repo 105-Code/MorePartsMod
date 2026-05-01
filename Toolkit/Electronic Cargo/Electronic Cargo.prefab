@@ -54,11 +54,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName:
-    plainText: 1
     TranslatableName: Electronic Cargo
-  description:
     plainText: 1
+  pickCategoryName:
+    TranslatableName: None
+    plainText: 0
+  description:
     TranslatableName: Allow transport electronic components
+    plainText: 1
   mass:
     variables: {fileID: 7980923611345833196}
     input: mass
@@ -70,6 +73,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 7980923611345833196}
       input: height / 2
+  density: 0.5
   orientation: {fileID: 7980923611345833184}
   variablesModule: {fileID: 7980923611345833196}
   variants:
@@ -179,6 +183,7 @@ MonoBehaviour:
   attachmentSurfaces: 1
   dragSurfaces: 1
   colliderArea: 1
+  attachByOverlap: 1
   physicsCollider: 0
   clickArea: 1
   baseDepth: 0
@@ -222,7 +227,7 @@ MonoBehaviour:
     textureMode: 0
     texture:
       colorTexture: {fileID: 11400000, guid: bddedb66bc725c848a44df7a2a2fff80, type: 2}
-      shapeTexture: {fileID: 11400000, guid: e5aea19716ab5c04fa999f55bdf8e14b, type: 2}
+      shapeTexture: {fileID: 11400000, guid: 20241a707c981f8c4bc4d690342bfd6a, type: 2}
     textures: []
     widthMode: 0
     width:
@@ -232,13 +237,14 @@ MonoBehaviour:
     mode: 0
     color:
       type: 0
-      colorBasic: {r: 0.9811321, g: 0.94159216, b: 0.5970096, a: 1}
+      colorBasic: {r: 0.5849056, g: 0.57626396, b: 0.40005338, a: 1}
       colorModule: {fileID: 0}
     colors: []
   leftCover: 0
   centerCover: 0
   rightCover: 0
   separatorRing: 0
+  smoothShading: 0
 --- !u!114 &7728655759003707832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +354,7 @@ MonoBehaviour:
     variableName: mass
     referenceToVariables: {fileID: 7980923611345833196}
     localValue: 2.8000000000000003
+  setDensity: 1
   parent: {fileID: 0}
   children: []
   flowModules: []
