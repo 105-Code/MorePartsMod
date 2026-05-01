@@ -1104,6 +1104,7 @@ GameObject:
   - component: {fileID: 7281608166575621481}
   - component: {fileID: 4068594087124507037}
   - component: {fileID: 9058196893176777551}
+  - component: {fileID: 1006537636302685993}
   m_Layer: 8
   m_Name: Rotor
   m_TagString: Untagged
@@ -1304,6 +1305,41 @@ MonoBehaviour:
     localValue: 0
   Base: {fileID: 6179661616820790748}
   Part: {fileID: 2724586926703645955}
+--- !u!114 &1006537636302685993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3860136810057135241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1118b079a948f1aa60a90b1197c957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elements:
+  - priority: 0
+    label:
+      TranslatableName: RPMs
+      plainText: 1
+    variableType: 0
+    floatReference:
+      variableName: rpm
+      referenceToVariables: {fileID: 7062449513941958936}
+      localValue: 0
+    boolReference:
+      variableName: 
+      referenceToVariables: {fileID: 7062449513941958936}
+      localValue: 0
+    stringReference:
+      variableName: 
+      referenceToVariables: {fileID: 7062449513941958936}
+      localValue: 
+    floatDrawType: 1
+    stringDrawType: 1
+    units: rpm
+    minValue: 500
+    maxValue: 5000
 --- !u!1 &6637922154549019874
 GameObject:
   m_ObjectHideFlags: 0

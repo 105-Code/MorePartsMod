@@ -328,6 +328,7 @@ GameObject:
   - component: {fileID: 4458619553451696607}
   - component: {fileID: 5292730459476133137}
   - component: {fileID: 1847258449601274138}
+  - component: {fileID: 2531395072185753753}
   m_Layer: 8
   m_Name: Hinge
   m_TagString: Untagged
@@ -485,3 +486,60 @@ MonoBehaviour:
     referenceToVariables: {fileID: 5292730459476133137}
     localValue: 0
   Part: {fileID: 3207330539235223471}
+--- !u!114 &2531395072185753753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8063651465425758740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1118b079a948f1aa60a90b1197c957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elements:
+  - priority: 0
+    label:
+      TranslatableName: Max Opening
+      plainText: 1
+    variableType: 0
+    floatReference:
+      variableName: max_opening
+      referenceToVariables: {fileID: 5292730459476133137}
+      localValue: 0
+    boolReference:
+      variableName: 
+      referenceToVariables: {fileID: 5292730459476133137}
+      localValue: 0
+    stringReference:
+      variableName: 
+      referenceToVariables: {fileID: 5292730459476133137}
+      localValue: 
+    floatDrawType: 1
+    stringDrawType: 1
+    units: "\xB0"
+    minValue: 1
+    maxValue: 90
+  - priority: 0
+    label:
+      TranslatableName: Opening Velocity
+      plainText: 1
+    variableType: 0
+    floatReference:
+      variableName: opening_velocity
+      referenceToVariables: {fileID: 5292730459476133137}
+      localValue: 0
+    boolReference:
+      variableName: 
+      referenceToVariables: {fileID: 5292730459476133137}
+      localValue: 0
+    stringReference:
+      variableName: 
+      referenceToVariables: {fileID: 5292730459476133137}
+      localValue: 
+    floatDrawType: 1
+    stringDrawType: 1
+    units: deg/s
+    minValue: 1
+    maxValue: 15
