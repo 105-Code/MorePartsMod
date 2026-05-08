@@ -28,42 +28,39 @@ namespace MorePartsMod.ARPA
             this._nodes.Remove(target);
         }
 
-        public void ClearMarks()
+        public bool IsConnected(Node start)
         {
-            foreach (Node node in this._nodes)
+            List<Node> queue = new List<Node>();
+            HashSet<Node> visited = new HashSet<Node>();
+            Dictionary<Node, Node> parent = new Dictionary<Node, Node>();
+
+            queue.Add(start);
+            visited.Add(start);
+
+            for (int head = 0; head < queue.Count; head++)
             {
-                node.Mark = false;
-            }
-        }
+                Node current = queue[head];
 
-        public bool IsConnected(Node origin)
-        {
-            foreach (Node node in this._nodes)
-            {
-                
-                if (node == origin || node.Mark)
+                if (current.IsOrigin)
                 {
-                    continue;
-                }
-
-                if (!origin.IsAvailableTo(node))
-                {
-                    continue;
-                }
-
-                if (node.IsOrigin)
-                {
-                    origin.Next = node;
+                    Node child = current;
+                    Node prev;
+                    while (parent.TryGetValue(child, out prev))
+                    {
+                        prev.Next = child;
+                        child = prev;
+                    }
                     return true;
                 }
 
-                node.Mark = true;
-                if (this.IsConnected(node))
+                foreach (Node neighbor in this._nodes)
                 {
-                    origin.Next = node;
-                    return true;
+                    if (visited.Contains(neighbor)) continue;
+                    if (!current.IsAvailableTo(neighbor)) continue;
+                    visited.Add(neighbor);
+                    parent[neighbor] = current;
+                    queue.Add(neighbor);
                 }
-                node.Mark = false;
             }
 
             return false;
@@ -74,15 +71,9 @@ namespace MorePartsMod.ARPA
             Node aux = origin;
             while(aux != null)
             {
-                if (aux.IsOrigin)
-                {
-                    return true;
-                }
-
-                if (!aux.IsAvailableTo(aux.Next))
-                {
-                    return false;
-                }
+                if (aux.IsOrigin) return true;
+                if (aux.Next == null) return false;
+                if (!aux.IsAvailableTo(aux.Next)) return false;
                 aux = aux.Next;
             }
             return false;

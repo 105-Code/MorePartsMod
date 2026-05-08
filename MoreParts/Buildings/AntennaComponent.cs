@@ -16,13 +16,14 @@ namespace MorePartsMod.Buildings
     {
         public static AntennaComponent main;
 
+        private static readonly Color LineColor = new Color(0.25f, 0.74f, 0.3f, 0.4f);
+
         private ARPANET _network;
         private Node _routeOrigin;
         public WorldLocation Position;
         private bool _hasTelecommunicationDish;
         private Planet _sunPlanet;
         private bool _enableTelecommunicationLines;
-		private Color _lineColor;
         public bool ShowTelecommunicationLines { set; private get; }
 
         private void Awake()
@@ -37,7 +38,6 @@ namespace MorePartsMod.Buildings
             this.ShowTelecommunicationLines = false;
             this._enableTelecommunicationLines = KeySettings.Main.Show_Telecommunication_lines;
             this._sunPlanet = this.getPrimaryPlanet();
-			this._lineColor = new Color(0.25f, 0.74f, 0.3f, 0.4f);
         }
 
         private Planet getPrimaryPlanet()
@@ -92,39 +92,30 @@ namespace MorePartsMod.Buildings
             return this._network.Insert(location, isOrigin);
         }
 
-        public Node AddNode(TelecommunicationDishModule dish)
-        {
-            WorldLocation location = dish.Rocket.GetComponent<WorldLocation>();
-            return this._network.Insert(location);
-        }
-
         public void RemoveNode(TelecommunicationDishModule dish)
         {
             this._network.Remove(dish.Node);
             this._network.ClearRoute(this._routeOrigin);
+            this._routeOrigin = null;
         }
 
         public bool IsConnected(Node origin)
         {
             try
             {
-                bool result;
                 if (origin.Next != null)
                 {
-                    result = this._network.CheckRoute(origin);
-                    if (result)
+                    if (this._network.CheckRoute(origin))
                     {
                         return true;
                     }
                     this._network.ClearRoute(origin);
                 }
-                origin.Mark = true;
-                result = this._network.IsConnected(origin);
+                bool result = this._network.IsConnected(origin);
                 if (result)
                 {
                     this._routeOrigin = origin;
                 }
-                this._network.ClearMarks();
                 return result;
             }
             catch (Exception error)
@@ -137,7 +128,8 @@ namespace MorePartsMod.Buildings
         public void OnChangePlayer()
         {
             this._network.ClearRoute(this._routeOrigin);
-            Rocket rocket = (Rocket)PlayerController.main.player;
+            this._routeOrigin = null;
+            Rocket rocket = PlayerController.main.player.Value as Rocket;
             if (rocket == null)
             {
                 this._hasTelecommunicationDish = false;
@@ -163,11 +155,18 @@ namespace MorePartsMod.Buildings
                 return;
             }
 
+            // Reference the player's planet (not the Sun) so mapHolder stays near the camera and Vector3 quantization doesn't jitter the line.
+            Player player = PlayerController.main.player.Value;
+            Planet referenceBody = (player != null && player.location != null && player.location.planet.Value != null)
+                ? player.location.planet.Value
+                : this._sunPlanet;
+            Double2 refOrigin = referenceBody.GetSolarSystemPosition();
+
             List<Vector3> points = new List<Vector3>();
             Node aux = this._routeOrigin;
             while (aux != null)
             {
-                points.Add(aux.GetAbsolutePosition() / 1000);
+                points.Add((aux.GetAbsolutePosition() - refOrigin) / 1000);
 
                 if (aux.IsOrigin)
                 {
@@ -177,8 +176,7 @@ namespace MorePartsMod.Buildings
                 aux = aux.Next;
             }
 
-            Map.solidLine.DrawLine(points.ToArray(), this._sunPlanet, _lineColor, _lineColor);
-
+            Map.solidLine.DrawLine(points.ToArray(), referenceBody, LineColor, LineColor);
         }
 
     }

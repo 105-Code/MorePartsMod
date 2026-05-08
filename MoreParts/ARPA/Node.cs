@@ -1,6 +1,6 @@
-﻿using SFS.World;
+﻿using SFS;
+using SFS.World;
 using SFS.WorldBase;
-using UnityEngine;
 
 namespace MorePartsMod.ARPA
 {
@@ -8,16 +8,14 @@ namespace MorePartsMod.ARPA
     {
 
         public Node Next { set; get; }
-        public bool Mark { set; get; }
         public int Id { get; private set; }
         public bool IsOrigin { get; private set; }
-        public WorldLocation WorldLocation { get; private set; } 
+        public WorldLocation WorldLocation { get; private set; }
 
 
         public Node(int id, WorldLocation worldLocation, bool isOrigin =false)
         {
             this.Id = id;
-            this.Mark = false;
             this.Next = null;
             this.WorldLocation = worldLocation;
             this.IsOrigin = isOrigin;
@@ -25,59 +23,39 @@ namespace MorePartsMod.ARPA
 
         public bool IsAvailableTo(Node target)
         {
-            Planet planet1 = this.WorldLocation.planet.Value;
-            Planet planet2 = target.WorldLocation.planet.Value;
-            if (this.HitPlanet(planet1.Radius, planet1.GetSolarSystemPosition(), this.GetAbsolutePosition(), target.GetAbsolutePosition()))
+            Double2 origin = this.GetAbsolutePosition();
+            Double2 dest = target.GetAbsolutePosition();
+            foreach (Planet planet in Base.planetLoader.planets.Values)
             {
-                return false;
-            }
-
-            if(planet1.codeName == planet2.codeName)
-            {
-                return true;
-            }
-
-            if (this.HitPlanet(planet2.Radius, planet2.GetSolarSystemPosition(), this.GetAbsolutePosition(), target.GetAbsolutePosition()))
-            {
-                return false;
+                if (this.HitPlanet(planet.Radius, planet.GetSolarSystemPosition(), origin, dest))
+                {
+                    return false;
+                }
             }
             return true;
         }
 
+        // segment vs circle: project planet center onto the origin->target segment,
+        // hit if the closest point lies on the segment and is inside the planet.
         private bool HitPlanet(double planetRadius, Double2 planetCenter, Double2 origin, Double2 target)
         {
-            double m = (target.y - origin.y) / (target.x - origin.x);
-            double aux = (-m * origin.x + origin.y - planetCenter.y);
+            double dx = target.x - origin.x;
+            double dy = target.y - origin.y;
+            double lenSq = dx * dx + dy * dy;
+            if (lenSq <= 0) return false;
 
-            double a = 1 + m * m;
-            double b = 2 * m * aux - 2 * planetCenter.x;
-            double c = planetCenter.x * planetCenter.x + aux * aux - planetRadius * planetRadius;
-            double result = b * b - 4 * a * c;
-            if(result < 0)
-            {
-                return false;
-            }
+            double t = ((planetCenter.x - origin.x) * dx + (planetCenter.y - origin.y) * dy) / lenSq;
+            if (t <= 0 || t >= 1) return false;
 
-            float originToPlanet = Vector2.Distance(origin, planetCenter);
-            float originToTarget = Vector2.Distance(origin, target);
-            if (originToTarget < originToPlanet)
-            {
-                return false;
-            }
-
-            Vector2 originPlanetDirection = (origin.ToVector2 - planetCenter.ToVector2).normalized;
-            Vector2 originTargetDirection = (origin.ToVector2 - target.ToVector2).normalized;
-            
-            if(Vector2.Dot(originPlanetDirection, originTargetDirection) < 0)
-            {
-                return false;
-            }
-
-            return true;
+            double closestX = origin.x + t * dx;
+            double closestY = origin.y + t * dy;
+            double distX = closestX - planetCenter.x;
+            double distY = closestY - planetCenter.y;
+            return (distX * distX + distY * distY) < planetRadius * planetRadius;
         }
 
         public Double2 GetAbsolutePosition()
-        {       
+        {
             return this.WorldLocation.planet.Value.GetSolarSystemPosition() + this.WorldLocation.Value.position;
         }
 

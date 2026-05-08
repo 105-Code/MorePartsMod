@@ -17,6 +17,11 @@ namespace MorePartsMod.Parts
         public Bool_Reference IsOn;
         public Float_Reference TargetState;
 
+        // Connection survives up to this physics timewarp index. Hard mode (game's MaxPhysicsTimewarpIndex == 3) tolerates higher warp.
+        private const int HardDifficultyMaxPhysicsWarp = 3;
+        private const int HardDifficultyConnectedWarp = 5;
+        private const int DefaultConnectedWarp = 3;
+
         private bool _notifyDisconnection;
         private bool _notifyConnection;
         private float _time = 3f;
@@ -36,7 +41,9 @@ namespace MorePartsMod.Parts
         {
             this._notifyConnection = true;
             this._notifyDisconnection = true;
-            this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == 3 ? 5 : 3;
+            this._maxTimeWarp = Base.worldBase.settings.difficulty.MaxPhysicsTimewarpIndex == HardDifficultyMaxPhysicsWarp
+                ? HardDifficultyConnectedWarp
+                : DefaultConnectedWarp;
         }
 
         private bool ContainCapsule()
@@ -85,7 +92,7 @@ namespace MorePartsMod.Parts
                 if (this.IsOn.Value)
                 {
                     this.TargetState.Value = 1;
-                    this.Node = AntennaComponent.main.AddNode(this);
+                    this.Node = AntennaComponent.main.AddNode(this.Rocket.GetComponent<WorldLocation>());
                 }
                 else
                 {
@@ -98,7 +105,7 @@ namespace MorePartsMod.Parts
                 this.IsOn.Value = true;
                 this.TargetState.Value = 1;
                 this.Rocket.hasControl.Value = true;
-                this.Node = AntennaComponent.main.AddNode(this);
+                this.Node = AntennaComponent.main.AddNode(this.Rocket.GetComponent<WorldLocation>());
             }
 
         }
@@ -177,7 +184,7 @@ namespace MorePartsMod.Parts
             }
             else
             {
-                this.Node = AntennaComponent.main.AddNode(this);
+                this.Node = AntennaComponent.main.AddNode(this.Rocket.GetComponent<WorldLocation>());
                 MsgDrawer.main.Log("Telecommunication Dish On");
                 this._notifyDisconnection = true;
                 this._notifyConnection = true;

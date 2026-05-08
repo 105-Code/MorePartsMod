@@ -50,7 +50,47 @@ Both expose a `Main` static singleton set in `Awake`.
 
 ### ARPANET
 
-`AntennaComponent` (a colony building spawned at the Space Center by `SpaceCenterPatcher`) owns an `ARPANET` graph. `ARPANET` is a simple linked-list connectivity graph of `Node`s. Each `Node` wraps a `WorldLocation`. Line-of-sight is computed geometrically (quadratic line/circle intersection). `TelecommunicationDishModule` (a rocket part) adds/removes itself as a node and checks connectivity every 3 seconds, toggling `rocket.hasControl`.
+The "ARPANET" feature implements a satellite-constellation control network. Unmanned rockets only retain `hasControl` while a `TelecommunicationDishModule` finds a line-of-sight relay path back to a ground station (Space Center or any colony). Manned rockets — any rocket containing a part named `Capsule` — bypass the system entirely; the dish module disables itself in `Start`.
+
+**Topology**
+
+A single `ARPANET` instance is owned by the singleton `AntennaComponent`. Three kinds of `Node`s exist in its flat `_nodes` list:
+- **Space Center node** (origin): inserted by `AntennaComponent.Awake` from `Position`.
+- **Colony nodes** (origin): every `ColonyComponent.Start` calls `AntennaComponent.main.AddNode(Location, true)`. Colonies act as ground stations even without any explicit "antenna building" — the colony itself is the relay.
+- **Rocket dish nodes** (non-origin): added by `TelecommunicationDishModule.Start` (or `_toggle` on power-on), removed in `OnDestroy` and on toggle-off.
+
+`Node.Next` is *not* an adjacency-list edge — it caches the next hop along a previously-found route back to an origin. Edges are computed on demand by `Node.IsAvailableTo`, so the graph is conceptually a fully-connected mesh filtered by line-of-sight at query time.
+
+**Connectivity check (`AntennaComponent.IsConnected`)**
+
+Called every 3s by each player-controlled dish in `FixedUpdate`. Two-stage:
+1. **Fast path** — if `origin.Next != null`, walk the cached route via `ARPANET.CheckRoute`, re-validating each hop's line-of-sight. If still valid, return true without re-searching.
+2. **Slow path** — if no cached route or it broke, run `ARPANET.IsConnected`, an iterative BFS over `_nodes`. The search terminates as soon as any node with `IsOrigin == true` is dequeued, guaranteeing the discovered route uses the fewest hops. On success, the BFS walks its `parent` map back to the start and writes `Next` pointers along that path, building the cached route from the rocket to an origin.
+
+`AntennaComponent` stores the last successfully-routed origin in `_routeOrigin` so the map renderer and disconnection cleanup can find it. `ClearRoute` walks the `Next` chain and nulls each pointer.
+
+**Line-of-sight (`Node.IsAvailableTo`)**
+
+For each node pair, every loaded planet in `Base.planetLoader.planets.Values` is tested via segment-vs-circle: project the planet center onto the segment from origin to target; reject if the projection lies inside the segment (`0 < t < 1`) and within the planet's radius. Robust to vertical lines (no slope-intercept), and a third unrelated body now blocks LOS too.
+
+**Disconnection conditions**
+
+`TelecommunicationDishModule.DoDisconnection` clears `Rocket.hasControl` when:
+- DFS finds no path to any origin.
+- `WorldTime.timewarpSpeed > _maxTimeWarp` (3 by default; 5 on the difficulty whose `MaxPhysicsTimewarpIndex == 3`).
+- Player toggles the dish off (`_toggle` / key `Y` / part-use action).
+
+Status messages use `MsgDrawer.main.Log` ("Connected" / "No Connection" / "Telecommunication Dish On/Off") and are gated by `_notifyConnection` / `_notifyDisconnection` flags to avoid spamming.
+
+**Map rendering**
+
+`MapManagerPatcher` postfixes `MapManager.DrawLandmarks` and calls `AntennaComponent.DrawInMap`, which:
+- Draws the Space Center landmark.
+- If `ShowTelecommunicationLines` (set true on successful connection), `_enableTelecommunicationLines` (toggled by key `I`, persisted via `KeySettings.ToggleShowTelecommunicationLines`), and the player rocket has a dish, walks `_routeOrigin → Next → …` and renders the path with `Map.solidLine.DrawLine` in the Sun's reference frame.
+
+**Persistence**
+
+The ARPANET is rebuilt from scratch on every world load — node IDs are not stable across sessions and nothing in `Colonies.json` references them. The graph re-forms naturally as `AntennaComponent.Awake`, each `ColonyComponent.Start`, and each `TelecommunicationDishModule.Start` run during scene load.
 
 ### Harmony patches
 
