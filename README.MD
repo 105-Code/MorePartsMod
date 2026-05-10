@@ -217,7 +217,7 @@ Also some new parts are added to the game. Some of them are listed below:
 - `Rotor`: Add a rotor to the game that allows you to fly in the Game.  
 ![Imgur](https://i.imgur.com/x1qX1iJ.png)  
 
-- `Continuous Track`: This part is like a wheel.
+- `Continuous Track`: This part is like a wheel.  
 ![Imgur](https://i.imgur.com/yqMNX8am.png)  
 
 - `Excavator`: With this part you can extract resources from the `Resource Deposit`. You will need to add the `Material cargo` part to deposit the resource mined from the ground.  
@@ -226,7 +226,9 @@ Also some new parts are added to the game. Some of them are listed below:
 - `GeoEye`: This is the planetary scanner. With this part you can discover a new `Resource Deposit`.  
 ![Imgur](https://i.imgur.com/eC3imYum.png)  
 
-- `GeoEye`: Allows you to move parts attached to this part
-![Imgur](https://imgur.com/5VtgzEa.png)  
+- `Hinge`: Allows you to move parts attached to this part.  
+![Imgur](https://imgur.com/5VtgzEa.png)
 
+- `Wing`: Allows you fly like a bird!.  
+![Imgur](/docs/images/wing.png)  
 
