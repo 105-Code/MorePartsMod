@@ -215,7 +215,7 @@ MonoBehaviour:
     TranslatableName: Material Cargo
     plainText: 1
   pickCategoryName:
-    TranslatableName: 
+    TranslatableName: None
     plainText: 0
   description:
     TranslatableName: Allow transport of material. this part is needed to extract

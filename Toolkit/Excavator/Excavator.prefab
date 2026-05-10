@@ -54,11 +54,11 @@ MonoBehaviour:
     TranslatableName: Excavator
     plainText: 1
   pickCategoryName:
-    TranslatableName: 
+    TranslatableName: None
     plainText: 0
   description:
-    TranslatableName: This part allows you to collect resources from the surface
-      of the planet. Need electricity
+    TranslatableName: "Resource harvesting arm \u2014 extracts materials from planet
+      surface deposits with opening animation"
     plainText: 1
   mass:
     variables: {fileID: -5492550926258613974}
@@ -166,7 +166,6 @@ MonoBehaviour:
     offset: 0
     transform: {fileID: 8623135702529149283}
     spriteRenderer: {fileID: 0}
-    image: {fileID: 0}
     X:
       serializedVersion: 2
       m_Curve:
@@ -370,8 +369,6 @@ MonoBehaviour:
   impactTolerance: 2
   ownEngineNozzle: {fileID: 0}
   polygon: {fileID: 6499995732646355852}
-  collider_Polygon: {fileID: 0}
-  collider_Box: {fileID: 0}
 --- !u!23 &8526610382877778900
 MeshRenderer:
   m_ObjectHideFlags: 0

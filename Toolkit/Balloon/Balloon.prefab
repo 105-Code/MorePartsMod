@@ -476,8 +476,12 @@ MonoBehaviour:
   displayName:
     TranslatableName: Weather balloon
     plainText: 1
+  pickCategoryName:
+    TranslatableName: None
+    plainText: 0
   description:
-    TranslatableName: A deployable balloon that operates without any fuel or energy.
+    TranslatableName: "Buoyant balloon part \u2014 adjusts lift/drag based on inflation
+      state for atmospheric flight"
     plainText: 1
   mass:
     variables: {fileID: 1694083014706337627}
@@ -490,6 +494,7 @@ MonoBehaviour:
     y:
       variables: {fileID: 1694083014706337627}
       input: 0
+  density: 0.5
   orientation: {fileID: 609440245930085783}
   variablesModule: {fileID: 1694083014706337627}
   variants:
