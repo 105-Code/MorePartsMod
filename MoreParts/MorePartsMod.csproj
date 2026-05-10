@@ -130,8 +130,11 @@
     <Compile Include="Parts\ScannerModule.cs" />
     <Compile Include="Parts\BalloonModule.cs" />
     <Compile Include="Parts\TelecommunicationDishModule.cs" />
+    <Compile Include="Parts\WingModule.cs" />
+    <Compile Include="Parts\CenterOfMassDebug.cs" />
 
     <Compile Include="Patches\RocketManagerPatcher.cs" />
+    <Compile Include="Patches\RocketPatcher.cs" />
     <Compile Include="Patches\WorldLoaderPatcher.cs" />
     <Compile Include="Patches\MapManagerPatcher.cs" />
     <Compile Include="Patches\BuildManagerPatcher.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="UI\ColonyGUI.cs" />
 
     <Compile Include="Utils\BuildingUtils.cs" />
+    <Compile Include="Utils\VisualRotate.cs" />
     <Compile Include="Utils\MathUtils.cs" />
     <Compile Include="Utils\MockMod.cs" />
     <Compile Include="Utils\FileUtils.cs" />

@@ -68,7 +68,16 @@ namespace MorePartsMod
             this._manager = GameObject.Instantiate(new GameObject("MorepartsManagers"));
             this._manager.AddComponent<ColonyManager>();
             this._manager.AddComponent<ResourcesManager>();
+
+            KeySettings.AddOnKeyDown_World(KeySettings.Main.Toggle_Center_of_Mass, this.TogggleCenterOfMass);
+
         }
+
+        private void TogggleCenterOfMass()
+        {
+            KeySettings.Main.ToggleShowCenterOfMass();
+        }
+
 
         private void UnloadWorld()
         {

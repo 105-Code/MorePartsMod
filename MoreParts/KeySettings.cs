@@ -13,9 +13,11 @@ namespace MorePartsMod
         public KeybindingsPC.Key Toggle_Telecommunication_Dish = KeyCode.Y;
         public KeybindingsPC.Key Open_Colony = KeyCode.U;
         public KeybindingsPC.Key Toggle_Telecommunication_Lines = KeyCode.I;
+        public KeybindingsPC.Key Toggle_Center_of_Mass = KeyCode.F2;
         public KeybindingsPC.Key Insert_Colony_Resources = KeyCode.J;
         public KeybindingsPC.Key Extract_Colony_Resources = KeyCode.K;
         public bool Show_Telecommunication_lines = true;
+        public bool Show_center_of_mass = false;
 
         public static void Setup()
         {
@@ -29,13 +31,21 @@ namespace MorePartsMod
             base.CreateUI_Keybinding(Toggle_Telecommunication_Dish, keySettings.Toggle_Telecommunication_Dish, "Toggle Telecommunication Dish");
             base.CreateUI_Keybinding(Open_Colony, keySettings.Open_Colony, "Open Colony");
             base.CreateUI_Keybinding(Toggle_Telecommunication_Lines, keySettings.Toggle_Telecommunication_Lines, "Toggle Telecommunication Lines");
+            base.CreateUI_Keybinding(Toggle_Center_of_Mass, keySettings.Toggle_Center_of_Mass, "Toggle Center of Mass");
             base.CreateUI_Keybinding(Insert_Colony_Resources, keySettings.Insert_Colony_Resources, "Insert resources to the colony");
             base.CreateUI_Keybinding(Extract_Colony_Resources, keySettings.Extract_Colony_Resources, "Extract resources from the colony");
+
         }
 
         public void ToggleShowTelecommunicationLines()
         {
             this.Show_Telecommunication_lines = !this.Show_Telecommunication_lines;
+            this.Save();
+        }
+
+        public void ToggleShowCenterOfMass()
+        {
+            this.Show_center_of_mass = !this.Show_center_of_mass;
             this.Save();
         }
 
