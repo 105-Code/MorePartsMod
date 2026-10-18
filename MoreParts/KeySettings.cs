@@ -57,7 +57,8 @@ namespace MorePartsMod
 
         private FilePath GetPath(Mod Mod)
         {
-            return new FolderPath(Mod.ModFolder).ExtendToFile("keybindings.json");
+            // Must match the file ModKeybindings.Load reads, otherwise the toggles are lost on restart.
+            return new FolderPath(Mod.ModFolder).ExtendToFile("keybindings.txt");
         }
     }
 }
