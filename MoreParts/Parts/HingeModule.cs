@@ -23,8 +23,21 @@ namespace MorePartsMod.Parts
 
         private const float DegToRad = 0.01745329f;
 
-        public Rocket Rocket { set; get; }
+        // Re-injected by SFS whenever the rocket is rebuilt (docking, separation, part destroyed),
+        // so the top group is refreshed against the new joint graph.
+        public Rocket Rocket
+        {
+            get => _rocket;
+            set
+            {
+                _rocket = value;
+                if (_topGroup != null)
+                    _topGroup = RefreshTopParts();
+            }
+        }
         public Part Part;
+
+        private Rocket _rocket;
 
         public void Awake()
         {
@@ -41,12 +54,10 @@ namespace MorePartsMod.Parts
                 return;
             }
 
+            // Positions and orientations of the top parts are saved already rotated, so nothing is re-applied here.
             _topGroup = CollectTopParts();
             _isClosing = Opening.Value >= MaxOpening.Value;
             _connector.localEulerAngles = new Vector3(0, 0, -90 + Opening.Value);
-
-            if (Opening.Value > 0 && _topGroup.Count > 0)
-                ApplyOpeningAngle(Opening.Value);
         }
 
         private void Update()
@@ -72,35 +83,68 @@ namespace MorePartsMod.Parts
         }
 
         // The pivot is the Connector child's origin — placed by the designer at the exact joint center.
-        // We convert its world position to partHolder local space so it matches part.transform.localPosition.
-        private Vector3 GetPivotLocalPosition()
+        // We convert its world position to partHolder local space so it matches part.Position.
+        private Vector2 GetPivotLocalPosition()
         {
             return Part.transform.parent.InverseTransformPoint(_connector.position);
         }
 
-        // BFS starting from the hinge's immediate "top" neighbors, collecting every transitively
-        // connected part that should rotate with the hinge.
+        // Geometric classification, used on Start. Undoes the current opening so a top neighbor is found
+        // where it sat with the hinge closed; a neighbor still clearly below the hinge stays a base part.
+        private bool IsOnTopSide(Part neighbor)
+        {
+            Vector2 up = GetHingeUpDirection();
+            Orientation o = _orientation.orientation.Value;
+            Quaternion undo = Quaternion.AngleAxis(-Opening.Value * o.x * o.y, Vector3.forward);
+            Vector2 pivot = GetPivotLocalPosition();
+
+            Vector2 current = neighbor.Position - Part.Position;
+            Vector2 closed = pivot + (Vector2)(undo * (neighbor.Position - pivot)) - Part.Position;
+
+            return Vector2.Dot(closed.normalized, up) > 0.5f && Vector2.Dot(current.normalized, -up) <= 0.5f;
+        }
+
         private HashSet<Part> CollectTopParts()
         {
-            var result = new HashSet<Part>();
-            if (Rocket == null) return result;
+            if (Rocket == null) return new HashSet<Part>();
 
-            Vector2 up = GetHingeUpDirection();
-            var pending = new List<Part>();
-
-            // Seed: direct neighbors whose anchor points in the opening direction.
+            var seeds = new List<Part>();
             foreach (PartJoint joint in Rocket.jointsGroup.GetConnectedJoints(Part))
             {
-                Vector2 anchor = joint.GetRelativeAnchor(Part);
-                if (Vector2.Dot(anchor.normalized, up) > 0.5f)
-                {
-                    Part neighbor = joint.GetOtherPart(Part);
-                    if (result.Add(neighbor))
-                        pending.Add(neighbor);
-                }
+                Part neighbor = joint.GetOtherPart(Part);
+                if (IsOnTopSide(neighbor))
+                    seeds.Add(neighbor);
+            }
+            return ExpandTopParts(seeds);
+        }
+
+        // Rebuilds the top group after the rocket changed, keeping the hinge's direct top neighbors that are
+        // still attached. Avoids re-classifying geometrically, which is ambiguous while the hinge is open.
+        private HashSet<Part> RefreshTopParts()
+        {
+            if (Rocket == null) return new HashSet<Part>();
+
+            var seeds = new List<Part>();
+            foreach (PartJoint joint in Rocket.jointsGroup.GetConnectedJoints(Part))
+            {
+                Part neighbor = joint.GetOtherPart(Part);
+                if (_topGroup.Contains(neighbor))
+                    seeds.Add(neighbor);
+            }
+            return ExpandTopParts(seeds);
+        }
+
+        // BFS from the seeds, collecting every transitively connected part without crossing back through the hinge.
+        private HashSet<Part> ExpandTopParts(List<Part> seeds)
+        {
+            var result = new HashSet<Part>();
+            var pending = new List<Part>();
+            foreach (Part seed in seeds)
+            {
+                if (result.Add(seed))
+                    pending.Add(seed);
             }
 
-            // Expand to all parts reachable from the seed without crossing back through the hinge.
             while (pending.Count > 0)
             {
                 Part current = pending[pending.Count - 1];
@@ -117,18 +161,24 @@ namespace MorePartsMod.Parts
             return result;
         }
 
-        // Applies a total rotation of angleDegrees around the pivot to all top parts.
-        // Used on Start to restore a saved non-zero opening angle.
-        private void ApplyOpeningAngle(float angleDegrees)
+        // Rotates the top parts around the pivot. Writes Position, Orientation and joint anchors (not just the
+        // transform) because JointGroup.RepositionParts rebuilds the rocket from them on every dock/split.
+        private void RotateTopParts(float angleDegrees)
         {
-            Orientation o = _orientation.orientation.Value;
-            Quaternion rotation = Quaternion.AngleAxis(angleDegrees * o.x * o.y, Vector3.forward);
-            Vector3 pivot = GetPivotLocalPosition();
+            Quaternion rotation = Quaternion.AngleAxis(angleDegrees, Vector3.forward);
+            Vector2 pivot = GetPivotLocalPosition();
 
             foreach (Part part in _topGroup)
             {
-                part.transform.localPosition = pivot + rotation * (part.transform.localPosition - pivot);
-                part.transform.localRotation = rotation * part.transform.localRotation;
+                part.Position = pivot + (Vector2)(rotation * (part.Position - pivot));
+                Orientation o = part.orientation.orientation.Value;
+                part.orientation.orientation.Value = new Orientation(o.x, o.y, Mathf.Repeat(o.z + angleDegrees, 360f));
+            }
+
+            foreach (Part part in _topGroup)
+            {
+                foreach (PartJoint joint in Rocket.jointsGroup.GetConnectedJoints(part))
+                    joint.anchor = joint.b.Position - joint.a.Position;
             }
         }
 
@@ -136,16 +186,7 @@ namespace MorePartsMod.Parts
         {
             float delta = _isClosing ? -OpeningVelocity.Value : OpeningVelocity.Value;
             Orientation o = _orientation.orientation.Value;
-            float angleDelta = delta * o.x * o.y;
-
-            Quaternion rotation = Quaternion.AngleAxis(angleDelta, Vector3.forward);
-            Vector3 pivot = GetPivotLocalPosition();
-
-            foreach (Part part in _topGroup)
-            {
-                part.transform.localPosition = pivot + rotation * (part.transform.localPosition - pivot);
-                part.transform.localRotation = rotation * part.transform.localRotation;
-            }
+            RotateTopParts(delta * o.x * o.y);
 
             Opening.Value += delta;
             _connector.localEulerAngles = new Vector3(0, 0, -90 + Opening.Value);
@@ -160,7 +201,7 @@ namespace MorePartsMod.Parts
         public void OnPartUsed(UsePartData data)
         {
             if (!_isMoving)
-                _topGroup = CollectTopParts();
+                _topGroup = RefreshTopParts();
 
             if (_topGroup.Count > 0)
                 _isMoving = true;
