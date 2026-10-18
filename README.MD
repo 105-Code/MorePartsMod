@@ -229,6 +229,6 @@ Also some new parts are added to the game. Some of them are listed below:
 - `Hinge`: Allows you to move parts attached to this part.  
 ![Imgur](https://imgur.com/5VtgzEa.png)
 
-- `Wing`: Allows you fly like a bird!.  
+- `Wing`: Allows you fly like a bird!. The wing only generates lift while deployed; click on it to deactivate (retract) or activate it again.  
 ![Imgur](/docs/images/wing.png)  
 

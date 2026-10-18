@@ -1,4 +1,6 @@
 using SFS.Input;
+using SFS.Parts;
+using SFS.UI;
 using SFS.Variables;
 using SFS.World;
 using UnityEngine;
@@ -16,6 +18,9 @@ namespace MorePartsMod.Parts
 
         public Bool_Reference DebugDrawLift;       // show lift/wind debug lines
         public Float_Reference FlapAngle;          // current flap deflection, written for the visual rotator
+
+        public Bool_Reference IsOn;                // wing only generates lift while deployed (click or stage)
+        public Part Part;
 
         public float FlapMaxAngle = 20f;  // degrees, max deflection in either direction
         public float FlapRate = 30f;  // degrees per second
@@ -48,6 +53,8 @@ namespace MorePartsMod.Parts
                 Debug.LogError($"[{name}] IncidenceAngle reference is not set.");
             if (FlapAngle == null)
                 Debug.LogError($"[{name}] FlapAngle reference is not set.");
+            if (IsOn == null)
+                Debug.LogError($"[{name}] IsOn reference is not set.");
             if (DebugDrawLift == null)
             {
                 Debug.LogError($"[{name}] DebugDrawLift reference is not set.");
@@ -78,8 +85,34 @@ namespace MorePartsMod.Parts
             return lr;
         }
 
+        private void Start()
+        {
+            if (Part != null)
+                Part.onPartUsed.AddListener(Toggle);
+        }
+
+        private void OnDestroy()
+        {
+            if (Part != null)
+                Part.onPartUsed.RemoveListener(Toggle);
+        }
+
+        private void Toggle(UsePartData data)
+        {
+            IsOn.Value = !IsOn.Value;
+            MsgDrawer.main.Log(IsOn.Value ? "Wing Deployed" : "Wing Retracted");
+            data.successfullyUsedPart = true;
+        }
+
         private void Update()
         {
+            if (IsOn == null || !IsOn.Value)
+            {
+                _flapDeflection = 0f;
+                FlapAngle.Value = 0f;
+                return;
+            }
+
             float dir = 0f;
             if (((I_Key)KeybindingsPC.keys.Turn_Rocket[1]).IsKeyStay()) dir += 1f; // E
             if (((I_Key)KeybindingsPC.keys.Turn_Rocket[0]).IsKeyStay()) dir -= 1f; // Q
@@ -101,6 +134,8 @@ namespace MorePartsMod.Parts
 
         private void FixedUpdate()
         {
+            if (IsOn == null || !IsOn.Value)
+            { HideDebugLines(); return; }
             if (Location == null || Location.planet == null || Rb2d == null || !Rb2d.simulated)
             { HideDebugLines(); return; }
             if (!Location.planet.HasAtmospherePhysics)
